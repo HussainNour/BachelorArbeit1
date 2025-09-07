@@ -1,32 +1,10 @@
 {
   "type": "object",
   "properties": {
-    "name": {
-      "type": "string",
-      "minLength": 1
-    },
-    "description": {
-      "title": "Long Description",
-      "type": "string"
-    },
-    "done": {
-      "type": "boolean"
-    },
-    "due_date": {
-      "type": "string",
-      "format": "date"
-    },
-    "rating": {
-      "type": "integer",
-      "maximum": 5
-    },
-    "recurrence": {
-      "type": "string",
-      "enum": ["Never", "Daily", "Weekly", "Monthly"]
-    },
-    "recurrence_interval": {
-      "type": "integer"
-    }
+    "salutation": { "type": "string", "title": "Anrede", "enum": ["Herr", "Frau", "Divers"] },
+    "firstName":  { "type": "string", "title": "Vorname",  "minLength": 1 },
+    "lastName":   { "type": "string", "title": "Nachname", "minLength": 1 },
+    "age":        { "type": "integer", "title": "Alter", "minimum": 0 }
   },
-  "required": ["name", "due_date"]
+  "required": ["firstName", "lastName"]
 }

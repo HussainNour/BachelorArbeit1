@@ -1,97 +1,56 @@
-import { FC, useMemo, useState } from 'react';
+import { useState } from 'react';
 import { JsonForms } from '@jsonforms/react';
-import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import {
-  materialCells,
-  materialRenderers,
-} from '@jsonforms/material-renderers';
-import RatingControl from './RatingControl';
-import ratingControlTester from '../ratingControlTester';
+import { materialCells, materialRenderers } from '@jsonforms/material-renderers';
 import schema from '../schema.json';
 import uischema from '../uischema.json';
+import { Box, Button, Typography } from '@mui/material';
 
-const classes = {
-  container: {
-    padding: '1em',
-    width: '100%',
-  },
-  title: {
-    textAlign: 'center',
-    padding: '0.25em',
-  },
-  dataContent: {
-    display: 'flex',
-    justifyContent: 'center',
-    borderRadius: '0.25em',
-    backgroundColor: '#cecece',
-    marginBottom: '1rem',
-  },
-  resetButton: {
-    margin: 'auto !important',
-    display: 'block !important',
-  },
-  demoform: {
-    margin: 'auto',
-    padding: '1rem',
-  },
-};
+type Person = { salutation?: string; firstName?: string; lastName?: string; age?: number; };
 
-const initialData = {
-  name: 'Send email to Adrian',
-  description: 'Confirm if you have passed the subject\nHereby ...',
-  done: true,
-  recurrence: 'Daily',
-  rating: 3,
-};
+const API = 'http://localhost:5050/persons';
 
-const renderers = [
-  ...materialRenderers,
-  //register custom renderers
-  { tester: ratingControlTester, renderer: RatingControl },
-];
+export const JsonFormsDemo = () => {
+  const [data, setData] = useState<Person>({});
+  const [hasErrors, setHasErrors] = useState(false);
+  const [msg, setMsg] = useState<string | null>(null);
 
-export const JsonFormsDemo: FC = () => {
-  const [data, setData] = useState<object>(initialData);
-  const stringifiedData = useMemo(() => JSON.stringify(data, null, 2), [data]);
-
-  const clearData = () => {
-    setData({});
+  const save = async () => {
+    setMsg(null);
+    try {
+      const res = await fetch(API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      if (!res.ok) throw new Error(await res.text());
+      const created = await res.json(); // json-server vergibt eine id
+      setMsg(`Gespeichert (id: ${created.id})`);
+    } catch (e: any) {
+      setMsg(`Fehler: ${e?.message ?? 'Unbekannt'}`);
+    }
   };
+
   return (
-    <Grid
-      container
-      justifyContent={'center'}
-      spacing={1}
-      style={classes.container}>
-      <Grid item sm={6}>
-        <Typography variant={'h4'}>Bound data</Typography>
-        <div style={classes.dataContent}>
-          <pre id="boundData">{stringifiedData}</pre>
-        </div>
-        <Button
-          style={classes.resetButton}
-          onClick={clearData}
-          color="primary"
-          variant="contained"
-          data-testid="clear-data">
-          Clear data
-        </Button>
-      </Grid>
-      <Grid item sm={6}>
-        <Typography variant={'h4'}>Rendered form</Typography>
-        <div style={classes.demoform}>
-          <JsonForms
-            schema={schema}
-            uischema={uischema}
-            data={data}
-            renderers={renderers}
-            cells={materialCells}
-            onChange={({ data }) => setData(data)}
-          />
-        </div>
-      </Grid>
-    </Grid>
+    <Box sx={{ maxWidth: 640, mx: 'auto', p: 2 }}>
+      <Typography variant="h5" gutterBottom>JSON Forms – Test</Typography>
+
+      <JsonForms
+        schema={schema as any}
+        uischema={uischema as any}
+        data={data}
+        renderers={materialRenderers}
+        cells={materialCells}
+        onChange={({ data, errors }) => {
+          setData(data);
+          setHasErrors((errors?.length ?? 0) > 0);
+        }}
+      />
+
+      <Button variant="contained" onClick={save} disabled={hasErrors} sx={{ mt: 2 }}>
+        Speichern (json-server)
+      </Button>
+
+      {msg && <Typography sx={{ mt: 1 }}>{msg}</Typography>}
+    </Box>
   );
 };
