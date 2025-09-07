@@ -1,3 +1,11 @@
 {
-  "persons": []
+  "persons": [
+    {
+      "id": "a3c7",
+      "salutation": "Herr",
+      "firstName": "Nour",
+      "lastName": "Hussain",
+      "age": 27
+    }
+  ]
 }

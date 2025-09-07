@@ -7,14 +7,12 @@
       "items": {
         "type": "object",
         "properties": {
-          "id":       { "type": "integer", "readOnly": true },
-          "order":    { "type": "integer", "readOnly": true },
-          "salutation": { "type": "string", "title": "Anrede", "enum": ["Herr", "Frau", "Divers"] },
+          "salutation": { "type": "string", "title": "Anrede", "enum": ["Herr","Frau","Divers"] },
           "firstName":  { "type": "string", "title": "Vorname",  "minLength": 1 },
           "lastName":   { "type": "string", "title": "Nachname", "minLength": 1 },
-          "age":        { "type": "integer", "title": "Alter",   "minimum": 0 }
+          "age":        { "type": ["integer","null"], "title": "Alter", "minimum": 0, "default": null }
         },
-        "required": ["firstName", "lastName"]
+        "required": ["firstName","lastName"]
       }
     }
   }
