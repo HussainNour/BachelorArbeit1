@@ -83,7 +83,6 @@ export const JsonFormsDemo = () => {
 
   return (
     <Box sx={{ maxWidth: 960, mx: 'auto', p: 2 }}>
-      <Typography variant="h5" gutterBottom>Personen (Top-Level, ohne IDs im UI)</Typography>
 
       <JsonForms
         schema={schema as any}
