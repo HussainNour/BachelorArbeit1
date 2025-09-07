@@ -1,18 +1,3 @@
 {
-  "persons": [
-    {
-      "id": "686b",
-      "firstName": "Hus",
-      "lastName": "gfh",
-      "salutation": "Herr",
-      "order": 0
-    },
-    {
-      "id": "0137",
-      "firstName": "fgdhdgfhgfdhgfdhdgf",
-      "lastName": "fgdhgfkhjktruujz",
-      "salutation": "Herr",
-      "order": 1
-    }
-  ]
+  "persons": []
 }

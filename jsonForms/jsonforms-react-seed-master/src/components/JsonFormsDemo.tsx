@@ -16,109 +16,124 @@ type Person = {
 type Model = { persons: Person[] };
 
 const API = 'http://localhost:5050/persons';
+const DEBUG = true;
 
 export const JsonFormsDemo = () => {
   const [data, setData] = useState<Model>({ persons: [] });
-  const [status, setStatus] = useState<'idle'|'loading'|'saving'|'saved'|'error'>('idle');
   const [hasErrors, setHasErrors] = useState(false);
+  const [status, setStatus] = useState<'idle'|'loading'|'saving'|'saved'|'error'>('idle');
   const originalRef = useRef<Person[]>([]); // Snapshot vom Server
 
-  // Laden
+  // ---- Laden ----
   const load = async () => {
     try {
       setStatus('loading');
       const res = await fetch(API);
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const persons: Person[] = await res.json();
-      // sortiere nach order (falls vorhanden), sonst nach id
-      persons.sort((a,b) =>
-        (a.order ?? a.id ?? 0) - (b.order ?? b.id ?? 0)
-      );
+      persons.sort((a, b) => (a.order ?? a.id ?? 0) - (b.order ?? b.id ?? 0));
       originalRef.current = JSON.parse(JSON.stringify(persons));
       setData({ persons });
       setStatus('idle');
-    } catch {
+      if (DEBUG) console.log('[LOAD]', persons);
+    } catch (e) {
+      console.error(e);
       setStatus('error');
     }
   };
 
   useEffect(() => { load(); }, []);
 
-  // Hilfen
-  const keyFields = (p: Person) => ({
-    salutation: p.salutation ?? '',
-    firstName:  p.firstName  ?? '',
-    lastName:   p.lastName   ?? '',
-    age:        p.age ?? null,
-    order:      p.order ?? null,
+  // Felder, die wir vergleichen/patchen
+  const pick = (x: Person) => ({
+    salutation: x.salutation ?? '',
+    firstName:  x.firstName  ?? '',
+    lastName:   x.lastName   ?? '',
+    age:        x.age ?? null,
+    order:      x.order ?? null
   });
 
-  // Speichern (diff-basiert)
+  // ---- Speichern (diff-basiert) ----
   const save = async () => {
-    if (hasErrors) return;
+    if (hasErrors) {
+      alert('Bitte alle Pflichtfelder ausfüllen (Vorname + Nachname).');
+      return;
+    }
     try {
       setStatus('saving');
 
-      const current = [...(data.persons ?? [])].map((p, idx) => ({ ...p, order: idx }));
-      const original = originalRef.current ?? [];
+      // Reihenfolge ins Modell schreiben
+      const current: Person[] = (data.persons ?? []).map((p, i) => ({ ...p, order: i }));
+      const original: Person[] = originalRef.current ?? [];
 
       const byId = (arr: Person[]) => new Map(arr.filter(p => p.id != null).map(p => [p.id!, p]));
-
       const currMap = byId(current);
       const origMap = byId(original);
 
-      // Neu (ohne id)
       const toCreate = current.filter(p => p.id == null);
-
-      // Gelöscht (war im original, fehlt jetzt)
       const toDelete = original.filter(p => p.id != null && !currMap.has(p.id!));
-
-      // Geändert (id existiert & Felder unterscheiden sich)
       const toUpdate = current.filter(p => {
         if (p.id == null) return false;
-        const o = origMap.get(p.id);
-        if (!o) return false;
-        return JSON.stringify(keyFields(p)) !== JSON.stringify(keyFields(o));
+        const o = origMap.get(p.id!);
+        if (!o) return true;
+        return JSON.stringify(pick(p)) !== JSON.stringify(pick(o));
       });
 
-      // 1) Create
-      for (const p of toCreate) {
-        const res = await fetch(API, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(p)
-        });
-        if (!res.ok) throw new Error('POST failed');
+      if (DEBUG) {
+        console.log('[SAVE] toCreate', toCreate);
+        console.log('[SAVE] toUpdate', toUpdate);
+        console.log('[SAVE] toDelete', toDelete);
       }
 
-      // 2) Update (inkl. order)
-      for (const p of toUpdate) {
-        const res = await fetch(`${API}/${p.id}`, {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(keyFields(p))
-        });
-        if (!res.ok) throw new Error('PATCH failed');
-      }
+      // 1) Create (alle neuen parallel posten)
+      await Promise.all(
+        toCreate.map(async (p) => {
+          const res = await fetch(API, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(p)
+          });
+          if (!res.ok) throw new Error('POST failed ' + res.status);
+          const created = await res.json();
+          if (DEBUG) console.log('[POST OK]', created);
+        })
+      );
 
-      // 3) Delete
-      for (const p of toDelete) {
-        const res = await fetch(`${API}/${p.id}`, { method: 'DELETE' });
-        if (!res.ok) throw new Error('DELETE failed');
-      }
+      // 2) Update (parallel patchen)
+      await Promise.all(
+        toUpdate.map(async (p) => {
+          const res = await fetch(`${API}/${p.id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(pick(p))
+          });
+          if (!res.ok) throw new Error('PATCH failed ' + res.status);
+          if (DEBUG) console.log('[PATCH OK]', p.id);
+        })
+      );
 
-      // Neu laden → Snapshot aktualisieren
+      // 3) Delete (parallel löschen)
+      await Promise.all(
+        toDelete.map(async (p) => {
+          const res = await fetch(`${API}/${p.id}`, { method: 'DELETE' });
+          if (!res.ok) throw new Error('DELETE failed ' + res.status);
+          if (DEBUG) console.log('[DELETE OK]', p.id);
+        })
+      );
+
+      // 4) Neu laden, damit IDs und Reihenfolge sicher stimmen
       await load();
       setStatus('saved');
-      setTimeout(() => setStatus('idle'), 800);
-    } catch {
+      window.setTimeout(() => setStatus('idle'), 850);
+    } catch (e) {
+      console.error(e);
       setStatus('error');
     }
   };
 
   return (
     <Box sx={{ maxWidth: 960, mx: 'auto', p: 2 }}>
-      <Typography variant="h5" gutterBottom>Personen (Top-Level /persons)</Typography>
+      <Typography variant="h5" gutterBottom>Personen (Liste)</Typography>
 
       <JsonForms
         schema={schema as any}
@@ -127,9 +142,8 @@ export const JsonFormsDemo = () => {
         renderers={materialRenderers}
         cells={materialCells}
         onChange={({ data: next, errors }) => {
-          // JSON Forms liefert { persons: [...] }
-          setData(next as Model);
-          setHasErrors((errors?.length ?? 0) > 0);
+          setData(next as Model);                  // lokal bearbeiten
+          setHasErrors((errors?.length ?? 0) > 0); // Save sperren bei Fehlern
         }}
       />
 
