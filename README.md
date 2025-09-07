@@ -1,9 +1,9 @@
 # JSON Forms + json-server (Personenliste mit stabilem Speichern)
 
 ## Vorschau
-![frontendJsonForms](Bilder/frontendJsonForms.png)
-![backend1](Bilder/backend1.png)
-![backend2](Bilder/backend2.png)
+![frontendJsonForms](/jsonForms/Bilder/frontendJsonForms.png)
+![backend1](/jsonForms/Bilder/backend1.png)
+![backend2](/jsonForms/Bilder/backend2.png)
 
 Dieses Projekt demonstriert, wie man mit **JSON Forms (React)** und **json-server** eine **Personenliste** als Formular baut.
 Die Daten werden über eine REST-API (`/persons`) geladen und beim **Klick auf „Speichern“** per **diff-basierter Synchronisation** zurückgeschrieben:
