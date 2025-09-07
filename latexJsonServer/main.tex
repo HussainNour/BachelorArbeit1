@@ -1,0 +1,140 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{csquotes}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+
+\title{JSON Server (typicode/json-server): Zweck, Architektur, Nutzungsmuster und Einordnung}
+\author{ }
+\date{7.~September~2025}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent
+\emph{JSON Server} ist ein schlankes Werkzeug, das aus einer JSON-Datei in Sekunden eine REST-API bereitstellt. Es dient primär der \emph{Prototypisierung}, dem \emph{Mocking} und \emph{Frontend-First-Entwicklung}, nicht der Produktion. Der Beitrag fasst Architektur und Kernfeatures zusammen (Routen, Query-Parameter, Relationen, Persistenz, Statisches Hosting), zeigt typische Workflows im Frontend (z.\,B.\ mit React), diskutiert Stärken und Grenzen und ordnet die aktuelle Entwicklung (v1-Beta vs.\ v0.17 stabil) ein. Alle Aussagen werden an den geeigneten Stellen mit Primärquellen belegt.
+\end{abstract}
+
+\section{Einordnung und Zielsetzung}
+\label{sec:einordnung}
+JSON Server wurde \enquote{mit $\heartsuit$ für Frontend-Entwickler} geschaffen, die \enquote{schnell ein Backend für Prototyping und Mocking} benötigen \cite[v0-Dokumentation]{jsonserver-github-v0}. Der v1-Readme betont weiterhin den Ein-Zeiler-Start (\texttt{npx json-server db.json}) und liefert sofort eine REST-API \cite[v1-Readme]{jsonserver-github-v1}. In der Praxis wird JSON Server genutzt, wenn
+\begin{itemize}
+  \item eine API \emph{noch nicht} existiert oder sich \emph{häufig ändert} (Mocking),
+  \item Frontend-Teams \emph{unabhängig} vom Backend arbeiten sollen,
+  \item Demo-/Testdaten benötigt werden (z.\,B.\ auch via \emph{JSONPlaceholder} \cite{jsonplaceholder}).
+\end{itemize}
+Viele Tutorials und Artikel empfehlen JSON Server ausdrücklich für Entwicklung und Tests, \emph{nicht} für den Produktionseinsatz \cite{freecodecamp,sitepoint}. 
+
+\section{Architektur und Datenmodell}
+\label{sec:architektur}
+Die Datenquelle ist eine Datei (\texttt{db.json} oder \texttt{db.json5}); daraus generiert das Tool pluralisierte Ressourcen (\texttt{/posts}, \texttt{/comments}) und optionale singuläre (\texttt{/profile}) \cite[Abschnitt \enquote{Routes}]{jsonserver-github-v1}. In v0.17 wird die Persistenz mithilfe von \emph{lowdb} erläutert (Änderungen werden automatisch \enquote{sicher} in \texttt{db.json} geschrieben) \cite[v0-Persistenzhinweis]{jsonserver-github-v0}. 
+\smallskip
+
+\noindent\textbf{Versionierungslage.} Auf \emph{npm} ist (Stand: Abruf) die Linie \texttt{v1.0.0-beta.3} vermerkt, veröffentlicht am 24.\ September 2024 \cite{npm-jsonserver,depsdev-jsonserver}. Die v1-Readme kennzeichnet Unterschiede zu v0.17, u.\,a.\ \emph{IDs sind stets Strings und werden generiert, falls fehlen}, Paginierung via \texttt{\_page}+\texttt{\_per\_page} (statt \texttt{\_limit}) sowie der Hinweis, Verzögerungen über Browser-Throttling statt der CLI-Option \texttt{--delay} zu simulieren \cite[Abschnitt \enquote{Notable differences with v0.17}]{jsonserver-github-v1}. Für v0.17 dokumentiert die stabile Readme eine breitere Palette an CLI-Optionen inkl.\ \texttt{--routes}, \texttt{--middlewares}, \texttt{--delay}, \texttt{--watch} u.\,a. \cite[CLI-Übersicht]{jsonserver-github-v0}. 
+
+\section{Features im Überblick}
+\label{sec:features}
+\paragraph{Routen.} Aus dem JSON werden CRUD-Routen pro Collection generiert (\texttt{GET/POST/PUT/PATCH/DELETE}) sowie singuläre Routen für Objekte wie \texttt{/profile} \cite[Abschnitt \enquote{Routes}]{jsonserver-github-v1}. 
+
+\paragraph{Abfragen (Query).}
+Filter (\texttt{?f=v}, Operatoren wie \texttt{\_gte}, \texttt{\_lte}, \texttt{\_ne}, \texttt{\_like}),
+Sortierung (\texttt{\_sort}, ggf.\ mehrere Felder), Paginierung (\texttt{\_page}, in v1 mit
+\texttt{\_per\_page}), Slicing (\texttt{\_start}, \texttt{\_end}/\texttt{\_limit}), Zugriff auf
+verschachtelte Felder (\texttt{a.b}, \texttt{arr[0]}) und Volltextsuche (\texttt{?q=}\ldots)
+sind integriert \cite[Abschnitt~\enquote{Params}]{jsonserver-github-v1}. 
+
+\paragraph{Relationen.} \texttt{\_embed} inkludiert Kindressourcen, \texttt{\_expand} inkludiert den Parent (klassisches Post--Comments-Beispiel) \cite[Abschnitt \enquote{Embed}]{jsonserver-github-v1}. 
+
+\paragraph{Lösch-Semantik.} Neben \texttt{DELETE /:resource/:id} dokumentiert v1 optional \texttt{?\_dependent=comments} \cite[Abschnitt \enquote{Delete}]{jsonserver-github-v1}. 
+
+\paragraph{Statische Dateien.} Ein Verzeichnis \texttt{./public} (oder per \texttt{-s/--static}) wird zusätzlich zum REST-Endpunkt ausgeliefert \cite[Abschnitt \enquote{Serving static files}]{jsonserver-github-v1}. 
+
+\paragraph{Erweiterung (v0.17 stabil).} Routen-Rewriter via \texttt{routes.json} (\texttt{--routes}) sowie eigene Middlewares (\texttt{--middlewares}) sind dokumentiert \cite[\enquote{Add custom routes}, \enquote{Add middlewares}]{jsonserver-github-v0}. Das erlaubt z.\,B.\ URL-Aliasing, zusätzliche Header, einfache Zugriffsregeln. 
+
+\section{Nutzung im Frontend-Workflow}
+\label{sec:workflow}
+\paragraph{Start.} \texttt{npx json-server db.json} liefert sofort eine API auf Port~3000 \cite[Abschnitt \enquote{Usage}]{jsonserver-github-v1}. Für Teams existiert \emph{My JSON Server}, das eine GitHub-Repo-\texttt{db.json} schreibgeschützt als Online-API verfügbar macht (z.\,B.\ \texttt{my-json-server.typicode.com/user/repo}) \cite{my-json-server}. Für Demonstrationen stellt \emph{JSONPlaceholder} einen öffentlichen Dummy-Dienst bereit \cite{jsonplaceholder}.
+
+\paragraph{React/Frameworks.} JSON Server ist framework-agnostisch. In React kann man übliche \texttt{fetch}/\texttt{axios}-Aufrufe gegen \texttt{/posts}, \texttt{/comments} etc.\ verwenden; für Schema-getriebene Formulare (z.\,B.\ JSON Forms) lässt sich die REST-API direkt an \texttt{onSubmit}/\texttt{save} koppeln (POST/PATCH/DELETE). Lehrartikel positionieren JSON Server klar als \emph{Mock-API} für Frontend-Entwicklung \cite{freecodecamp}.
+
+\paragraph{Persistenz/IDs.} In v1 sind IDs \emph{Strings} und werden automatisch erzeugt \cite[Abschnitt \enquote{Notable differences with v0.17}]{jsonserver-github-v1}; in v0.17 werden integere IDs häufig genutzt, mit dem Hinweis, dass ID-Werte nicht mutiert werden \cite[v0-Hinweis]{jsonserver-github-v0}. Für UI-Listen, die stabile Identitäten benötigen, empfiehlt sich eine \emph{diff-basierte} Synchronisation (POST für neue, PATCH für geänderte, DELETE für entfernte Einträge), um erneute ID-Vergabe zu vermeiden -- ein Muster, das in Entwicklerforen und Demos verbreitet ist (vgl.\ Abschnitt~\ref{sec:tradeoffs}). 
+
+\section{Stärken (Vorteile)}
+\label{sec:pros}
+\begin{itemize}
+  \item \textbf{Extrem schneller Start \& geringer Overhead.} Eine JSON-Datei genügt; CRUD-Routen und Queries sind sofort nutzbar \cite[Abschnitt \enquote{Usage}]{jsonserver-github-v1}. 
+  \item \textbf{Produktive Query-Funktionen.} Filter/Sort/Paging/Slice, Volltextsuche und Relations-Einbettung reduzieren Frontend-Boilerplate \cite[Abschnitt \enquote{Params}]{jsonserver-github-v1}.
+  \item \textbf{Erweiterbarkeit (v0.17).} Routen-Rewriter und Middlewares erlauben leichtgewichtige Anpassungen ohne eigenes Express-Backend \cite{jsonserver-github-v0}.
+  \item \textbf{Ökosystemnahe Tools.} Online-Varianten (\emph{My JSON Server}, \emph{JSONPlaceholder}) erleichtern Demos, Readmes und Codesandboxes \cite{my-json-server,jsonplaceholder}.
+\end{itemize}
+
+\section{Schwächen und Trade-offs}
+\label{sec:tradeoffs}
+\begin{itemize}
+  \item \textbf{Nicht für Produktion gedacht.} Offizielle/autoritative Ressourcen und Lehrartikel raten von Produktion ab (Sicherheit, Skalierung, Robustheit; Mocking-Zweck) \cite{freecodecamp,sitepoint}. 
+  \item \textbf{Lizenz \& Versionen beachten.} Der v1-Readme enthält Sponsorware/Fair-Source-Hinweise; Unternehmen mit 3{+} Nutzern sollen sponsern \cite[Hinweise im Readme]{jsonserver-github-v1}. Für stabile Features (z.\,B.\ \texttt{--routes}, \texttt{--middlewares}, \texttt{--delay}) dokumentiert die v0-Readme den Status quo \cite{jsonserver-github-v0}; v1 benennt \emph{Breaking Changes} (ID-Typ, Paginierung, Entfernen von \texttt{--delay}) \cite[Abschnitt \enquote{Notable differences with v0.17}]{jsonserver-github-v1}.
+  \item \textbf{Datenmodellgrenzen.} Komplexe Geschäftslogik, AuthZ/AuthN, Transaktionen, Migrations-/Schemamanagement fehlen (bewusst). Für reale Systeme sind Express/Fastify/Nest plus DB (PostgreSQL/Mongo, ORM/Querybuilder) angemessen. 
+  \item \textbf{Persistenzmodell.} Datei-Persistenz ist einfach, aber fehleranfällig unter Parallelzugriff/Last; die Semantik dient Entwicklung/Tests, nicht Multi-Node-Betrieb.
+\end{itemize}
+
+\section{Praxisempfehlungen}
+\label{sec:best}
+\begin{itemize}
+  \item \textbf{Zweckklarheit.} Für Mocking, POCs, Komponenten-Demos und lokale End-to-End-Tests ist JSON Server hervorragend geeignet \cite{jsonserver-github-v0,freecodecamp}. 
+  \item \textbf{Diff-Speichern \& stabile IDs.} In UI-Listen: Bestehende Einträge per \texttt{PATCH}, neue per \texttt{POST}, entfernte per \texttt{DELETE} bearbeiten; so bleiben IDs stabil (wichtig für List-Keys).
+  \item \textbf{v1 vs.\ v0.17 gezielt wählen.} Wer Rewriter/Middlewares/\texttt{--delay} braucht, orientiert sich an v0.17-Dokumentation \cite{jsonserver-github-v0}. Für neue Projekte die v1-Hinweise (String-IDs, Paginierung) einplanen \cite{jsonserver-github-v1}. 
+  \item \textbf{Online-Demos.} Für schreibgeschützte Demos bietet sich \emph{My JSON Server} an (GitHub-Repo als Quelle) \cite{my-json-server}; für Beispiel-Calls \emph{JSONPlaceholder} \cite{jsonplaceholder}.
+\end{itemize}
+
+\section{Fazit}
+JSON Server füllt die wichtige Nische zwischen \enquote{gar kein Backend} und \enquote{vollwertiger API}: Als \emph{Mock-Server} steigert er die Entwicklungsgeschwindigkeit, entkoppelt Teams und erlaubt frühes UI-Design. Seine Stärken liegen im sofortigen CRUD-Set, reichhaltigen Query-Parametern und (in v0.17) leichten Erweiterungsmöglichkeiten. Den bewussten Verzicht auf Produktionsmerkmale muss man einplanen; für reale Backends sind spezialisierte Server/Frameworks geboten. Wer die Versionierungsdifferenzen (v1-Beta vs.\ v0.17) beachtet, erhält ein zuverlässiges Tool für Lehre, Prototypen und Testumgebungen.
+
+\begin{thebibliography}{99}
+
+\bibitem{jsonserver-github-v1}
+\textbf{typicode/json-server} -- GitHub, v1 (Readme, Routen, Parameter, \enquote{Notable differences with v0.17}, Sponsorware/Fair-Source-Hinweise, Releases).\\
+\url{https://github.com/typicode/json-server}.\\
+Insb.\ Abschnitte: \emph{Usage}, \emph{Routes}, \emph{Params}, \emph{Embed}, \emph{Delete}, \emph{Serving static files}, \emph{Notable differences with v0.17}.
+
+\bibitem{jsonserver-github-v0}
+\textbf{typicode/json-server} -- GitHub, \emph{v0} (stabile Dokumentation, CLI-Optionen, Rewriter, Middlewares, lowdb-Persistenzhinweis).\\
+\url{https://github.com/typicode/json-server/tree/v0}.
+
+\bibitem{npm-jsonserver}
+\textbf{json-server} -- npm Registry (Paketseite, Versionsstand; v1.0.0-beta.3 veröffentlicht 24.\ Sep 2024).\\
+\url{https://www.npmjs.com/package/json-server}.
+
+\bibitem{depsdev-jsonserver}
+\textbf{deps.dev} -- Versionsübersicht für \emph{json-server} (zeigt v1.0.0-beta.3).\\
+\url{https://deps.dev/npm/json-server/0.5.8/versions}.
+
+\bibitem{my-json-server}
+\textbf{My JSON Server} -- Schreibgeschützter Online-Fake-Server aus GitHub-Repo.\\
+\url{https://my-json-server.typicode.com/}.
+
+\bibitem{jsonplaceholder}
+\textbf{JSONPlaceholder} -- Öffentliche Fake-REST-API (von typicode).\\
+\url{https://jsonplaceholder.typicode.com/}.
+
+\bibitem{freecodecamp}
+freeCodeCamp: \emph{JSON Server for Front-end Development} (Einordnung als Mock-API/Dev-Tool).\\
+\url{https://www.freecodecamp.org/news/json-server-for-frontend-development/}.
+
+\bibitem{sitepoint}
+SitePoint: \emph{JSON Server Example} (Hinweis: nicht für Produktion empfohlen; Sicherheits/Skalierungsgründe).\\
+\url{https://www.sitepoint.com/json-server-example/}.
+
+\bibitem{jsonserver-dev-delay}
+json-server.dev: \emph{\texttt{--delay} option removed} (Änderungshinweis zu v1; Throttling im Browser statt CLI-Delay).\\
+\url{https://json-server.dev/json-server-delay-option-on-cli/}.
+
+\end{thebibliography}
+
+\end{document}
