@@ -1,0 +1,134 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{csquotes}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+
+\title{JSON Forms (jsonforms.io): Architektur, Features, React-Integration und wissenschaftliche Einordnung}
+\author{ }
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent
+JSON Forms ist ein deklaratives Framework zur Generierung validierender Web-Formulare aus \emph{JSON Schema} (Datenmodell) und einem separaten \emph{UI Schema} (Layout und Interaktion). Der Beitrag analysiert Architektur und Kernkonzepte, beschreibt die Integration in React, diskutiert St\"arken/Schw\"achen sowie typische Einsatzmuster und ordnet JSON Forms gegen\"uber Alternativen wie \emph{react-jsonschema-form} ein. Grundlage sind die offizielle Dokumentation, API-Referenzen und begleitende Ressourcen.
+\end{abstract}
+
+\section{Einordnung und Zielsetzung}
+Zahlreiche Unternehmens\-anwendungen bestehen zu gro{\ss}en Teilen aus Formularen. Statt die UI pro Feld manuell zu entwickeln, verfolgt JSON Forms das Prinzip \emph{``More forms. Less code''}: Formulare werden \emph{deklarativ} beschrieben und zur Laufzeit gerendert \cite{jsonforms-site,jsonforms-what}. Das Datenmodell wird als JSON~Schema spezifiziert (Typen, Constraints), w\"ahrend das UI Schema die Anordnung (Layouts), Bindungen (\texttt{scope}) und Regeln (\texttt{rule}) definiert \cite{jsonforms-uischema,jsonforms-rules}. Ziel ist, Entwicklungsaufwand zu reduzieren, Konsistenz zu erh\"ohen und Validierung zentral zu halten.
+
+\section{Architektur und Konzepte}
+\subsection{Core und Renderer-Sets}
+JSON Forms trennt \emph{Core} und Renderer. Der Core (\texttt{@jsonforms/core}) verwaltet State, Ableitung sichtbarer Controls und Validierung. Renderer-Sets (z.\,B.\ React Material, React Vanilla) sind austauschbar und k\"onnen durch \emph{Custom Renderers} erweitert werden \cite{jsonforms-core,jsonforms-material}. Die Auswahl (\emph{Tester/Ranking}) bestimmt, welcher Renderer ein UI-Element rendert.
+
+\subsection{JSON Schema und Validierung}
+JSON~Schema beschreibt Struktur und Constraints der Daten. JSON Forms nutzt daf\"ur den Validator \emph{AJV}, der aktuelle Drafts (inkl.\ 2019-09, 2020-12) unterst\"utzt und Schema in effizienten JS-Code \"ubersetzt \cite{ajv-site,ajv-guide}. Dadurch erfolgt Validierung konsistent und performant, Fehlermeldungen lassen sich feldweise abbilden.
+
+\subsection{UI Schema, Layouts und Regeln}
+Das \emph{UI Schema} ist ein normales JSON-Objekt, das Layouts (Vertical/Horizontal, Group, Categorization) und Controls beschreibt; jedes Control referenziert per \texttt{scope} einen Pfad im Datenmodell \cite{jsonforms-uischema}. \emph{Rules} erlauben dynamische Aspekte wie \emph{HIDE}/\emph{SHOW} oder \emph{ENABLE}/\emph{DISABLE} in Abh\"angigkeit von Datenwerten oder Schema-Bedingungen \cite{jsonforms-rules}. Ohne explizites UI Schema kann JSON Forms eines generieren (\emph{auto-generated UI}) \cite{jsonforms-react}.
+
+\section{React-Integration (DX) und Verhalten (UX)}
+\subsection{Einbindung in React}
+Die React-Integration erfolgt \"uber die Komponente \texttt{<JsonForms/>} mit Props wie \texttt{schema}, \texttt{uischema}, \texttt{data}, \texttt{renderers} und \texttt{onChange} \cite{jsonforms-react}. Das offizielle Seed-Projekt (\texttt{jsonforms-react-seed}) zeigt einen minimalen Einstieg (Klonen, \texttt{npm ci}, \texttt{npm run dev}) \cite{jsonforms-getting-started,seed-react}. Material-Renderer liefern out-of-the-box MUI-basiertes Look\&Feel; Vanilla-Renderer sind eine leichte Alternative \cite{jsonforms-material}.
+
+\subsection{Interaktion, Arrays und Kategorisierung}
+Typische Widgets (Text, Boolean, Number/Integer, Date/Time, Enum) sowie \emph{Arrays} (inkl.\ \emph{List-with-Detail}) sind Bestandteil der Renderer-Sets \cite{jsonforms-examples}. Kategorisierungen strukturieren gro{\ss}e Formulare in Tabs/Abschnitte; Regeln erm\"oglichen kontextsensitive UI. Praxisrelevant sind konsistente Fehlermeldungen (Validierung via AJV) und Tastatur\-bedienbarkeit, die stark vom verwendeten Renderer-Set (z.\,B.\ MUI) profitiert.
+
+\section{St\"arken (Vorteile)}
+\begin{itemize}
+  \item \textbf{Deklarativ und wiederverwendbar:} Formulare aus Schema/UISchema senken Boilerplate, verbessern Konsistenz und erleichtern Evolution (\"Anderungen im Artefakt statt in vielen Komponenten) \cite{jsonforms-what,jsonforms-uischema}.
+  \item \textbf{Trennung von Concerns:} Datenvalidierung (Schema) vs.\ Darstellung und UI-Logik (UI Schema/Rules) f\"ordert Wartbarkeit \cite{jsonforms-uischema,jsonforms-rules}.
+  \item \textbf{Validierung:} AJV ist verbreitet, performant und Draft-kompatibel \cite{ajv-site,ajv-guide}.
+  \item \textbf{Renderer-Architektur:} Austauschbare/erweiterbare Renderer-Sets (Material/Vanilla) und Custom-Renderer f\"ur Spezial-Widgets \cite{jsonforms-material,jsonforms-core}.
+  \item \textbf{Cross-Framework:} Neben React existieren Integrationen f\"ur Angular und Vue, sodass Formulardefinitionen \"uber Stacks hinweg nutzbar sind \cite{jsonforms-angular,jsonforms-react}.
+  \item \textbf{Onboarding:} Beispiele, Tutorial und Seed vereinfachen den Start \cite{jsonforms-examples,jsonforms-getting-started}.
+\end{itemize}
+
+\section{Schw\"achen und Trade-offs (Nachteile)}
+\begin{itemize}
+  \item \textbf{Lernkurve:} Zwei Artefakte (Schema und UI Schema) plus Renderer-Tester/Ranking. Komplexe, verschachtelte Strukturen erfordern saubere Modellierung \cite{jsonforms-uischema}.
+  \item \textbf{Bundle/Abh\"angigkeiten:} Core + Renderer-Set (z.\,B.\ MUI) + AJV k\"onnen die Bundle-Gr\"o{\ss}e erh\"ohen; selektives Bundling und Code-Splitting sind ratsam \cite{jsonforms-material,ajv-site}.
+  \item \textbf{Spezial-Widgets:} Sehr dom\"anenspezifische Controls (z.\,B.\ Geodaten, Diagramm-Editoren) erfordern meist Custom-Renderer \cite{jsonforms-core}.
+  \item \textbf{Generierung vs.\ Kontrolle:} Auto-generierte UI beschleunigt POCs, f\"ur fein kontrollierte UX ist jedoch ein explizites UI Schema vorzuziehen \cite{jsonforms-react}.
+\end{itemize}
+
+\section{Vergleich und Einordnung}
+\subsection{Gegen\"uber \emph{react-jsonschema-form} (rjsf)}
+Beide Frameworks generieren Formulare aus JSON~Schema. rjsf nutzt ein \emph{uiSchema}-Konzept und eine gro{\ss}e Community \cite{rjsf-docs}; JSON Forms betont eine klar getrennte UI-Schema-Sprache mit Layouts/Rules und eine modulare Renderer-Architektur \cite{jsonforms-uischema,jsonforms-core}. Die Wahl h\"angt davon ab, ob maximale Renderer-Austauschbarkeit und regelbasierte Sichtbarkeiten (JSON Forms) oder ein besonders breites \"Okosystem an Standard-Widgets (rjsf) im Vordergrund stehen.
+
+\subsection{Gegen\"uber Low-Level-Formlibs (react-hook-form, Formik)}
+State-Management-Libraries adressieren prim\"ar Zustand/Validierung auf Komponentenebene; das UI entsteht handgeschrieben. JSON Forms lohnt sich, wenn Schemas extern gelagert/geliefert werden (z.\,B.\ durch einen Server) und Formulare \emph{schema-getrieben} dynamisch entstehen sollen \cite{jsonforms-what,jsonforms-react}.
+
+\section{Best Practices}
+\begin{itemize}
+  \item \textbf{Artefakte versionieren:} JSON Schema und UI Schema wie Code behandeln; Reviews f\"ur \"Anderungen.
+  \item \textbf{Renderer-Governance:} Fr\"uh ein projektspezifisches Renderer-Set (Theming/Accessibility) definieren; Custom-Renderer f\"ur Spezialf\"alle \cite{jsonforms-material}.
+  \item \textbf{Validierung kuratieren:} Eigene Formate/Keywords in AJV registrieren; Fehlermeldungen dom\"anenspezifisch gestalten \cite{ajv-guide}.
+  \item \textbf{Performance:} Nur n\"otige Renderer bundlen; Code-Splitting; UI Schema m\"oglichst generativ statt zur Laufzeit zu mutieren \cite{jsonforms-material}.
+  \item \textbf{DX/UX-Prototypen:} Arrays mit Detailansichten, Combinators und Rules fr\"uh testen (siehe Beispiele) \cite{jsonforms-examples}.
+\end{itemize}
+
+\section{Fazit}
+JSON Forms ist eine robuste Wahl f\"ur datengetriebene Admin- und Enterprise-UIs mit vielen, sich \"andernden Formularen. St\"arken sind die deklarative Arbeitsweise, Validierung via AJV und die modulare Renderer-Architektur. Die Kehrseite sind Lernaufwand und potentiell h\"oheres Bundlegewicht. Mit kuratiertem Renderer-Set, sauber versionierten Schemas und guter Validierungsstrategie bietet JSON Forms eine nachhaltige Basis.
+
+\vspace{1em}
+\noindent\textbf{Daten- und Quellengrundlage.} Dieser Artikel referenziert die offizielle Dokumentation von JSON Forms (\"Uberblick, Architektur, UI Schema, Rules, React/Angular, Beispiele), die API-Seiten zu Core/Material, das Seed-Projekt sowie AJV- und JSON-Schema-Ressourcen (Stand: aktueller Abrufzeitpunkt).
+
+\begin{thebibliography}{99}
+
+\bibitem{jsonforms-site}
+JSON Forms -- Projektseite: \emph{More forms. Less code}. \url{https://jsonforms.io/}.
+
+\bibitem{jsonforms-what}
+JSON Forms -- ``What is JSON Forms?'' (Dokumentation). \url{https://jsonforms.io/docs/}.
+
+\bibitem{jsonforms-react}
+JSON Forms -- React-Integration (\texttt{<JsonForms/>}, auto UI Schema). \url{https://jsonforms.io/docs/integrations/react/}.
+
+\bibitem{jsonforms-uischema}
+JSON Forms -- UI Schema (Layouts, Controls, Optionen). \url{https://jsonforms.io/docs/uischema/}.
+
+\bibitem{jsonforms-rules}
+JSON Forms -- UI Schema Rules (HIDE/SHOW/ENABLE/DISABLE). \url{https://jsonforms.io/docs/uischema/rules/}.
+
+\bibitem{jsonforms-examples}
+JSON Forms -- Beispiele (Basic, Arrays, Categorization, List-with-Detail, etc.). \url{https://jsonforms.io/examples/basic/}.
+
+\bibitem{jsonforms-getting-started}
+JSON Forms -- Getting Started / Tutorial. \url{https://jsonforms.io/docs/getting-started/}, \url{https://jsonforms.io/docs/tutorial/}.
+
+\bibitem{seed-react}
+GitHub -- React Seed App f\"ur JSON Forms. \url{https://github.com/eclipsesource/jsonforms-react-seed}.
+
+\bibitem{jsonforms-core}
+JSON Forms -- Core API (Architektur, Konzepte). \url{https://jsonforms.io/api/core/}.
+
+\bibitem{jsonforms-material}
+JSON Forms -- React Material Renderers (API/Quickstart). \url{https://jsonforms.io/api/material/}.
+
+\bibitem{jsonforms-angular}
+JSON Forms -- Angular API/Integration. \url{https://jsonforms.io/api/angular/}.
+
+\bibitem{ajv-site}
+AJV -- Offizielle Seite (Unterst\"utzte Drafts, Einsatzgebiete). \url{https://ajv.js.org/}.
+
+\bibitem{ajv-guide}
+AJV -- Getting Started (Codegenerierung f\"ur schnelle Validierung). \url{https://ajv.js.org/guide/getting-started.html}.
+
+\bibitem{jsonschema-learn}
+JSON Schema -- Getting Started (Grundlagen). \url{https://json-schema.org/learn/getting-started-step-by-step}.
+
+\bibitem{rjsf-docs}
+react-jsonschema-form -- Projektseite/Dokumentation. \url{https://rjsf-team.github.io/react-jsonschema-form/docs/}.
+
+\end{thebibliography}
+
+\end{document}
