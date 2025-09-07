@@ -5,16 +5,17 @@ import schema from '../schema.json';
 import uischema from '../uischema.json';
 import { Box, Button, Alert, Stack, Typography } from '@mui/material';
 
-type Person = { salutation?: string; firstName?: string; lastName?: string; age?: number|null };
+type Person = { salutation?: string; firstName?: string; lastName?: string; age?: number | null };
 type Model  = { persons: Person[] };
 
 const API = 'http://localhost:5050/persons';
 
+// Altersfeld robust normalisieren (leer -> null, "12" -> 12)
 const normalizeAge = (age: any) => {
   if (age === '' || age === undefined) return null;
   if (typeof age === 'string' && age.trim() === '') return null;
   if (typeof age === 'string' && /^\d+$/.test(age)) return parseInt(age, 10);
-  return age; // number|null
+  return age; // number | null
 };
 
 export const JsonFormsDemo = () => {
@@ -22,7 +23,7 @@ export const JsonFormsDemo = () => {
   const [hasErrors, setHasErrors] = useState(false);
   const [status, setStatus] = useState<'idle'|'loading'|'saving'|'saved'|'error'>('idle');
 
-  // Laden (IDs werden entfernt)
+  // --- Laden: Serverliste holen -> IDs ignorieren, nur sichtbare Felder übernehmen
   const load = async () => {
     try {
       setStatus('loading');
@@ -41,23 +42,25 @@ export const JsonFormsDemo = () => {
       setStatus('error');
     }
   };
+
   useEffect(() => { load(); }, []);
 
-  // Speichern: wipe & recreate (ohne IDs im Frontend)
+  // --- Speichern: ALLE löschen & aktuelle Liste in Reihenfolge neu POSTen (ohne IDs)
   const save = async () => {
-    if (hasErrors) return;
+    if (hasErrors) return;  // Formularfehler? -> nicht speichern
     try {
       setStatus('saving');
 
-      // 1) Bestehende Einträge (mit IDs) holen & löschen
+      // 1) Existierende Einträge mit IDs holen und löschen
       const existing = await (await fetch(API)).json();
       await Promise.all(
         (existing as any[]).map(p =>
-          fetch(`${API}/${p.id}`, { method: 'DELETE' }).then(r => { if(!r.ok) throw new Error('DELETE'); })
+          fetch(`${API}/${p.id}`, { method: 'DELETE' })
+            .then(r => { if (!r.ok) throw new Error('DELETE'); })
         )
       );
 
-      // 2) Aktuelle Liste in Reihenfolge neu POSTen
+      // 2) Aktuelle Liste in Reihenfolge neu anlegen (json-server vergibt IDs automatisch)
       const toCreate = (data.persons ?? []).map(p => ({ ...p, age: normalizeAge(p.age) }));
       await Promise.all(
         toCreate.map(p =>
@@ -65,14 +68,14 @@ export const JsonFormsDemo = () => {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(p)
-          }).then(r => { if(!r.ok) throw new Error('POST'); })
+          }).then(r => { if (!r.ok) throw new Error('POST'); })
         )
       );
 
-      // 3) Neu laden
+      // 3) Neu laden (damit UI den Serverstand sieht – weiterhin ohne IDs)
       await load();
       setStatus('saved');
-      setTimeout(() => setStatus('idle'), 800);
+      setTimeout(() => setStatus('idle'), 900);
     } catch {
       setStatus('error');
     }
@@ -80,7 +83,7 @@ export const JsonFormsDemo = () => {
 
   return (
     <Box sx={{ maxWidth: 960, mx: 'auto', p: 2 }}>
-      <Typography variant="h5" gutterBottom>Personen (ohne IDs, /persons)</Typography>
+      <Typography variant="h5" gutterBottom>Personen (Top-Level, ohne IDs im UI)</Typography>
 
       <JsonForms
         schema={schema as any}
@@ -89,14 +92,18 @@ export const JsonFormsDemo = () => {
         renderers={materialRenderers}
         cells={materialCells}
         onChange={({ data: next, errors }) => {
-          setData(next as Model);
-          setHasErrors((errors?.length ?? 0) > 0);
+          setData(next as Model);                  // nur lokal ändern
+          setHasErrors((errors?.length ?? 0) > 0); // Save-Button sperren bei Fehlern
         }}
       />
 
       <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
-        <Button variant="contained" onClick={save} disabled={hasErrors || status === 'saving'}>Speichern</Button>
-        <Button variant="outlined"  onClick={load} disabled={status === 'loading'}>Neu laden</Button>
+        <Button variant="contained" onClick={save} disabled={hasErrors || status === 'saving'}>
+          Speichern
+        </Button>
+        <Button variant="outlined" onClick={load} disabled={status === 'loading'}>
+          Neu laden
+        </Button>
       </Stack>
 
       {status === 'loading' && <Alert sx={{ mt: 2 }} severity="info">Lade…</Alert>}
