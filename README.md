@@ -1,9 +1,9 @@
 # SurveyJS + json-server (Personenliste mit stabilem Speichern)
 
 ## Vorschau
-![frontendJsonForms](/Bilder/frontendJsonForms.png)
-![backend1](/Bilder/backend1.png)
-![backend2](/Bilder/backend2.png)
+![frontendSurveyjs](Bilder/frontend.png)
+![backendSurveyjs1](Bilder/backend1.png)
+![backendSurveyjs2](Bilder/backend2.png)
 
 
 Dieses Beispiel zeigt, wie du mit **SurveyJS (React)** ein Formular zur **Erfassung und Bearbeitung einer Personenliste** baust und die Daten mit **json-server** als REST-API in `db.json` **persistierst**:
