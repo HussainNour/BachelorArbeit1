@@ -1,7 +1,7 @@
 # SurveyJS + json-server (Personenliste mit stabilem Speichern)
 
 ## Vorschau
-![frontendSurveyjs](Bilder/frontend.png)
+![frontendSurveyjs](Bilder/forntend.png)
 ![backendSurveyjs1](Bilder/backend1.png)
 ![backendSurveyjs2](Bilder/backend2.png)
 
