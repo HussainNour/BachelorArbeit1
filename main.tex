@@ -1,0 +1,208 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{csquotes}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+
+\title{SurveyJS: Architektur, Funktionsumfang, Integrationsmuster und Einordnung im Frontend-Formularbau}
+\author{ }
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent
+\emph{SurveyJS} ist ein modulares Open-Source-\emph{Form- und Survey-Framework} (MIT-lizenziertes Form-\&-Runtime-Kernmodul), das Umfragen und komplexe Formulare in Webanwendungen ermöglicht. Die Laufzeitbibliothek ist in React, Angular, Vue und anderen Frontend-Stacks einsetzbar und wird über eine deklarative JSON-Definition gesteuert. Der Beitrag systematisiert Ziele und Architektur, beschreibt zentrale Features (Fragetypen, Validierung, Ausdrücke/Regeln, Internationalisierung, Barrierefreiheit, Theming), erläutert Integrationsmuster (Events, Datenspeicherung, Server-Anbindung), diskutiert Erweiterungen (Creator, Dashboard, PDF) und bewertet Stärken, Grenzen und typische Einsatzszenarien. Die Darstellung stützt sich auf offizielle Dokumentation und Produktseiten.
+\end{abstract}
+
+\section{Einordnung, Zielsetzung und Ökosystem}
+SurveyJS adressiert die schnelle und zugleich flexible Erstellung interaktiver Formulare und Umfragen in Single-Page-Anwendungen. Kernidee ist die \emph{Trennung} von \emph{Formdefinition (JSON)} und \emph{Rendering/Logik} in der Laufzeitbibliothek. Dadurch lassen sich Formulare deklarativ konfigurieren und in verschiedenen Frameworks einheitlich ausführen. Die offizielle Produktseite positioniert die Bibliothek mit mehreren Komponenten: \emph{Form Library} (Runtime), \emph{Survey Creator} (visueller Editor), \emph{Dashboard} (Auswertung/Charts) und \emph{PDF Generator} (Server-/Client-seitige Generierung) \cite{surveyjs-form-library, surveyjs-products}.
+
+Lizenzrechtlich gilt: Die \emph{Form Library} (Runtime, Pakete wie \texttt{survey-core}, \texttt{survey-react-ui}) ist Open Source (MIT). Kommerzielle Komponenten (\emph{Survey Creator}, \emph{Dashboard}, \emph{PDF}) werden per Entwicklerlizenz vertrieben; das Lizenzmodell und die EULA sind öffentlich dokumentiert \cite{surveyjs-licensing, surveyjs-eula, survey-creator-npm}.
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+
+\section{Architektur und Datenmodellierung}
+\subsection*{Formdefinition}
+Die zentrale Formdefinition erfolgt als JSON-Objekt mit Metadaten (Titel, Beschreibung, Layoutparameter) und einer \texttt{pages}/\texttt{elements}-Struktur. Jedes Element hat einen \texttt{type} (z.\,B. \texttt{text}, \texttt{radiogroup}, \texttt{checkbox}, \texttt{matrix}), eine eindeutige \texttt{name} und optionale Validierungs- und Darstellungsattribute. Beispielhaft (gekürzt):
+
+\begin{verbatim}
+{
+  "title": "Registration",
+  "pages": [{
+    "elements": [
+      { "type": "text", "name": "firstName", "isRequired": true },
+      { "type": "text", "name": "lastName" },
+      { "type": "text", "name": "age", "inputType": "number" }
+    ]
+  }]
+}
+\end{verbatim}
+
+Die Laufzeitbibliothek stellt daraus ein \emph{Model} instanziierbar bereit (z.\,B. \verb|new Model(json)|), das u.\,a. \emph{Events}, \emph{Validierung}, \emph{Auswertungen} und \emph{Datenzugriff} kapselt \cite{surveyjs-docs-core}.
+
+\subsection*{Laufzeit, Framework-Adapter und Events}
+Der Kern (\texttt{survey-core}) enthält Datenmodelle, Ausdrücke und Validierer; Framework-spezifische UI-Pakete (\texttt{survey-react-ui}, \texttt{survey-vue-ui}, \texttt{survey-angular-ui}) übernehmen das Rendering. Anwendungen binden das \emph{Model} und den \emph{Survey}-Komponent ein und reagieren über Events (\emph{onComplete}, \emph{onValueChanged}, \emph{onValidateQuestion} etc.) \cite{surveyjs-form-library, surveyjs-docs-core}. 
+
+\section{Funktionsumfang (Features)}
+\subsection*{Fragetypen und Layout}
+SurveyJS unterstützt eine breite Palette an Fragetypen: einfache Eingabefelder (Text, Zahl, Datum), Auswahlfragen (\texttt{radiogroup}, \texttt{checkbox}, \texttt{dropdown}), \emph{Panels} und \emph{Panel Dynamics} (wiederholbare Gruppen), Matrizen/\emph{matrixdynamic} (tabellarische Eingabe), Datei-Upload, Signatur-Pad u.\,a. \cite{surveyjs-form-library}. Layout und Seitenlogik (mehrseitig vs.\ Einzelseite) sind konfigurierbar; dynamische Labels/Platzhalter und HTML-Blöcke (\texttt{html}) erlauben reichhaltige Formulargestaltung.
+
+\subsection*{Validierung, Regeln und Ausdrücke}
+Neben einfachen Regeln (\texttt{isRequired}, Längen/Typen) stellt SurveyJS eine Ausdruckssprache für \emph{Sichtbarkeitslogik}, \emph{Aktivierungsbedingungen}, \emph{berechnete Werte} (\texttt{calculatedValues}) und \emph{Validierung} bereit. Typische Operatoren sind \enquote{\texttt{notempty}}, Vergleichsoperatoren, String-/Array-Funktionen; komplexe Bedingungen lassen sich verschachteln. Dokumentiert sind u.\,a. \emph{Conditional Visibility} und \emph{Expressions/Calculated Values} \cite{surveyjs-docs-conditional, surveyjs-docs-expressions, surveyjs-blog-expressions}. 
+
+\subsection*{Internationalisierung und Barrierefreiheit}
+Die Form Library bringt Übersetzungen und Mechanismen zur Lokalisierung (\texttt{locale}, \texttt{title\_loc}, \texttt{choicesByUrl} mit lokalisierbaren Texten). Zur Barrierefreiheit zählen Tastaturnavigation, ARIA-Attribute und Screenreader-Support; die Produktseite nennt \emph{Section~508} und \emph{WCAG}-Konformität als Zielvorgaben \cite{surveyjs-accessibility, surveyjs-products}. Für barrierearme Gestaltung sind inhaltliche und visuelle Aspekte (Kontrast, Fokusreihenfolge) in den Themes berücksichtigt.
+
+\subsection*{Theming und Styling}
+Das Styling ist über \emph{Themes} steuerbar (Farben, Typografie, Abstände, Komponentenstates). Die Dokumentation beschreibt Default-Themes, CSS-Klassen und die Anwendung eigener Themes (\enquote{Manage default themes and styles}) \cite{surveyjs-themes-styles}. Zusätzlich steht ein \emph{Theme Builder} auf der Website zur Verfügung (interaktive Anpassung mit Export als JSON/CSS).
+
+\subsection*{Leistungsaspekte}
+Für große, \enquote{content-heavy} Formulare existieren Muster wie \emph{Lazy Loading}, um Renderkosten zu reduzieren (späte Initialisierung, Seitenweise-Laden) \cite{surveyjs-lazy-loading}. Allgemein profitieren Performance und Responsiveness von der Trennung zwischen Model und UI-Adapter; das Rendering ist an das jeweilige Frontend-Framework gekoppelt (React/Vue/Angular) und folgt dessen Optimierungsmechanismen.
+
+\section{Integration und Speicherung}
+\subsection*{Datentransfer und Backend-Anbindung}
+SurveyJS bringt \emph{keine} eigene Persistenz- oder Authentifizierungslösung mit. Die Speicherung von Antworten ist explizit als Integrationsaufgabe dokumentiert (\enquote{Store Survey Results}). Beispiele zeigen REST-Anbindungen, File- und Datenbank-Backends; offizielle \emph{Server-Beispiele} existieren für Node.js, ASP.NET, PHP \cite{surveyjs-store-results, surveyjs-servers}.
+
+\paragraph{Reaktives Muster (React).} Typisch ist die Verarbeitung über das \verb|onComplete|-Event des \emph{Model}. Ein Minimalbeispiel (POST an eine REST-API):
+
+\begin{verbatim}
+import { Model } from "survey-core";
+import { Survey } from "survey-react-ui";
+
+const model = new Model(json);
+model.onComplete.add(async (sender) => {
+  const payload = sender.data; // Antworten als JSON
+  await fetch("http://localhost:5050/persons", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  });
+});
+
+return <Survey model={model} />;
+\end{verbatim}
+
+Für bidirektionale Szenarien (Vorbelegung/Editing) werden \emph{Daten} über \verb|model.data = ...| gesetzt, Teilantworten über \verb|onValueChanged| synchronisiert. Bei Listen-/Tabellenmustern (\texttt{paneldynamic}/\texttt{matrixdynamic}) empfiehlt sich \emph{diff-basiertes} Speichern (neue/aktualisierte/gelöschte Einträge auseinanderhalten), wie man es auch bei \texttt{json-server} oder nahen Mock-APIs verwendet.
+
+\subsection*{Sicherheit und Datenschutz}
+SurveyJS rendert ausschließlich Client-seitig. Die Verantwortung für sichere Übertragung (HTTPS), Speicherung (z.\,B. Verschlüsselung, Zugriffskontrolle), Löschung/Archivierung und DSGVO-konforme Prozesse liegt beim integrierenden Backend. Für personenbezogene Daten gilt: Minimierung, Verschlüsselung \emph{in transit/at rest} und konsistente Einwilligungs-/Informationsprozesse sind umzusetzen (Best Practices; kein Bestandteil der Form Library).
+
+\section{Erweiterungen im SurveyJS-Portfolio}
+\subsection*{Survey Creator (Form Builder)}
+Der \emph{Survey Creator} ist ein visueller Editor, der die JSON-Definition generiert. Er richtet sich an Entwicklerteams, Produktmanager oder \enquote{Power User}, die Formulare modellieren, ohne JSON manuell zu schreiben. Das Produkt ist \emph{kommerziell} lizenziert (\enquote{not available for free commercial usage}); Details sind im Licensing und der EULA festgehalten \cite{surveyjs-licensing, surveyjs-eula, survey-creator-npm}. Integrierbar ist der Creator als Komponente ins eigene Backoffice.
+
+\subsection*{SurveyJS Dashboard (Analytics)}
+Das \emph{Dashboard} liefert Diagramme, Filter und Auswertungs-Widgets über erhobene Antworten und ist ebenfalls kommerziell lizenziert \cite{surveyjs-products}. Die Lösung kann in Portale integriert werden, um Fachbereichen Self-Service-Analysen zu ermöglichen.
+
+\subsection*{PDF Generator}
+Für Compliance-/Reporting-Fälle (Druck, Archiv) steht ein PDF-Generator bereit (Client/Server-Variante). Auch dies ist ein kommerzielles Modul \cite{surveyjs-products, surveyjs-licensing}.
+
+\section{Vergleich und Abgrenzung}
+\paragraph{Gegenüber Formular-Frameworks mit JSON Schema.} SurveyJS verwendet ein \emph{eigenes} Konfigurationsschema (kein JSON Schema Draft-Standard). Im Gegensatz zu bibliotheken wie \emph{JSON Forms} oder \emph{react-jsonschema-form}, die stark um JSON Schema kreisen, fokussiert SurveyJS auf \emph{Survey-/Form-Logik}, dynamische Panels/Matrizen und eine integrierte Ausdruckssprache. Das ist für Survey-Szenarien vorteilhaft; in streng schemagetriebenen Enterprise-Domänen kann die fehlende JSON-Schema-Konformität jedoch ein Nachteil sein (z.\,B. Validierungswiederverwendung aus Backendschemata).
+
+\paragraph{Gegenüber SaaS-Tools.} Gegenüber SaaS-Survey-Plattformen (SurveyMonkey, Typeform etc.) bietet SurveyJS volle \emph{On-Prem/Embedded}-Kontrolle, Versionierbarkeit und keinerlei Vendor-Lock-in auf Datenebene. Dafür müssen Hosting, Sicherheit und Auswertungen (sofern nicht das kommerzielle Dashboard genutzt wird) selbst bereitgestellt werden.
+
+\section{Stärken und Grenzen}
+\subsection*{Stärken}
+\begin{itemize}
+  \item \textbf{Deklarativer Ansatz \& breite Fragetypen:} Schlanke JSON-Definition, reichhaltige Controls (inkl.\ dynamischer Panels/Matrizen) \cite{surveyjs-form-library}.
+  \item \textbf{Mächtige Ausdruckssprache:} Sichtbarkeit, Validierung, berechnete Werte, verzahnte Regeln \cite{surveyjs-docs-expressions, surveyjs-docs-conditional}.
+  \item \textbf{Multi-Framework \& Theming:} Adapter für React/Vue/Angular; Themes/CSS anpassbar \cite{surveyjs-form-library, surveyjs-themes-styles}.
+  \item \textbf{Barrierefreiheit:} Fokus auf 508/WCAG-Ziele; produktseitige Hinweise \cite{surveyjs-accessibility, surveyjs-products}.
+  \item \textbf{Erweiterbares Portfolio:} Creator (visuelles Modeling), Dashboard (Analytics), PDF (Export) \cite{surveyjs-products, surveyjs-licensing}.
+\end{itemize}
+
+\subsection*{Grenzen / Trade-offs}
+\begin{itemize}
+  \item \textbf{Kein integriertes Backend:} Speicherung/Authentisierung sind Sache der Integration (\enquote{Store Survey Results}) \cite{surveyjs-store-results, surveyjs-servers}.
+  \item \textbf{Eigenes Konfigurationsschema:} Keine direkte Wiederverwendung vorhandener JSON-Schemata; ggf.\ Transformationsaufwand.
+  \item \textbf{Kommerzielle Module:} Creator/Dashboard/PDF sind kostenpflichtig; Lizenz pro Entwickler, separate EULA \cite{surveyjs-licensing, surveyjs-eula}.
+  \item \textbf{Komplexität in Großformularen:} Viele Regeln/Abhängigkeiten erfordern saubere Modellierung; Performance-Muster (Lazy Loading) beachten \cite{surveyjs-lazy-loading}.
+\end{itemize}
+
+\section{Best Practices}
+\begin{itemize}
+  \item \textbf{Modularisieren:} Große Formulare in Seiten/Panels gliedern; \emph{paneldynamic}/\emph{matrixdynamic} gezielt für wiederholbare Strukturen nutzen.
+  \item \textbf{Ausdrücke testen:} Regeln (Sichtbarkeit/Validierung) früh mit realistischen Daten prüfen; \emph{calculatedValues} für Wiederverwendung.
+  \item \textbf{Theming zentralisieren:} Ein gemeinsames Theme (CSS/\emph{Theme JSON}) pflegen; Kontraste und Fokusreihenfolgen barrierefrei gestalten.
+  \item \textbf{Persistenz klar trennen:} \verb|onComplete|/\verb|onValueChanged| für Datentransfer nutzen; Fehlertoleranz (Retry/Timeout), Validierungen serverseitig spiegeln.
+  \item \textbf{Performance bewusst:} Seitenweise Navigation, Lazy Loading, bedarfsgerechte Initialisierung aktiv nutzen \cite{surveyjs-lazy-loading}.
+\end{itemize}
+
+\section{Fazit}
+SurveyJS bietet eine reife, modulare Laufzeit für komplexe, dynamische Webformulare und Umfragen. Die Kombination aus umfangreichen Fragetypen, deklarativem JSON, Ausdruckssprache und Theming ermöglicht produktive Entwicklung in React/Vue/Angular. Die klare Abgrenzung -- keine eingebaute Persistenz, dafür offen dokumentierte Integrationspfade -- passt gut in moderne Frontend-First-Architekturen. Wer \emph{visuelles Modeling}, \emph{Analytics} oder \emph{PDF} benötigt, kann kommerzielle Module des gleichen Herstellers beziehen. Einschränkungen ergeben sich aus dem proprietären Konfigurationsschema (ohne JSON-Schema-Kompatibilität out-of-the-box) und der Notwendigkeit, Backend-Aspekte sauber zu lösen. Insgesamt ist SurveyJS für \emph{Embedded-Surveys}, \emph{Self-Service-Formulare} und \emph{Headless-Formularbau} eine technisch überzeugende Option.
+
+\begin{thebibliography}{99}
+
+\bibitem{surveyjs-form-library}
+SurveyJS: \emph{Form Library} (Produktseite und Einstieg).\\
+\url{https://surveyjs.io/form-library}.
+
+\bibitem{surveyjs-products}
+SurveyJS: \emph{Products Overview} (Form Library, Survey Creator, Dashboard, PDF Generator).\\
+\url{https://surveyjs.io/}.
+
+\bibitem{surveyjs-licensing}
+SurveyJS: \emph{Licensing} (Open-Source- und kommerzielle Komponenten, Lizenzmodelle).\\
+\url{https://surveyjs.io/licensing}.
+
+\bibitem{surveyjs-eula}
+Devsoft Baltic OÜ: \emph{Commercial developer license for SurveyJS Creator, SurveyJS PDF Generator and SurveyJS Dashboard} (EULA, PDF).\\
+\url{https://surveyjs.io/Developer-License-Agreement.pdf}.
+
+\bibitem{survey-creator-npm}
+\emph{survey-creator} (npm-Paketseite, Lizenzhinweis: nicht frei für kommerzielle Nutzung).\\
+\url{https://www.npmjs.com/package/survey-creator}.
+
+\bibitem{surveyjs-docs-core}
+SurveyJS Docs: \emph{Documentation} (Model, Events, Integration, API-Referenz).\\
+\url{https://surveyjs.io/Documentation/Library?id=overview}.
+
+\bibitem{surveyjs-docs-conditional}
+SurveyJS Docs: \emph{Conditional Visibility} (Sichtbarkeitslogik).\\
+\url{https://surveyjs.io/Documentation/Library?id=Conditional-Visibility}.
+
+\bibitem{surveyjs-docs-expressions}
+SurveyJS Docs: \emph{Expressions and Calculated Values}.\\
+\url{https://surveyjs.io/Documentation/Library?id=Expressions-and-calculated-values}.
+
+\bibitem{surveyjs-store-results}
+SurveyJS Docs: \emph{Store Survey Results} (Speicherung, Integrationshinweise).\\
+\url{https://surveyjs.io/Documentation/Library?id=LibraryOverview#store-survey-results}.
+
+\bibitem{surveyjs-servers}
+SurveyJS Docs: \emph{Servers} (Beispiele/Guides für Node.js, ASP.NET, PHP).\\
+\url{https://surveyjs.io/Documentation} (Menüpunkt \enquote{Servers}).
+
+\bibitem{surveyjs-themes-styles}
+SurveyJS Docs: \emph{Manage default themes and styles}.\\
+\url{https://surveyjs.io/Documentation/Library?id=Manage-default-themes-and-styles}.
+
+\bibitem{surveyjs-accessibility}
+SurveyJS: \emph{Accessibility Statement} (WCAG/508-Zielsetzung).\\
+\url{https://surveyjs.io/AccessibilityStatement.pdf}.
+
+\bibitem{surveyjs-lazy-loading}
+SurveyJS Docs: \emph{Lazy loading for content-heavy forms}.\\
+\url{https://surveyjs.io/Documentation/Library?id=Examples-Lazy-loading-for-content-heavy-forms}.
+
+\bibitem{surveyjs-blog-expressions}
+SurveyJS Blog: \emph{What you should know about SurveyJS expressions}.\\
+\url{https://surveyjs.medium.com/what-you-should-know-about-surveyjs-expressions-3a680b807ae2}.
+
+\end{thebibliography}
+
+\end{document}
