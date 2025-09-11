@@ -75,6 +75,10 @@ npm i -D json-server
 In **zwei Terminals**:
 
 ```bash
+# Abhängigkeiten installieren mit:
+npm ci
+
+
 # API (http://localhost:5050)
 npm run api
 ```
