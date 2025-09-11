@@ -1,11 +1,3 @@
 {
-  "persons": [
-    {
-      "id": "0bd3",
-      "salutation": "Frau",
-      "firstName": "Vanessa ",
-      "lastName": "Schneider",
-      "age": 25
-    }
-  ]
+  "blaetter": []
 }
