@@ -1,18 +1,11 @@
 {
   "persons": [
     {
-      "id": "49cd",
+      "id": "0bd3",
       "salutation": "Frau",
       "firstName": "Vanessa ",
       "lastName": "Schneider",
       "age": 25
-    },
-    {
-      "id": "f9c9",
-      "salutation": "Herr",
-      "firstName": "Nour",
-      "lastName": "Hus",
-      "age": 27
     }
   ]
 }
