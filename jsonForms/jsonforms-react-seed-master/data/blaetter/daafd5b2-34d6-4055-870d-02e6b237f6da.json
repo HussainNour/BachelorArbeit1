@@ -1,0 +1,64 @@
+{
+  "fakultaet": "ghfnjhgdn",
+  "studiengang": "dfghdfghf",
+  "fachsemester": "gdhgfdhdfg",
+  "gruppen": [],
+  "modul": {
+    "nummer": "fdgh",
+    "bezeichnung": "dfghfgh"
+  },
+  "lehrveranstaltung": {
+    "nummer": "dfghdfg",
+    "bezeichnung": "dfhgfg"
+  },
+  "sws": {
+    "gesamt": 1,
+    "vorlesung": 1,
+    "seminar": 1,
+    "praktikum": 1
+  },
+  "raumanforderung": "dfhg",
+  "technikanforderung": "gfhd",
+  "durchfuehrung": "Präsenz",
+  "durchfuehrungHinweise": "dfgh",
+  "lesende": [
+    {
+      "bereichTitelName": "dfgh",
+      "gruppe": "fgdh",
+      "erlaeuterung": "fgdhd"
+    }
+  ],
+  "seminarleiter": [
+    {
+      "gruppe": "dfgh",
+      "bereichTitelName": "fgdh",
+      "erlaeuterung": "fgdh"
+    }
+  ],
+  "praktikumsverantwortliche": [
+    {
+      "bereichTitelName": "dfgh",
+      "gruppe": "fgdh",
+      "erlaeuterung": "fghd"
+    }
+  ],
+  "wuensche": [],
+  "bevorzugteKalenderwochen": [],
+  "pruefungsHinweise": "dfghfg",
+  "rueckgabeFakultaet": "2025-09-03",
+  "verantwortlicheUnterschrift": {
+    "professor": "dfgh",
+    "professorDatum": "2025-09-03",
+    "dekan": "fdghfgdh",
+    "dekanDatum": "2025-09-03",
+    "dienstleistungDekan": "gfdhdfgh",
+    "dienstleistungDekanDatum": "2025-09-17"
+  },
+  "meta": {
+    "semester": "fdghdfgh",
+    "abgabeterminDS": "2025-09-02",
+    "eingangBeiDS": "2025-09-01"
+  },
+  "notizen": "dfghdfgh",
+  "id": "daafd5b2-34d6-4055-870d-02e6b237f6da"
+}

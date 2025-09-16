@@ -10,6 +10,9 @@
     "@mui/lab": "6.0.0-beta.22",
     "@mui/material": "^6.1.0",
     "@mui/x-date-pickers": "^7.17.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "json-fs-store": "^1.0.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
@@ -27,7 +30,7 @@
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.7",
     "jsdom": "^24.1.0",
-    "json-server": "^1.0.0-beta.3",
+    "nodemon": "^3.1.10",
     "prettier": "^3.3.1",
     "start-server-and-test": "^2.0.4",
     "typescript": "~5.4.5",
@@ -44,7 +47,8 @@
     "cypress:open": "cypress open",
     "cypress:run": "cypress run --config video=false",
     "cypress:ci": "BROWSER=none start-server-and-test start http://localhost:3000 cypress:run",
-    "api": "json-server --watch db.json --port 5050"
+    "server": "node jfs-server.js",
+    "server:dev": "nodemon jfs-server.js"
   },
   "browserslist": [
     ">0.2%",
