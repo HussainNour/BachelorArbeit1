@@ -1,0 +1,24 @@
+{
+  "durchfuehrung": "Präsenz",
+  "fakultaet": "Nour",
+  "studiengang": "Hussain",
+  "fachsemester": "sdfdasf",
+  "modul": {
+    "nummer": "asdfsdf",
+    "bezeichnung": "dsafsd"
+  },
+  "lehrveranstaltung": {
+    "nummer": "sdafsd",
+    "bezeichnung": "sadfds"
+  },
+  "sws": {
+    "gesamt": 1,
+    "vorlesung": 1,
+    "seminar": 1,
+    "praktikum": 1
+  },
+  "id": "81e85b80-116c-47e8-a230-f4343576343c",
+  "gruppen": [],
+  "wuensche": [],
+  "bevorzugteKalenderwochen": []
+}

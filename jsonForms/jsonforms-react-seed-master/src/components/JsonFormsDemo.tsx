@@ -20,6 +20,9 @@ type SWS = {
 };
 
 type Blatt = {
+  /** WICHTIG: id behalten, nicht löschen */
+  id?: string;
+
   fakultaet?: string;
   studiengang?: string;
   fachsemester?: string;
@@ -69,21 +72,32 @@ const optNumber = (v: any): number | undefined => {
 const ensureStrArray = (v: any): string[] | undefined =>
   Array.isArray(v) ? v.filter((x) => typeof x === 'string' && x.trim() !== '') : undefined;
 const ensureNumArray = (v: any): number[] | undefined =>
-  Array.isArray(v) ? v.map((x) => (typeof x === 'string' && /^\d+$/.test(x) ? parseInt(x, 10) : x))
-                   .filter((x) => typeof x === 'number' && Number.isFinite(x)) : undefined;
+  Array.isArray(v)
+    ? v
+        .map((x) => (typeof x === 'string' && /^\d+$/.test(x) ? parseInt(x, 10) : x))
+        .filter((x) => typeof x === 'number' && Number.isFinite(x))
+    : undefined;
 
-/** für json-server: id vom Top-Level-Objekt ignorieren */
-const stripId = (o: any) => {
-  const { id, ...rest } = o ?? {};
-  return rest;
-};
+/** Hilfsfunktion: Ein Blatt sauber machen, ohne id zu verlieren */
+const normalizeBlatt = (b: Blatt): Blatt => ({
+  ...b,
+  sws: {
+    gesamt: optNumber(b?.sws?.gesamt),
+    vorlesung: optNumber(b?.sws?.vorlesung),
+    seminar: optNumber(b?.sws?.seminar),
+    praktikum: optNumber(b?.sws?.praktikum)
+  },
+  gruppen: ensureStrArray(b.gruppen) ?? [],
+  wuensche: ensureStrArray(b.wuensche) ?? [],
+  bevorzugteKalenderwochen: ensureNumArray(b.bevorzugteKalenderwochen) ?? []
+});
 
 export const JsonFormsDemo = () => {
   const [data, setData] = useState<Model>([]); // <-- Array!
   const [hasErrors, setHasErrors] = useState(false);
   const [status, setStatus] = useState<'idle'|'loading'|'saving'|'saved'|'error'>('idle');
 
-  /** Laden: Liste holen -> bereinigen -> Array in den State */
+  /** Laden: Liste holen -> bereinigen -> Array in den State (id jetzt BEHALTEN) */
   const load = async () => {
     try {
       setStatus('loading');
@@ -92,9 +106,11 @@ export const JsonFormsDemo = () => {
       const raw = await res.json();
 
       const blaetter: Blatt[] = (raw as any[]).map((r: any) => {
-        const inObj = stripId(r);
+        const inObj = r; // <<-- KEIN stripId mehr!
 
         return {
+          id: inObj.id ?? undefined, // <<-- id übernehmen
+
           fakultaet: inObj.fakultaet ?? '',
           studiengang: inObj.studiengang ?? '',
           fachsemester: inObj.fachsemester ?? '',
@@ -158,48 +174,56 @@ export const JsonFormsDemo = () => {
 
   useEffect(() => { load(); }, []);
 
-  /** Speichern: Alles löschen + aktuelle Array-Reihenfolge neu anlegen */
+  /** Speichern: Unterschiede synchronisieren (DELETE fehlende, PUT vorhandene, POST neue) */
   const save = async () => {
     if (hasErrors) return;
     try {
       setStatus('saving');
 
-      // 1) Bestehende Einträge löschen
+      // 1) IDs holen, die aktuell auf dem Server existieren
       const existingRes = await fetch(API);
-      const existing = existingRes.ok ? await existingRes.json() : [];
+      const existing: any[] = existingRes.ok ? await existingRes.json() : [];
+      const existingIds = new Set(existing.map((e) => e.id));
+
+      // 2) IDs, die wir lokal (Formular) haben
+      const currentIds = new Set((data ?? []).map((b) => b.id).filter(Boolean) as string[]);
+
+      // 3) Alles löschen, was es auf dem Server gibt, aber im Formular nicht mehr vorhanden ist
+      const toDelete = [...existingIds].filter((id) => !currentIds.has(id as string));
       await Promise.all(
-        (existing as any[]).map((e) =>
-          fetch(`${API}/${e.id}`, { method: 'DELETE' })
+        toDelete.map((id) =>
+          fetch(`${API}/${encodeURIComponent(id as string)}`, { method: 'DELETE' })
             .then((r) => { if (!r.ok) throw new Error('DELETE'); })
         )
       );
 
-      // 2) Neu anlegen (ohne id); leichte Bereinigung vor POST
-      const toCreate: Blatt[] = (data ?? []).map((b) => ({
-        ...b,
-        sws: {
-          gesamt: optNumber(b?.sws?.gesamt),
-          vorlesung: optNumber(b?.sws?.vorlesung),
-          seminar: optNumber(b?.sws?.seminar),
-          praktikum: optNumber(b?.sws?.praktikum)
-        },
-        gruppen: ensureStrArray(b.gruppen) ?? [],
-        wuensche: ensureStrArray(b.wuensche) ?? [],
-        bevorzugteKalenderwochen: ensureNumArray(b.bevorzugteKalenderwochen) ?? []
-      }));
+      // 4) Upsert (PUT für vorhandene, POST für neue)
+      const headers = { 'Content-Type': 'application/json' };
+      const updated: Model = [];
 
-      await Promise.all(
-        toCreate.map((entry) =>
-          fetch(API, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(entry)
-          }).then((r) => { if (!r.ok) throw new Error('POST'); })
-        )
-      );
+      for (const b of data ?? []) {
+        const body = JSON.stringify(normalizeBlatt(b));
 
-      // 3) Neu laden
-      await load();
+        if (b.id) {
+          // Update
+          const res = await fetch(`${API}/${encodeURIComponent(b.id)}`, { method: 'PUT', headers, body });
+          if (!res.ok) throw new Error('PUT');
+          updated.push(b); // id bleibt gleich
+        } else {
+          // Neu anlegen
+          const res = await fetch(API, { method: 'POST', headers, body });
+          if (!res.ok) throw new Error('POST');
+          const created = await res.json(); // sollte { ... , id } zurückgeben
+          updated.push({ ...b, id: created.id });
+        }
+      }
+
+      // 5) State mit stabilen IDs aktualisieren
+      setData(updated);
+
+      // optional neu laden, falls der Server noch etwas transformiert
+      // await load();
+
       setStatus('saved');
       setTimeout(() => setStatus('idle'), 900);
     } catch {
@@ -218,7 +242,7 @@ export const JsonFormsDemo = () => {
         renderers={materialRenderers}
         cells={materialCells}
         onChange={({ data: next, errors }) => {
-          setData(next as Model);
+          setData(next as Model);       // id-Felder bleiben in den Objekten erhalten
           setHasErrors((errors?.length ?? 0) > 0);
         }}
       />

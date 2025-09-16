@@ -1,0 +1,24 @@
+{
+  "durchfuehrung": "Präsenz",
+  "fakultaet": "adsfasdf",
+  "studiengang": "asdfdasfadsf",
+  "fachsemester": "asdfadsfadsf",
+  "modul": {
+    "nummer": "fasdfsdf",
+    "bezeichnung": "asdfasdf"
+  },
+  "lehrveranstaltung": {
+    "nummer": "asdfasdf",
+    "bezeichnung": "sdafasd"
+  },
+  "sws": {
+    "gesamt": 1,
+    "vorlesung": 1,
+    "seminar": 1,
+    "praktikum": 1
+  },
+  "id": "0bca3a1c-8789-477b-aab4-1b0875cd73ac",
+  "gruppen": [],
+  "wuensche": [],
+  "bevorzugteKalenderwochen": []
+}
