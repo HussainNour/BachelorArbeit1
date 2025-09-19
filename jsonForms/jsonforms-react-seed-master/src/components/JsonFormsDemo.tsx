@@ -5,99 +5,102 @@ import schema from '../schema.json';
 import uischema from '../uischema.json';
 import { Box, Button, Alert, Stack, Typography } from '@mui/material';
 
-/** ---------- Typen passend zu schema.json ---------- */
-type Zuordnung = {
-  bereichTitelName?: string;
-  gruppe?: string;
+/** ---------- Typen passend zu Ziel-JSON ---------- */
+type Person = {
+  titel?: string;
+  name?: string;
+  gruppen?: string;
   erlaeuterung?: string;
 };
 
-type SWS = {
-  gesamt?: number;
-  vorlesung?: number;
-  seminar?: number;
-  praktikum?: number;
-};
-
-type Blatt = {
-  /** WICHTIG: id behalten, nicht löschen */
-  id?: string;
-
+type Modul = {
   fakultaet?: string;
   studiengang?: string;
-  fachsemester?: string;
-  gruppen?: string[];
+  fs?: string;
+  gruppen?: string;
 
-  modul?: { nummer?: string; bezeichnung?: string };
-  lehrveranstaltung?: { nummer?: string; bezeichnung?: string };
+  modulnr?: string;
+  modulname?: string;
+  lehrveranstaltung?: string;
 
-  sws?: SWS;
+  swsVorlesung?: string;
+  swsSeminar?: string;
+  swsPraktikum?: string;
 
-  raumanforderung?: string;
-  technikanforderung?: string;
-  durchfuehrung?: 'Präsenz' | 'digital asynchron' | 'digital asynchron (zeitlich begrenzt)' | 'digital synchron';
-  durchfuehrungHinweise?: string;
+  raumV?: string;
+  raumS?: string;
+  raumP?: string;
 
-  lesende?: Zuordnung[];
-  seminarleiter?: Zuordnung[];
-  praktikumsverantwortliche?: Zuordnung[];
+  technikV?: string;
+  technikS?: string;
+  technikP?: string;
 
-  wuensche?: string[];
-  bevorzugteKalenderwochen?: number[];
-  pruefungsHinweise?: string;
+  planungshinweise?: string;
+  kwHinweise?: string;
 
-  rueckgabeFakultaet?: string; // YYYY-MM-DD
-  verantwortlicheUnterschrift?: {
-    professor?: string; professorDatum?: string;
-    dekan?: string;     dekanDatum?: string;
-    dienstleistungDekan?: string; dienstleistungDekanDatum?: string;
-  };
+  name?: string;
+  unterschrift?: string;
+  rueckgabedatum?: string;       // YYYY-MM-DD
 
-  meta?: { semester?: string; abgabeterminDS?: string; eingangBeiDS?: string };
-  notizen?: string;
+  profUnterschrift?: string;
+  dekanUnterschrift?: string;
+  datumUnterschrift?: string;    // YYYY-MM-DD
+
+  lesende?: Person[];            // Arrays
+  seminarleiter?: Person[];
+  praktikumsleiter?: Person[];
 };
 
-type Model = Blatt[]; // Root ist ein Array!
+type Item = {
+  /** Interne ID für Upserts/Deletes – bleibt unsichtbar in der UI */
+  id?: string;
+  modul?: Modul;
+};
+
+type Model = Item[]; // Root ist ein Array!
 
 /** ---------- API ---------- */
 const API = 'http://localhost:5050/blaetter';
 
-/** schlichte Normalizer, die leere Werte entfernen statt null zu setzen */
-const optNumber = (v: any): number | undefined => {
-  if (v === '' || v === undefined || v === null) return undefined;
-  if (typeof v === 'string' && /^\d+(\.\d+)?$/.test(v)) return Number(v);
-  if (typeof v === 'number' && !Number.isNaN(v)) return v;
-  return undefined;
+/** ---------- kleine Hilfsfunktionen ---------- */
+const ensureArray = <T,>(v: any): T[] => {
+  if (Array.isArray(v)) return v as T[];
+  if (v === undefined || v === null) return [];
+  return [v as T]; // robust, falls der Server einmal ein einzelnes Objekt liefert
 };
-const ensureStrArray = (v: any): string[] | undefined =>
-  Array.isArray(v) ? v.filter((x) => typeof x === 'string' && x.trim() !== '') : undefined;
-const ensureNumArray = (v: any): number[] | undefined =>
-  Array.isArray(v)
-    ? v
-        .map((x) => (typeof x === 'string' && /^\d+$/.test(x) ? parseInt(x, 10) : x))
-        .filter((x) => typeof x === 'number' && Number.isFinite(x))
-    : undefined;
 
-/** Hilfsfunktion: Ein Blatt sauber machen, ohne id zu verlieren */
-const normalizeBlatt = (b: Blatt): Blatt => ({
-  ...b,
-  sws: {
-    gesamt: optNumber(b?.sws?.gesamt),
-    vorlesung: optNumber(b?.sws?.vorlesung),
-    seminar: optNumber(b?.sws?.seminar),
-    praktikum: optNumber(b?.sws?.praktikum)
-  },
-  gruppen: ensureStrArray(b.gruppen) ?? [],
-  wuensche: ensureStrArray(b.wuensche) ?? [],
-  bevorzugteKalenderwochen: ensureNumArray(b.bevorzugteKalenderwochen) ?? []
-});
+const trimStringsDeep = (obj: any): any => {
+  if (obj == null) return obj;
+  if (Array.isArray(obj)) return obj.map(trimStringsDeep);
+  if (typeof obj === 'object') {
+    const out: any = {};
+    for (const [k, v] of Object.entries(obj)) out[k] = trimStringsDeep(v);
+    return out;
+  }
+  if (typeof obj === 'string') return obj.trim();
+  return obj;
+};
+
+/** Ein Item aufräumen (IDs NIEMALS löschen) */
+const normalizeItem = (it: Item): Item => {
+  const modul = it?.modul ?? {};
+  return trimStringsDeep({
+    ...it, // behält id
+    modul: {
+      ...modul,
+      lesende: ensureArray<Person>(modul.lesende),
+      seminarleiter: ensureArray<Person>(modul.seminarleiter),
+      praktikumsleiter: ensureArray<Person>(modul.praktikumsleiter)
+    }
+  });
+};
 
 export const JsonFormsDemo = () => {
-  const [data, setData] = useState<Model>([]); // <-- Array!
+  const [data, setData] = useState<Model>([]); // Array wie früher
   const [hasErrors, setHasErrors] = useState(false);
   const [status, setStatus] = useState<'idle'|'loading'|'saving'|'saved'|'error'>('idle');
 
-  /** Laden: Liste holen -> bereinigen -> Array in den State (id jetzt BEHALTEN) */
+  /** Laden: Liste holen -> bereinigen -> Array in den State (id BEHALTEN) */
   const load = async () => {
     try {
       setStatus('loading');
@@ -105,67 +108,14 @@ export const JsonFormsDemo = () => {
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const raw = await res.json();
 
-      const blaetter: Blatt[] = (raw as any[]).map((r: any) => {
-        const inObj = r; // <<-- KEIN stripId mehr!
+      const items: Item[] = (Array.isArray(raw) ? raw : [raw])
+        .filter(Boolean)
+        .map((inObj: any) => normalizeItem({
+          id: inObj?.id ?? undefined, // id übernehmen
+          modul: inObj?.modul ?? {}
+        }));
 
-        return {
-          id: inObj.id ?? undefined, // <<-- id übernehmen
-
-          fakultaet: inObj.fakultaet ?? '',
-          studiengang: inObj.studiengang ?? '',
-          fachsemester: inObj.fachsemester ?? '',
-          gruppen: ensureStrArray(inObj.gruppen) ?? [],
-
-          modul: {
-            nummer: inObj?.modul?.nummer ?? '',
-            bezeichnung: inObj?.modul?.bezeichnung ?? ''
-          },
-          lehrveranstaltung: {
-            nummer: inObj?.lehrveranstaltung?.nummer ?? '',
-            bezeichnung: inObj?.lehrveranstaltung?.bezeichnung ?? ''
-          },
-
-          sws: {
-            gesamt: optNumber(inObj?.sws?.gesamt),
-            vorlesung: optNumber(inObj?.sws?.vorlesung),
-            seminar: optNumber(inObj?.sws?.seminar),
-            praktikum: optNumber(inObj?.sws?.praktikum)
-          },
-
-          raumanforderung: inObj.raumanforderung ?? '',
-          technikanforderung: inObj.technikanforderung ?? '',
-          durchfuehrung: inObj.durchfuehrung ?? 'Präsenz',
-          durchfuehrungHinweise: inObj.durchfuehrungHinweise ?? '',
-
-          lesende: Array.isArray(inObj.lesende) ? inObj.lesende : [],
-          seminarleiter: Array.isArray(inObj.seminarleiter) ? inObj.seminarleiter : [],
-          praktikumsverantwortliche: Array.isArray(inObj.praktikumsverantwortliche) ? inObj.praktikumsverantwortliche : [],
-
-          wuensche: ensureStrArray(inObj.wuensche) ?? [],
-          bevorzugteKalenderwochen: ensureNumArray(inObj.bevorzugteKalenderwochen) ?? [],
-          pruefungsHinweise: inObj.pruefungsHinweise ?? '',
-
-          rueckgabeFakultaet: typeof inObj.rueckgabeFakultaet === 'string' ? inObj.rueckgabeFakultaet : '',
-          verantwortlicheUnterschrift: {
-            professor: inObj?.verantwortlicheUnterschrift?.professor ?? '',
-            professorDatum: inObj?.verantwortlicheUnterschrift?.professorDatum ?? '',
-            dekan: inObj?.verantwortlicheUnterschrift?.dekan ?? '',
-            dekanDatum: inObj?.verantwortlicheUnterschrift?.dekanDatum ?? '',
-            dienstleistungDekan: inObj?.verantwortlicheUnterschrift?.dienstleistungDekan ?? '',
-            dienstleistungDekanDatum: inObj?.verantwortlicheUnterschrift?.dienstleistungDekanDatum ?? ''
-          },
-
-          meta: {
-            semester: inObj?.meta?.semester ?? 'Wintersemester 2025/26',
-            abgabeterminDS: inObj?.meta?.abgabeterminDS ?? '',
-            eingangBeiDS: inObj?.meta?.eingangBeiDS ?? ''
-          },
-
-          notizen: inObj.notizen ?? ''
-        } as Blatt;
-      });
-
-      setData(blaetter);
+      setData(items);
       setStatus('idle');
     } catch {
       setStatus('error');
@@ -174,7 +124,7 @@ export const JsonFormsDemo = () => {
 
   useEffect(() => { load(); }, []);
 
-  /** Speichern: Unterschiede synchronisieren (DELETE fehlende, PUT vorhandene, POST neue) */
+  /** Speichern: wie im alten Code => DELETE fehlende, PUT vorhandene, POST neue */
   const save = async () => {
     if (hasErrors) return;
     try {
@@ -183,12 +133,12 @@ export const JsonFormsDemo = () => {
       // 1) IDs holen, die aktuell auf dem Server existieren
       const existingRes = await fetch(API);
       const existing: any[] = existingRes.ok ? await existingRes.json() : [];
-      const existingIds = new Set(existing.map((e) => e.id));
+      const existingIds = new Set((existing ?? []).map((e) => e?.id).filter(Boolean));
 
-      // 2) IDs, die wir lokal (Formular) haben
+      // 2) IDs, die wir lokal haben
       const currentIds = new Set((data ?? []).map((b) => b.id).filter(Boolean) as string[]);
 
-      // 3) Alles löschen, was es auf dem Server gibt, aber im Formular nicht mehr vorhanden ist
+      // 3) Löschen, was auf dem Server existiert, aber lokal entfernt wurde
       const toDelete = [...existingIds].filter((id) => !currentIds.has(id as string));
       await Promise.all(
         toDelete.map((id) =>
@@ -201,28 +151,28 @@ export const JsonFormsDemo = () => {
       const headers = { 'Content-Type': 'application/json' };
       const updated: Model = [];
 
-      for (const b of data ?? []) {
-        const body = JSON.stringify(normalizeBlatt(b));
+      for (const item of data ?? []) {
+        const bodyObj = normalizeItem(item);
+        const body = JSON.stringify(bodyObj);
 
-        if (b.id) {
+        if (item.id) {
           // Update
-          const res = await fetch(`${API}/${encodeURIComponent(b.id)}`, { method: 'PUT', headers, body });
+          const res = await fetch(`${API}/${encodeURIComponent(item.id)}`, { method: 'PUT', headers, body });
           if (!res.ok) throw new Error('PUT');
-          updated.push(b); // id bleibt gleich
+          // Serverantwort optional übernehmen (falls transformiert)
+          const saved = await res.json().catch(() => bodyObj);
+          updated.push(normalizeItem(saved));
         } else {
           // Neu anlegen
           const res = await fetch(API, { method: 'POST', headers, body });
           if (!res.ok) throw new Error('POST');
-          const created = await res.json(); // sollte { ... , id } zurückgeben
-          updated.push({ ...b, id: created.id });
+          const created = await res.json(); // erwartet { ... , id }
+          updated.push(normalizeItem({ ...item, id: created?.id }));
         }
       }
 
       // 5) State mit stabilen IDs aktualisieren
       setData(updated);
-
-      // optional neu laden, falls der Server noch etwas transformiert
-      // await load();
 
       setStatus('saved');
       setTimeout(() => setStatus('idle'), 900);
@@ -238,11 +188,11 @@ export const JsonFormsDemo = () => {
       <JsonForms
         schema={schema as any}
         uischema={uischema as any}
-        data={data}                     // <-- Array!
+        data={data}                     // Array!
         renderers={materialRenderers}
         cells={materialCells}
         onChange={({ data: next, errors }) => {
-          setData(next as Model);       // id-Felder bleiben in den Objekten erhalten
+          setData((next ?? []) as Model); // id-Felder bleiben in den Objekten erhalten
           setHasErrors((errors?.length ?? 0) > 0);
         }}
       />

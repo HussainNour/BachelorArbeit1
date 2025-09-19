@@ -1,148 +1,91 @@
 {
-"type": "array",
+  "type": "array",
   "items": {
     "type": "object",
-    "required": [
-      "fakultaet",
-      "studiengang",
-      "fachsemester",
-      "modul",
-      "lehrveranstaltung",
-      "sws",
-      "durchfuehrung"
-    ],
+    "title": "Zuarbeitsblatt",
     "properties": {
-      "fakultaet": { "type": "string", "title": "Fakultät" },
-      "studiengang": { "type": "string", "title": "Studiengang" },
-      "fachsemester": { "type": "string", "title": "Fachsemester" },
-      "gruppen": {
-        "type": "array",
-        "title": "Gruppen",
-        "items": { "type": "string", "title": "Gruppe" },
-        "uniqueItems": true
-      },
+      "id": { "type": "string", "readOnly": true, "title": "ID (intern)" },
       "modul": {
         "type": "object",
-        "title": "Nummer und Bezeichnung des Moduls",
-        "required": ["bezeichnung"],
+        "title": "Modul",
+        "required": ["fakultaet", "studiengang", "fs", "modulnr", "modulname", "lehrveranstaltung"],
         "properties": {
-          "nummer": { "type": "string", "title": "Nummer" },
-          "bezeichnung": { "type": "string", "title": "Bezeichnung" }
-        }
-      },
-      "lehrveranstaltung": {
-        "type": "object",
-        "title": "Nummer und Bezeichnung der Lehrveranstaltung / des Teilmoduls",
-        "required": ["bezeichnung"],
-        "properties": {
-          "nummer": { "type": "string", "title": "Nummer" },
-          "bezeichnung": { "type": "string", "title": "Bezeichnung" }
-        }
-      },
-      "sws": {
-        "type": "object",
-        "title": "SWS (bezogen auf einen Beispiel-Studierenden)",
-        "properties": {
-          "gesamt": { "type": "number", "title": "Gesamt SWS", "minimum": 0 },
-          "vorlesung": { "type": "number", "title": "Vorlesung (SWS)", "minimum": 0 },
-          "seminar": { "type": "number", "title": "Seminar (SWS)", "minimum": 0 },
-          "praktikum": { "type": "number", "title": "Praktikum (SWS)", "minimum": 0 }
-        }
-      },
-      "raumanforderung": { "type": "string", "title": "Raumanforderung" },
-      "technikanforderung": { "type": "string", "title": "Technikanforderung (Campus/Bereich)" },
-      "durchfuehrung": {
-        "type": "string",
-        "title": "Charakter der Lehrveranstaltung",
-        "enum": ["Präsenz", "digital asynchron", "digital asynchron (zeitlich begrenzt)", "digital synchron"],
-        "default": "Präsenz"
-      },
-      "lesende": {
-        "type": "array",
-        "title": "Lesende",
-        "items": {
-          "type": "object",
-          "properties": {
-            "bereichTitelName": { "type": "string", "title": "F – Bereich / Titel, Name" },
-            "gruppe": { "type": "string", "title": "S – Gruppe" },
-            "erlaeuterung": { "type": "string", "title": "Erläuterung" }
-          }
-        }
-      },
-      "seminarleiter": {
-        "type": "array",
-        "title": "Seminarleiter",
-        "items": {
-          "type": "object",
-          "properties": {
-            "bereichTitelName": { "type": "string", "title": "F – Bereich / Titel, Name" },
-            "gruppe": { "type": "string", "title": "S – Gruppe" },
-            "erlaeuterung": { "type": "string", "title": "Erläuterung" }
-          }
-        }
-      },
-      "praktikumsverantwortliche": {
-        "type": "array",
-        "title": "Praktikumsverantwortliche",
-        "items": {
-          "type": "object",
-          "properties": {
-            "bereichTitelName": { "type": "string", "title": "F – Bereich / Titel, Name" },
-            "gruppe": { "type": "string", "title": "S – Gruppe" },
-            "erlaeuterung": { "type": "string", "title": "Erläuterung" }
-          }
-        }
-      },
-      "durchfuehrungHinweise": { "type": "string", "title": "Hinweise zur Durchführung" },
-      "wuensche": {
-        "type": "array",
-        "title": "Wünsche zur Planung",
-        "uniqueItems": true,
-        "items": {
-          "type": "string",
-          "enum": [
-            "gleichmäßige Verteilung von Vorlesungen und Seminaren auf gerade und ungerade Wochen",
-            "Vorlesungen in der einen und Seminare in der anderen Woche",
-            "Blockplanung (2 × 90 min hintereinander) von Vorlesungen, Seminaren oder Praktika einer Seminargruppe",
-            "keine Blockplanung in einer Seminargruppe",
-            "Vorlesung zwingend vor Seminar"
-          ]
-        }
-      },
-      "bevorzugteKalenderwochen": {
-        "type": "array",
-        "title": "Bevorzugte Kalenderwochen (KW)",
-        "items": { "type": "integer", "minimum": 1, "maximum": 60 },
-        "uniqueItems": true,
-        "description": "Z. B. 42–52, 01–06."
-      },
-      "pruefungsHinweise": { "type": "string", "title": "Prüfungs-/Blockwochen-Hinweise" },
-      "rueckgabeFakultaet": { "type": "string", "format": "date", "title": "Termin der Rückgabe an die Fakultät" },
-      "verantwortlicheUnterschrift": {
-        "type": "object",
-        "title": "Unterschriften",
-        "properties": {
-          "professor": { "type": "string", "title": "Verantwortliche:r Professor:in (Name)" },
-          "professorDatum": { "type": "string", "format": "date", "title": "Datum" },
-          "dekan": { "type": "string", "title": "Dekan:in der Fakultät (Name)" },
-          "dekanDatum": { "type": "string", "format": "date", "title": "Datum" },
-          "dienstleistungDekan": {
-            "type": "string",
-            "title": "(Optional) Dekan:in/Leiter:in (dienstleistende Fakultät/Bereich)"
+          "fakultaet":        { "type": "string", "title": "Fakultät" },
+          "studiengang":      { "type": "string", "title": "Studiengang" },
+          "fs":               { "type": "string", "title": "Fachsemester (FS)" },
+          "gruppen":          { "type": "string", "title": "Gruppen (z. B. 13 BIB 1 - 5)" },
+
+          "modulnr":          { "type": "string", "title": "Modul-Nr." },
+          "modulname":        { "type": "string", "title": "Modulname" },
+          "lehrveranstaltung":{ "type": "string", "title": "Lehrveranstaltung/Teilmodul" },
+
+          "swsVorlesung":     { "type": "string", "title": "SWS Vorlesung" },
+          "swsSeminar":       { "type": "string", "title": "SWS Seminar" },
+          "swsPraktikum":     { "type": "string", "title": "SWS Praktikum" },
+
+          "raumV":            { "type": "string", "title": "Raum Vorlesung" },
+          "raumS":            { "type": "string", "title": "Raum Seminar" },
+          "raumP":            { "type": "string", "title": "Raum Praktikum" },
+
+          "technikV":         { "type": "string", "title": "Technik Vorlesung" },
+          "technikS":         { "type": "string", "title": "Technik Seminar" },
+          "technikP":         { "type": "string", "title": "Technik Praktikum" },
+
+          "planungshinweise": { "type": "string", "title": "Planungshinweise" },
+          "kwHinweise":       { "type": "string", "title": "KW-Hinweise (z. B. KW42, KW43,…)" },
+
+          "name":             { "type": "string", "title": "Name (Ersteller:in)" },
+          "unterschrift":     { "type": "string", "title": "Unterschrift (Name)" },
+          "rueckgabedatum":   { "type": "string", "format": "date", "title": "Rückgabedatum" },
+
+          "profUnterschrift": { "type": "string", "title": "Prof.-Unterschrift (Name)" },
+          "dekanUnterschrift":{ "type": "string", "title": "Dekan:in-Unterschrift (Name)" },
+          "datumUnterschrift":{ "type": "string", "format": "date", "title": "Datum Unterschrift" },
+
+          "lesende": {
+            "type": "array",
+            "title": "Lesende",
+            "items": {
+              "type": "object",
+              "properties": {
+                "titel":       { "type": "string", "title": "Titel" },
+                "name":        { "type": "string", "title": "Name" },
+                "gruppen":     { "type": "string", "title": "Gruppen" },
+                "erlaeuterung":{ "type": "string", "title": "Erläuterung" }
+              }
+            }
           },
-          "dienstleistungDekanDatum": { "type": "string", "format": "date", "title": "(Optional) Datum" }
+
+          "seminarleiter": {
+            "type": "array",
+            "title": "Seminarleiter",
+            "items": {
+              "type": "object",
+              "properties": {
+                "titel":       { "type": "string", "title": "Titel" },
+                "name":        { "type": "string", "title": "Name" },
+                "gruppen":     { "type": "string", "title": "Gruppen" },
+                "erlaeuterung":{ "type": "string", "title": "Erläuterung" }
+              }
+            }
+          },
+
+          "praktikumsleiter": {
+            "type": "array",
+            "title": "Praktikumsleiter",
+            "items": {
+              "type": "object",
+              "properties": {
+                "titel":       { "type": "string", "title": "Titel" },
+                "name":        { "type": "string", "title": "Name" },
+                "gruppen":     { "type": "string", "title": "Gruppen" },
+                "erlaeuterung":{ "type": "string", "title": "Erläuterung" }
+              }
+            }
+          }
         }
-      },
-      "meta": {
-        "type": "object",
-        "title": "Meta",
-        "properties": {
-          "semester": { "type": "string", "title": "Semester", "default": "Wintersemester 2025/26" },
-          "abgabeterminDS": { "type": "string", "format": "date", "title": "Abgabetermin bei DS" },
-          "eingangBeiDS": { "type": "string", "format": "date", "title": "Eingang bei DS" }
-        }
-      },
-      "notizen": { "type": "string", "title": "Weitere Erläuterungen/Notizen" }
-    }
+      }
+    },
+    "required": ["modul"]
   }
 }

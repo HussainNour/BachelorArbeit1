@@ -3,7 +3,7 @@
   "label": "Zuarbeitsblätter",
   "scope": "#",
   "options": {
-    "elementLabelProp": "modul.bezeichnung",
+    "elementLabelProp": "modul.modulname",
     "detail": {
       "type": "VerticalLayout",
       "elements": [
@@ -11,89 +11,113 @@
           "type": "Group",
           "label": "Stammdaten",
           "elements": [
-            { "type": "HorizontalLayout", "elements": [
-              { "type": "Control", "scope": "#/properties/fakultaet" },
-              { "type": "Control", "scope": "#/properties/studiengang" },
-              { "type": "Control", "scope": "#/properties/fachsemester" }
-            ]},
-            { "type": "Control", "scope": "#/properties/gruppen" }
+            {
+              "type": "HorizontalLayout",
+              "elements": [
+                { "type": "Control", "scope": "#/properties/modul/properties/fakultaet" },
+                { "type": "Control", "scope": "#/properties/modul/properties/studiengang" },
+                { "type": "Control", "scope": "#/properties/modul/properties/fs" },
+                { "type": "Control", "scope": "#/properties/modul/properties/gruppen" }
+              ]
+            }
           ]
         },
         {
           "type": "Group",
           "label": "Modul & Lehrveranstaltung",
           "elements": [
-            { "type": "HorizontalLayout", "elements": [
-              { "type": "Control", "scope": "#/properties/modul/properties/nummer" },
-              { "type": "Control", "scope": "#/properties/modul/properties/bezeichnung" }
-            ]},
-            { "type": "HorizontalLayout", "elements": [
-              { "type": "Control", "scope": "#/properties/lehrveranstaltung/properties/nummer" },
-              { "type": "Control", "scope": "#/properties/lehrveranstaltung/properties/bezeichnung" }
-            ]}
+            {
+              "type": "HorizontalLayout",
+              "elements": [
+                { "type": "Control", "scope": "#/properties/modul/properties/modulnr" },
+                { "type": "Control", "scope": "#/properties/modul/properties/modulname" },
+                { "type": "Control", "scope": "#/properties/modul/properties/lehrveranstaltung" }
+              ]
+            }
           ]
         },
         {
           "type": "Group",
-          "label": "SWS",
+          "label": "SWS & Räume & Technik",
           "elements": [
-            { "type": "HorizontalLayout", "elements": [
-              { "type": "Control", "scope": "#/properties/sws/properties/gesamt" },
-              { "type": "Control", "scope": "#/properties/sws/properties/vorlesung" },
-              { "type": "Control", "scope": "#/properties/sws/properties/seminar" },
-              { "type": "Control", "scope": "#/properties/sws/properties/praktikum" }
-            ]}
+            {
+              "type": "HorizontalLayout",
+              "elements": [
+                { "type": "Control", "scope": "#/properties/modul/properties/swsVorlesung" },
+                { "type": "Control", "scope": "#/properties/modul/properties/swsSeminar" },
+                { "type": "Control", "scope": "#/properties/modul/properties/swsPraktikum" }
+              ]
+            },
+            {
+              "type": "HorizontalLayout",
+              "elements": [
+                { "type": "Control", "scope": "#/properties/modul/properties/raumV" },
+                { "type": "Control", "scope": "#/properties/modul/properties/raumS" },
+                { "type": "Control", "scope": "#/properties/modul/properties/raumP" }
+              ]
+            },
+            {
+              "type": "HorizontalLayout",
+              "elements": [
+                { "type": "Control", "scope": "#/properties/modul/properties/technikV" },
+                { "type": "Control", "scope": "#/properties/modul/properties/technikS" },
+                { "type": "Control", "scope": "#/properties/modul/properties/technikP" }
+              ]
+            }
           ]
         },
         {
           "type": "Group",
-          "label": "Raum/Technik & Durchführung",
+          "label": "Planung",
           "elements": [
-            { "type": "HorizontalLayout", "elements": [
-              { "type": "Control", "scope": "#/properties/raumanforderung" },
-              { "type": "Control", "scope": "#/properties/technikanforderung" }
-            ]},
-            { "type": "HorizontalLayout", "elements": [
-              { "type": "Control", "scope": "#/properties/durchfuehrung" },
-              { "type": "Control", "scope": "#/properties/durchfuehrungHinweise" }
-            ]}
+            { "type": "Control", "scope": "#/properties/modul/properties/planungshinweise" },
+            { "type": "Control", "scope": "#/properties/modul/properties/kwHinweise" }
           ]
         },
         {
           "type": "Group",
           "label": "Personen",
           "elements": [
-            { "type": "Control", "scope": "#/properties/lesende",
+            {
+              "type": "Control",
+              "scope": "#/properties/modul/properties/lesende",
               "options": {
                 "detail": {
                   "type": "HorizontalLayout",
                   "elements": [
-                    { "type": "Control", "scope": "#/properties/bereichTitelName" },
-                    { "type": "Control", "scope": "#/properties/gruppe" },
+                    { "type": "Control", "scope": "#/properties/titel" },
+                    { "type": "Control", "scope": "#/properties/name" },
+                    { "type": "Control", "scope": "#/properties/gruppen" },
                     { "type": "Control", "scope": "#/properties/erlaeuterung" }
                   ]
                 }
               }
             },
-            { "type": "Control", "scope": "#/properties/seminarleiter",
+            {
+              "type": "Control",
+              "scope": "#/properties/modul/properties/seminarleiter",
               "options": {
                 "detail": {
                   "type": "HorizontalLayout",
                   "elements": [
-                    { "type": "Control", "scope": "#/properties/bereichTitelName" },
-                    { "type": "Control", "scope": "#/properties/gruppe" },
+                    { "type": "Control", "scope": "#/properties/titel" },
+                    { "type": "Control", "scope": "#/properties/name" },
+                    { "type": "Control", "scope": "#/properties/gruppen" },
                     { "type": "Control", "scope": "#/properties/erlaeuterung" }
                   ]
                 }
               }
             },
-            { "type": "Control", "scope": "#/properties/praktikumsverantwortliche",
+            {
+              "type": "Control",
+              "scope": "#/properties/modul/properties/praktikumsleiter",
               "options": {
                 "detail": {
                   "type": "HorizontalLayout",
                   "elements": [
-                    { "type": "Control", "scope": "#/properties/bereichTitelName" },
-                    { "type": "Control", "scope": "#/properties/gruppe" },
+                    { "type": "Control", "scope": "#/properties/titel" },
+                    { "type": "Control", "scope": "#/properties/name" },
+                    { "type": "Control", "scope": "#/properties/gruppen" },
                     { "type": "Control", "scope": "#/properties/erlaeuterung" }
                   ]
                 }
@@ -103,38 +127,26 @@
         },
         {
           "type": "Group",
-          "label": "Planungswünsche",
+          "label": "Unterschriften & Termine",
           "elements": [
-            { "type": "Control", "scope": "#/properties/wuensche" },
-            { "type": "Control", "scope": "#/properties/bevorzugteKalenderwochen" },
-            { "type": "Control", "scope": "#/properties/pruefungsHinweise" }
+            {
+              "type": "HorizontalLayout",
+              "elements": [
+                { "type": "Control", "scope": "#/properties/modul/properties/name" },
+                { "type": "Control", "scope": "#/properties/modul/properties/unterschrift" },
+                { "type": "Control", "scope": "#/properties/modul/properties/rueckgabedatum" }
+              ]
+            },
+            {
+              "type": "HorizontalLayout",
+              "elements": [
+                { "type": "Control", "scope": "#/properties/modul/properties/profUnterschrift" },
+                { "type": "Control", "scope": "#/properties/modul/properties/dekanUnterschrift" },
+                { "type": "Control", "scope": "#/properties/modul/properties/datumUnterschrift" }
+              ]
+            }
           ]
-        },
-        {
-          "type": "Group",
-          "label": "Termine & Unterschriften",
-          "elements": [
-            { "type": "HorizontalLayout", "elements": [
-              { "type": "Control", "scope": "#/properties/rueckgabeFakultaet" },
-              { "type": "Control", "scope": "#/properties/meta/properties/abgabeterminDS" },
-              { "type": "Control", "scope": "#/properties/meta/properties/eingangBeiDS" }
-            ]},
-            { "type": "HorizontalLayout", "elements": [
-              { "type": "Control", "scope": "#/properties/verantwortlicheUnterschrift/properties/professor" },
-              { "type": "Control", "scope": "#/properties/verantwortlicheUnterschrift/properties/professorDatum" }
-            ]},
-            { "type": "HorizontalLayout", "elements": [
-              { "type": "Control", "scope": "#/properties/verantwortlicheUnterschrift/properties/dekan" },
-              { "type": "Control", "scope": "#/properties/verantwortlicheUnterschrift/properties/dekanDatum" }
-            ]},
-            { "type": "HorizontalLayout", "elements": [
-              { "type": "Control", "scope": "#/properties/verantwortlicheUnterschrift/properties/dienstleistungDekan" },
-              { "type": "Control", "scope": "#/properties/verantwortlicheUnterschrift/properties/dienstleistungDekanDatum" }
-            ]},
-            { "type": "Control", "scope": "#/properties/meta/properties/semester" }
-          ]
-        },
-        { "type": "Control", "scope": "#/properties/notizen" }
+        }
       ]
     }
   }
