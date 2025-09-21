@@ -1,0 +1,2549 @@
+[
+  {
+    "Modulnummer": "C114",
+    "Modulbezeichnung": "Modellierung",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "1",
+    "Dauer": "1 Semester",
+    "Turnus": "Wintersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. rer. nat",
+      "Vorname": "Sibylle",
+      "Nachname": "Schwarz"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 4,
+      "SWS_S": 2,
+      "SWS_P": 0,
+      "SWS_gesamt": 6,
+      "Aufteilung": [
+        {
+          "Typ": "Vorlesung",
+          "Dozent": "Fr. Prof. Schwarz",
+          "Gruppen": "25INB-1+2+3",
+          "Gruppenanzahl": 1
+        },
+        {
+          "Typ": "Seminar",
+          "Dozent": "Fr. Prof. Schwarz",
+          "Gruppen": "25INB-1+2+3",
+          "Gruppenanzahl": 3
+        },
+        {
+          "Typ": "Seminar",
+          "Dozent": "Hr. Höppner",
+          "Gruppen": "25MIB-1+2",
+          "Gruppenanzahl": 2
+        }
+      ]
+    },
+    "Modultyp": "PF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {
+      "Gesamt": 180,
+      "INB_Seminare": {
+        "Gruppen": 3,
+        "TeilnehmerProGruppe": 40
+      },
+      "MIB_Seminare": {
+        "Gruppen": 2,
+        "TeilnehmerProGruppe": 30,
+        "Gesamt": 60
+      }
+    },
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C752",
+    "Modulbezeichnung": "Digitaltechnik I",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "1",
+    "Dauer": "1 Semester",
+    "Turnus": "Wintersemester",
+    "Modulverantwortliche": {
+      "Anrede": "he Prof. Dr. rer. nat",
+      "Vorname": "Jens",
+      "Nachname": "Wagner"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 3,
+      "SWS_S": 1,
+      "SWS_P": 1,
+      "SWS_gesamt": 5,
+      "Aufteilung": [
+        {
+          "Typ": "Vorlesung",
+          "Dozent": "Hr. Prof. Wagner",
+          "Gruppen": "",
+          "Gruppenanzahl": 1,
+          "SWS": 2
+        },
+        {
+          "Typ": "Vorlesung",
+          "Dozent": "Fr. Brodowsky",
+          "Gruppen": "MNZ",
+          "Gruppenanzahl": 1,
+          "SWS": 1
+        },
+        {
+          "Typ": "Seminar",
+          "Dozent": "Hr. Prof. Wagner",
+          "Gruppen": "25INB-1+2+3",
+          "Gruppenanzahl": 3
+        },
+        {
+          "Typ": "Praktikum",
+          "Dozent": "Hr. Prof. Wagner",
+          "Gruppen": "25INB-1a+1b+2a",
+          "Gruppenanzahl": 3
+        },
+        {
+          "Typ": "Praktikum",
+          "Dozent": "Hr. M. Ulbricht",
+          "Gruppen": "25INB-2b+3a+3b",
+          "Gruppenanzahl": 3
+        }
+      ]
+    },
+    "Modultyp": "PF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {
+      "INB_gesamt": 120,
+      "INB_Seminare": {
+        "Gruppen": 3,
+        "TeilnehmerProGruppe": 40
+      },
+      "INB_Praktikum_Prof_Wagner": {
+        "Gruppen": 3,
+        "TeilnehmerProGruppe": 20
+      },
+      "INB_Praktikum_M_Ulbricht": {
+        "Gruppen": 3,
+        "TeilnehmerProGruppe": 20
+      },
+      "INB_Praktikum_Gesamt": {
+        "Gruppen": 6,
+        "TeilnehmerProGruppe": 20,
+        "Raum": "Li 0.13"
+      }
+    },
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C963",
+    "Modulbezeichnung": "Grundlagen der Programmierung",
+    "Fakultät": "FIM-INF",
+    "Niveau": "",
+    "Fachsemester": "",
+    "Dauer": "",
+    "Turnus": "",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. rer. nat.",
+      "Vorname": "Mario",
+      "Nachname": "Hlawitschka"
+    },
+    "Workload": 210,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2.5,
+      "SWS_S": 0,
+      "SWS_P": 2,
+      "SWS_gesamt": 4.5,
+      "Aufteilung": [
+        {
+          "Typ": "Vorlesung",
+          "Dozent": "Hr. Prof. Rinke",
+          "Gruppen": "",
+          "Gruppenanzahl": 1
+        },
+        {
+          "Typ": "Vorlesung",
+          "Dozent": "Hr. Prof. Rinke",
+          "Gruppen": "5 Gr. geteilt in a und b",
+          "Gruppenanzahl": 9,
+          "Bemerkung": "a. 20 TN"
+        },
+        {
+          "Typ": "Praktikum",
+          "Dozent": "Hr. Prof. Rinke",
+          "Gruppen": "25INB-1a",
+          "Gruppenanzahl": 1
+        },
+        {
+          "Typ": "Praktikum",
+          "Dozent": "Hr. Prof. Rinke",
+          "Gruppen": "parallel 2 Gruppen a und b",
+          "Gruppenanzahl": 2
+        },
+        {
+          "Typ": "Praktikum",
+          "Dozent": "Hr. Höppner",
+          "Gruppen": "25INB-2a+25INB-3a",
+          "Gruppenanzahl": 2
+        },
+        {
+          "Typ": "Praktikum",
+          "Dozent": "LfbA N.N.",
+          "Gruppen": "25INB-1b+2b+3a+3b+25MIB-1b+1b+2a inkl. BIN",
+          "Gruppenanzahl": 1
+        }
+      ]
+    },
+    "Modultyp": "PF",
+    "CharakterLehrveranstaltung": {},
+    "ZusammenMit": [],
+    "Teilnehmerzahlen": {
+      "Gesamt": 180,
+      "INB_Praktikum_Prof_Rinke": {
+        "Gruppen": 1,
+        "TeilnehmerProGruppe": 20
+      },
+      "INB_Praktikum_Hoeppner": {
+        "Gruppen": 2,
+        "TeilnehmerProGruppe": 20
+      },
+      "INB_Praktikum_LfbA_NN": {
+        "Gruppen": 3,
+        "TeilnehmerProGruppe": 20
+      },
+      "MIB_Praktikum_LfbA_NN": {
+        "Gruppen": 4,
+        "TeilnehmerProGruppe": 15
+      },
+      "Gruppen_gesamt": 10,
+      "TN_gesamt": 180
+    },
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "N662",
+    "Modulbezeichnung": "Mathematik für Informatiker I",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "1",
+    "Dauer": "1 Semester",
+    "Turnus": "Wintersemester",
+    "Modulverantwortliche": {
+      "Anrede": " Prof. Dr. rer. nat. habil.",
+      "Vorname": " Martin",
+      "Nachname": "Grüttmüller"
+    },
+    "Workload": 210,
+    "Lehrveranstaltungen": {
+      "SWS_V": 4,
+      "SWS_S": 2,
+      "SWS_P": 0,
+      "SWS_gesamt": 6,
+      "Aufteilung": [
+        {
+          "Typ": "Vorlesung",
+          "Dozent": "Hr. Prof. Grüttmüller",
+          "Gruppen": 1,
+          "Studiengänge": [
+            "INB",
+            "MIB"
+          ]
+        },
+        {
+          "Typ": "Seminar",
+          "Dozent": "Hr. Prof. Grüttmüller",
+          "Gruppen": 2,
+          "Gruppenbezeichnung": "25INB-1+2"
+        },
+        {
+          "Typ": "Seminar",
+          "Dozent": "K. Schubert",
+          "Gruppen": 1,
+          "Gruppenbezeichnung": "25INB-3"
+        },
+        {
+          "Typ": "Seminar",
+          "Dozent": "MNZ B. Schmidt",
+          "Gruppen": 2,
+          "Gruppenbezeichnung": "25MIB-1+2 inkl. BIN"
+        }
+      ]
+    },
+    "Modultyp": "PF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {
+      "Gesamt": 180,
+      "INB_Seminare": [
+        {
+          "Dozent": "Hr. Prof. Grüttmüller",
+          "Gruppen": 2,
+          "TeilnehmerProGruppe": 40
+        },
+        {
+          "Dozent": "K. Schubert",
+          "Gruppen": 1,
+          "TeilnehmerProGruppe": 40
+        }
+      ],
+      "MIB_Seminare": {
+        "Dozent": "MNZ B. Schmidt",
+        "Gruppen": 2,
+        "TeilnehmerProGruppe": 30
+      }
+    },
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C300",
+    "Modulbezeichnung": "Algorithmen und Datenstrukturen",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "2",
+    "Dauer": "1 Semester",
+    "Turnus": "Sommersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. rer. nat.",
+      "Vorname": " Karsten",
+      "Nachname": "Weicker"
+    },
+    "Workload": 180,
+    "Lehrveranstaltungen": {
+      "SWS_V": 4,
+      "SWS_S": 2,
+      "SWS_P": 0,
+      "SWS_gesamt": 6,
+      "Aufteilung": []
+    },
+    "Modultyp": "PF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C405",
+    "Modulbezeichnung": "Praktikum der Technischen Informatik",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "2",
+    "Dauer": "2 Semester",
+    "Turnus": "Sommersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. rer. nat.",
+      "Vorname": " Jens",
+      "Nachname": "Wagner"
+    },
+    "Workload": 240,
+    "Lehrveranstaltungen": {
+      "SWS_V": 3,
+      "SWS_S": 1,
+      "SWS_P": 2,
+      "SWS_gesamt": 6,
+      "Aufteilung": []
+    },
+    "Modultyp": "PF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {
+      "Studiengang": "INB"
+    }
+  },
+  {
+    "Modulnummer": "C680",
+    "Modulbezeichnung": "Anwendungsorientierte Programmierung",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "2",
+    "Dauer": "1 Semester",
+    "Turnus": "Sommersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. rer. nat.",
+      "Vorname": " Johannes",
+      "Nachname": "Waldmann"
+    },
+    "Workload": 94,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 2,
+      "SWS_P": 0,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "PF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C947",
+    "Modulbezeichnung": "Digitaltechnik II",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "2",
+    "Dauer": "1 Semester",
+    "Turnus": "Sommersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Dr. rer. nat.",
+      "Vorname": " Sebastian",
+      "Nachname": "Rinke"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 2,
+      "SWS_P": 0,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "PF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "N055",
+    "Modulbezeichnung": "Mathematik für Informatiker II",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "2",
+    "Dauer": "1 Semester",
+    "Turnus": "Sommersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. rer. nat. habil. ",
+      "Vorname": "Martin",
+      "Nachname": "Grüttmüller"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 2,
+      "SWS_P": 0,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "PF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C287",
+    "Modulbezeichnung": "Betriebssysteme und Rechnernetze",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "3",
+    "Dauer": "1 Semester",
+    "Turnus": "Wintersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr.-Ing.",
+      "Vorname": " Jean-Alexander",
+      "Nachname": "Müller"
+    },
+    "Workload": 180,
+    "Lehrveranstaltungen": {
+      "SWS_V": 4,
+      "SWS_S": 0,
+      "SWS_P": 2,
+      "SWS_gesamt": 6,
+      "Aufteilung": []
+    },
+    "Modultyp": "PF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C559",
+    "Modulbezeichnung": "Softwaretechnik",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "3",
+    "Dauer": "1 Semester",
+    "Turnus": "Wintersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. rer. nat.",
+      "Vorname": "Karsten",
+      "Nachname": "Weicker"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 1,
+      "SWS_P": 1,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "PF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C719",
+    "Modulbezeichnung": "Datenbanken",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "3",
+    "Dauer": "1 Semester",
+    "Turnus": "Wintersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr.-Ing.",
+      "Vorname": "Thomas",
+      "Nachname": "Kudraß"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 1,
+      "SWS_P": 1,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "PF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C902",
+    "Modulbezeichnung": "Wissenschaftskommunikation in der Informatik",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "3",
+    "Dauer": "1 Semester",
+    "Turnus": "Wintersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. rer. nat.",
+      "Vorname": "Thomas",
+      "Nachname": "Riechert"
+    },
+    "Workload": 94,
+    "Lehrveranstaltungen": {
+      "SWS_V": 1,
+      "SWS_S": 3,
+      "SWS_P": 0,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "PF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch,Englisch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "N417",
+    "Modulbezeichnung": "Mathematik für Informatiker III",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "3",
+    "Dauer": "1 Semester",
+    "Turnus": "Wintersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. rer. nat. habil.",
+      "Vorname": "Andreas",
+      "Nachname": "Lasarow"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 2,
+      "SWS_P": 0,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "PF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C073",
+    "Modulbezeichnung": "Softwareprojekt I",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "4",
+    "Dauer": "1 Semester",
+    "Turnus": "Sommersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. rer. nat.",
+      "Vorname": "Andreas",
+      "Nachname": "Both"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 1,
+      "SWS_S": 0,
+      "SWS_P": 1,
+      "SWS_gesamt": 2,
+      "Aufteilung": []
+    },
+    "Modultyp": "PF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C393",
+    "Modulbezeichnung": "Fortgeschrittene Programmierung",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "4",
+    "Dauer": "1 Semester",
+    "Turnus": "Sommersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. rer. nat.",
+      "Vorname": "Johannes",
+      "Nachname": "Waldmann"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 2,
+      "SWS_P": 0,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "PF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C827",
+    "Modulbezeichnung": "Rechnerarchitektur",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "4",
+    "Dauer": "1 Semester",
+    "Turnus": "Sommersemester",
+    "Modulverantwortliche": {
+      "Anrede": "che Dr. rer. nat.",
+      "Vorname": "Sebastian",
+      "Nachname": "Rinke"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 2,
+      "SWS_P": 0,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "PF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C993",
+    "Modulbezeichnung": "Automaten und formale Sprachen",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "4",
+    "Dauer": "1 Semester",
+    "Turnus": "Sommersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. rer. nat.",
+      "Vorname": "Sibylle",
+      "Nachname": "Schwarz"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 2,
+      "SWS_P": 0,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "PF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C171",
+    "Modulbezeichnung": "Softwareprojekt II",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "5",
+    "Dauer": "1 Semester",
+    "Turnus": "Wintersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. rer. nat.",
+      "Vorname": "Andreas",
+      "Nachname": "Both"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 0.5,
+      "SWS_S": 0,
+      "SWS_P": 1,
+      "SWS_gesamt": 1.5,
+      "Aufteilung": []
+    },
+    "Modultyp": "PF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C622",
+    "Modulbezeichnung": "Grundlagen der Künstlichen Intelligenz",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "5",
+    "Dauer": "1 Semester",
+    "Turnus": "Wintersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. rer. nat.",
+      "Vorname": "Sibylle",
+      "Nachname": "Schwarz"
+    },
+    "Workload": 149,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 2,
+      "SWS_P": 0,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "PF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C799",
+    "Modulbezeichnung": "IT-Sicherheit",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "5",
+    "Dauer": "1 Semester",
+    "Turnus": "Wintersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. rer. nat.",
+      "Vorname": "Karsten",
+      "Nachname": "Weicker"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 2,
+      "SWS_P": 0,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "PF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C222",
+    "Modulbezeichnung": "Praxisprojekt",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "6",
+    "Dauer": "1 Semester",
+    "Turnus": "Sommersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr.-Ing.",
+      "Vorname": "Thomas",
+      "Nachname": "Kudraß"
+    },
+    "Workload": 449,
+    "Lehrveranstaltungen": {
+      "SWS_V": 0,
+      "SWS_S": 0,
+      "SWS_P": 0,
+      "SWS_gesamt": 0,
+      "Aufteilung": []
+    },
+    "Modultyp": "PF",
+    "CharakterLehrveranstaltung": {},
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C241",
+    "Modulbezeichnung": "Bachelormodul",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "6",
+    "Dauer": "1 Semester",
+    "Turnus": "Sommersemester",
+    "Modulverantwortliche": {
+      "Anrede": "",
+      "Vorname": "",
+      "Nachname": ""
+    },
+    "Workload": 450,
+    "Lehrveranstaltungen": {
+      "SWS_V": 0,
+      "SWS_S": 0,
+      "SWS_P": 0,
+      "SWS_gesamt": 0,
+      "Aufteilung": []
+    },
+    "Modultyp": "PF",
+    "CharakterLehrveranstaltung": {},
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "F742",
+    "Modulbezeichnung": "Englisch für Studium und Beruf (B2)",
+    "Fakultät": "HSK-FI",
+    "Niveau": "Bachelor",
+    "Fachsemester": "2",
+    "Dauer": "1 Semester",
+    "Turnus": "Sommersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Dr.",
+      "Vorname": "Antje",
+      "Nachname": "Tober-Nietner"
+    },
+    "Workload": 90,
+    "Lehrveranstaltungen": {
+      "SWS_V": 0,
+      "SWS_S": 2,
+      "SWS_P": 0,
+      "SWS_gesamt": 2,
+      "Aufteilung": []
+    },
+    "Modultyp": "PF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Englisch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "U622",
+    "Modulbezeichnung": "Studium generale",
+    "Fakultät": "HSK-SG",
+    "Niveau": "Bachelor",
+    "Fachsemester": "2",
+    "Dauer": "1 Semester",
+    "Turnus": "Sommersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Dr. rer. nat.",
+      "Vorname": "Martin",
+      "Nachname": "Schubert"
+    },
+    "Workload": 60,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 0,
+      "SWS_P": 0,
+      "SWS_gesamt": 2,
+      "Aufteilung": []
+    },
+    "Modultyp": "PF",
+    "CharakterLehrveranstaltung": {},
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C004",
+    "Modulbezeichnung": "Mikroprogrammierung und Mikroprozessoren",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "4",
+    "Dauer": "1 Semester",
+    "Turnus": "Sommersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. rer. nat.",
+      "Vorname": "Jens",
+      "Nachname": "Wagner"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 0,
+      "SWS_P": 2,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "WPF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C090",
+    "Modulbezeichnung": "Algorithmische Geometrie",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "4",
+    "Dauer": "1 Semester",
+    "Turnus": "Sommersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. rer. nat.",
+      "Vorname": "Sibylle",
+      "Nachname": "Schwarz"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 2,
+      "SWS_P": 0,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "WPF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C121",
+    "Modulbezeichnung": "Computergrafik",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "4",
+    "Dauer": "1 Semester",
+    "Turnus": "Sommersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. rer. nat.",
+      "Vorname": "Mario",
+      "Nachname": "Hlawitschka"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 2,
+      "SWS_P": 0,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "WPF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C227",
+    "Modulbezeichnung": "Vertiefende Spezialvorlesung der Informatik 1",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "4",
+    "Dauer": "1 Semester",
+    "Turnus": "Sommersemester",
+    "Modulverantwortliche": {
+      "Anrede": "",
+      "Vorname": "",
+      "Nachname": ""
+    },
+    "Workload": 0,
+    "Lehrveranstaltungen": {
+      "SWS_V": 0,
+      "SWS_S": 0,
+      "SWS_P": 0,
+      "SWS_gesamt": 0,
+      "Aufteilung": []
+    },
+    "Modultyp": "WPF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C249",
+    "Modulbezeichnung": "Semantic Web",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "4",
+    "Dauer": "1 Semester",
+    "Turnus": "Sommersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. rer. nat.",
+      "Vorname": "Thomas",
+      "Nachname": "Riechert"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 2,
+      "SWS_P": 0,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "WPF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C383",
+    "Modulbezeichnung": "Prozessautomatisierung",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "4",
+    "Dauer": "1 Semester",
+    "Turnus": "Sommersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. rer. nat.",
+      "Vorname": "Jens",
+      "Nachname": "Wagner"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 0,
+      "SWS_P": 2,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "WPF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C448",
+    "Modulbezeichnung": "Hardware-Entwurfstechnik",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "4",
+    "Dauer": "1 Semester",
+    "Turnus": "Sommersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. rer. nat.",
+      "Vorname": "Jens",
+      "Nachname": "Wagner"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 0,
+      "SWS_P": 2,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "WPF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C585",
+    "Modulbezeichnung": "e-Learning",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "4",
+    "Dauer": "1 Semester",
+    "Turnus": "Sommersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. rer. nat.",
+      "Vorname": "Thomas",
+      "Nachname": "Riechert"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 2,
+      "SWS_P": 0,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "WPF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C720",
+    "Modulbezeichnung": "Datenbanken (Aufbaukurs)",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "4",
+    "Dauer": "1 Semester",
+    "Turnus": "Sommersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr.-Ing.",
+      "Vorname": "Thomas",
+      "Nachname": "Kudraß"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 2,
+      "SWS_P": 0,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "WPF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C741",
+    "Modulbezeichnung": "Multimediale Webprogrammierung",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "4",
+    "Dauer": "1 Semester",
+    "Turnus": "Sommersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. rer. nat. habil.",
+      "Vorname": "Michael",
+      "Nachname": "Frank"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 2,
+      "SWS_P": 0,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "WPF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C864",
+    "Modulbezeichnung": "Web Engineering",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "4",
+    "Dauer": "1 Semester",
+    "Turnus": "Sommersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. rer. nat.",
+      "Vorname": "Andreas",
+      "Nachname": "Both"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 2,
+      "SWS_P": 0,
+      "SWS_gesamt": 0,
+      "Aufteilung": []
+    },
+    "Modultyp": "WPF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C960",
+    "Modulbezeichnung": "Assemblerprogrammierung",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "4",
+    "Dauer": "1 Semester",
+    "Turnus": "Sommersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. rer. nat.",
+      "Vorname": "Jens",
+      "Nachname": "Wagner"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 2,
+      "SWS_P": 0,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "WPF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "N450",
+    "Modulbezeichnung": "Einführung in ERP-Software (SAP)",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "4",
+    "Dauer": "1 Semester",
+    "Turnus": "Sommersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. rer. nat.",
+      "Vorname": "Tobias",
+      "Nachname": "Martin"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 2,
+      "SWS_P": 0,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "WPF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "N468",
+    "Modulbezeichnung": "Diskrete Mathematik und Optimierung",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "4",
+    "Dauer": "1 Semester",
+    "Turnus": "Sommersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. rer. nat. habil.",
+      "Vorname": "Martin",
+      "Nachname": "Grüttmüller"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 2,
+      "SWS_P": 0,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "WPF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C010",
+    "Modulbezeichnung": "Grundlagen der mobilen Robotik",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "5",
+    "Dauer": "1 Semester",
+    "Turnus": "Wintersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. rer. nat.",
+      "Vorname": "Jens",
+      "Nachname": "Wagner"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 0,
+      "SWS_P": 2,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "WPF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C064",
+    "Modulbezeichnung": "Audio-Video-Kommunikation",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "5",
+    "Dauer": "1 Semester",
+    "Turnus": "Wintersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr.-Ing.",
+      "Vorname": " Jean-Alexander",
+      "Nachname": "Müller"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 0,
+      "SWS_S": 2,
+      "SWS_P": 2,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "WPF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C160",
+    "Modulbezeichnung": "Constraint-Programmierung",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "5",
+    "Dauer": "1 Semester",
+    "Turnus": "Wintersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. rer. nat.",
+      "Vorname": "Johannes",
+      "Nachname": "Waldmann"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 2,
+      "SWS_P": 0,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "WPF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C182",
+    "Modulbezeichnung": "Computeranimation",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "5",
+    "Dauer": "1 Semester",
+    "Turnus": "Wintersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. rer. nat.",
+      "Vorname": "Mario",
+      "Nachname": "Hlawitschka"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 2,
+      "SWS_P": 0,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "WPF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C247",
+    "Modulbezeichnung": "Grundlagen Internet-basierter Informationssysteme",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "5",
+    "Dauer": "1 Semester",
+    "Turnus": "Wintersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. rer. nat.",
+      "Vorname": "Thomas",
+      "Nachname": "Riechert"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 2,
+      "SWS_P": 0,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "WPF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C259",
+    "Modulbezeichnung": "Thread-Programmierung",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "5",
+    "Dauer": "1 Semester",
+    "Turnus": "Wintersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. rer. nat. habil.",
+      "Vorname": "Alfons",
+      "Nachname": "Geser"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 2,
+      "SWS_P": 0,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "WPF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C493",
+    "Modulbezeichnung": "Einführung in die virtuelle und erweiterte Realität (VR/AR)",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "5",
+    "Dauer": "1 Semester",
+    "Turnus": "Wintersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr.",
+      "Vorname": "Kiran",
+      "Nachname": "Varanasi"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 2,
+      "SWS_P": 0,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "WPF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C651",
+    "Modulbezeichnung": "Dokumentbeschreibungssprachen",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "5",
+    "Dauer": "1 Semester",
+    "Turnus": "Wintersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. rer. nat. habil.",
+      "Vorname": "Michael",
+      "Nachname": "Frank"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 2,
+      "SWS_P": 0,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "WPF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C652",
+    "Modulbezeichnung": "Mobile Computing",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "5",
+    "Dauer": "1 Semester",
+    "Turnus": "Wintersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. rer. nat.",
+      "Vorname": "Andreas",
+      "Nachname": "Both"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 2,
+      "SWS_P": 0,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "WPF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C672",
+    "Modulbezeichnung": "Vertiefende Spezialvorlesung der Informatik 2",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "5",
+    "Dauer": "1 Semester",
+    "Turnus": "Wintersemester",
+    "Modulverantwortliche": {
+      "Anrede": "",
+      "Vorname": "",
+      "Nachname": ""
+    },
+    "Workload": 0,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 2,
+      "SWS_P": 0,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "WPF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C763",
+    "Modulbezeichnung": "Digitale Signal- und Bildverarbeitung",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "5",
+    "Dauer": "1 Semester",
+    "Turnus": "Wintersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. rer. nat.",
+      "Vorname": "Mario",
+      "Nachname": "Hlawitschka"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 2,
+      "SWS_P": 0,
+      "SWS_gesamt": 3,
+      "Aufteilung": []
+    },
+    "Modultyp": "WPF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C869",
+    "Modulbezeichnung": "Formale Methoden und Werkzeuge",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "5",
+    "Dauer": "1 Semester",
+    "Turnus": "Wintersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. rer. nat.",
+      "Vorname": "Johannes",
+      "Nachname": "Waldmann"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 2,
+      "SWS_P": 0,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "WPF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "N840",
+    "Modulbezeichnung": "Numerische Algorithmen",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "5",
+    "Dauer": "1 Semester",
+    "Turnus": "Wintersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. rer. nat.",
+      "Vorname": "Patrick",
+      "Nachname": "Kürschner"
+    },
+    "Workload": 149,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 2,
+      "SWS_P": -2,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "WPF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "W233",
+    "Modulbezeichnung": "Einführung in die Betriebswirtschaftslehre",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "5",
+    "Dauer": "1 Semester",
+    "Turnus": "Wintersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. oec. publ.",
+      "Vorname": "Sabine",
+      "Nachname": "Hüttinger"
+    },
+    "Workload": 144,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 2,
+      "SWS_P": 0,
+      "SWS_gesamt": 2,
+      "Aufteilung": []
+    },
+    "Modultyp": "WPF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C362",
+    "Modulbezeichnung": "Digitaltechnik",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "1",
+    "Dauer": "2 Semester",
+    "Turnus": "Wintersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Dr. rer. nat.",
+      "Vorname": "Sebastian ",
+      "Nachname": "Rinke"
+    },
+    "Workload": 240,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 1,
+      "SWS_P": 0,
+      "SWS_gesamt": 3,
+      "Aufteilung": []
+    },
+    "Modultyp": "PF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C707",
+    "Modulbezeichnung": "Multimedia-Grundkurs I",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "1",
+    "Dauer": "1 Semester",
+    "Turnus": "Wintersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. rer. nat.",
+      "Vorname": "Thomas",
+      "Nachname": "Riechert"
+    },
+    "Workload": 120,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 2,
+      "SWS_P": 0,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "PF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C734",
+    "Modulbezeichnung": "Multimedia-Grundkurs II",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "2",
+    "Dauer": "1 Semester",
+    "Turnus": "Sommersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr.",
+      "Vorname": "Kiran",
+      "Nachname": "Varanasi"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 2,
+      "SWS_P": 0,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "PF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C914",
+    "Modulbezeichnung": "Medienrecht",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "3",
+    "Dauer": "1 Semester",
+    "Turnus": "Wintersemester",
+    "Modulverantwortliche": {
+      "Anrede": "",
+      "Vorname": "",
+      "Nachname": ""
+    },
+    "Workload": 120,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 2,
+      "SWS_P": 0,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "PF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "N933",
+    "Modulbezeichnung": "Physik für Medieninformatiker",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "3",
+    "Dauer": "1 Semester",
+    "Turnus": "Wintersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. rer. nat. habil.",
+      "Vorname": "Christian",
+      "Nachname": "Weickhardt"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 2,
+      "SWS_P": 0,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "PF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C440",
+    "Modulbezeichnung": "Mediengestaltung",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "4",
+    "Dauer": "1 Semester",
+    "Turnus": "Sommersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. rer. nat.",
+      "Vorname": "Thomas",
+      "Nachname": "Riechert"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 2,
+      "SWS_P": 0,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "PF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C757",
+    "Modulbezeichnung": "Multimedia-Datenbanken",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "5",
+    "Dauer": "1 Semester",
+    "Turnus": "Wintersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr.-Ing.",
+      "Vorname": "Robert",
+      "Nachname": "Müller"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 2,
+      "SWS_P": 0,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "PF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C681",
+    "Modulbezeichnung": "Medienmarketing",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "4",
+    "Dauer": "1 Semester",
+    "Turnus": "Sommersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. rer. nat. habil.",
+      "Vorname": "Michael",
+      "Nachname": "Frank"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 2,
+      "SWS_P": 0,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "WPF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C977",
+    "Modulbezeichnung": "E-Business",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "4",
+    "Dauer": "1 Semester",
+    "Turnus": "Sommersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. rer. nat.",
+      "Vorname": "Thomas",
+      "Nachname": "Riechert"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 2,
+      "SWS_P": 0,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "WPF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "349",
+    "Modulbezeichnung": "Studioproduktion I",
+    "Fakultät": "FIM",
+    "Niveau": "Bachelor",
+    "Fachsemester": "4",
+    "Dauer": "1 Semester",
+    "Turnus": "Sommersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr.-Ing.",
+      "Vorname": "Uwe",
+      "Nachname": "Kulisch"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 2,
+      "SWS_P": 0,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "WPF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "I562",
+    "Modulbezeichnung": "Grundlagen der Audio-/Video-Technik",
+    "Fakultät": "FIM",
+    "Niveau": "Bachelor",
+    "Fachsemester": "4",
+    "Dauer": "1 Semester",
+    "Turnus": "Sommersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr.-Ing.",
+      "Vorname": "Ulrich",
+      "Nachname": "Schmedes"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 3,
+      "SWS_S": 0,
+      "SWS_P": 1,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "WPF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "I590",
+    "Modulbezeichnung": "Kommunikation und Medien",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "4",
+    "Dauer": "1 Semester",
+    "Turnus": "Sommersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. jur.",
+      "Vorname": "Marc",
+      "Nachname": "Liesching"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 0,
+      "SWS_P": 0,
+      "SWS_gesamt": 2,
+      "Aufteilung": []
+    },
+    "Modultyp": "PF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "I604",
+    "Modulbezeichnung": "Elektronische Berichterstattung, Reportage, Dokumentation",
+    "Fakultät": "FIM-TEC",
+    "Niveau": "Bachelor",
+    "Fachsemester": "4",
+    "Dauer": "1 Semester",
+    "Turnus": "Sommersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. phil.",
+      "Vorname": "Gabriele",
+      "Nachname": "Hooffacker"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 0,
+      "SWS_S": 2,
+      "SWS_P": 2,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "WPF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C117",
+    "Modulbezeichnung": "Digitale Kunst",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "5",
+    "Dauer": "1 Semester",
+    "Turnus": "Wintersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. rer. nat.",
+      "Vorname": "Jens",
+      "Nachname": "Wagner"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 0,
+      "SWS_P": 2,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "WPF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C246",
+    "Modulbezeichnung": "Autorensysteme",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "5",
+    "Dauer": "1 Semester",
+    "Turnus": "Wintersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. rer. nat.",
+      "Vorname": "Thomas",
+      "Nachname": "Riechert"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 2,
+      "SWS_P": 0,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "WPF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "C668",
+    "Modulbezeichnung": "Onlineshop-Projekt",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "4",
+    "Dauer": "1 Semester",
+    "Turnus": "Sommersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr. rer. nat.",
+      "Vorname": "Thomas",
+      "Nachname": "Riechert"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 2,
+      "SWS_S": 0,
+      "SWS_P": 2,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "WPF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "I300",
+    "Modulbezeichnung": "App-Konzeption und App-Design",
+    "Fakultät": "FIM-TEC",
+    "Niveau": "Bachelor",
+    "Fachsemester": "5",
+    "Dauer": "1 Semester",
+    "Turnus": "Wintersemester",
+    "Modulverantwortliche": {
+      "Anrede": "",
+      "Vorname": "Maximilian",
+      "Nachname": "Amthor"
+    },
+    "Workload": 150,
+    "Lehrveranstaltungen": {
+      "SWS_V": 0,
+      "SWS_S": 3,
+      "SWS_P": 0,
+      "SWS_gesamt": 3,
+      "Aufteilung": []
+    },
+    "Modultyp": "WPF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "I770",
+    "Modulbezeichnung": "Medienerstellung mit Fokus Fotografie",
+    "Fakultät": "FIM-TEC",
+    "Niveau": "Bachelor",
+    "Fachsemester": "5",
+    "Dauer": "1 Semester",
+    "Turnus": "Wintersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr.-Ing.",
+      "Vorname": "Michael",
+      "Nachname": "Reiche"
+    },
+    "Workload": 149,
+    "Lehrveranstaltungen": {
+      "SWS_V": 0,
+      "SWS_S": 2,
+      "SWS_P": 2,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "WPF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "INB",
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  },
+  {
+    "Modulnummer": "I976",
+    "Modulbezeichnung": "Studioproduktion II interaktiv",
+    "Fakultät": "FIM-INF",
+    "Niveau": "Bachelor",
+    "Fachsemester": "5",
+    "Dauer": "1 Semester",
+    "Turnus": "Wintersemester",
+    "Modulverantwortliche": {
+      "Anrede": "Prof. Dr.-Ing.",
+      "Vorname": "Uwe",
+      "Nachname": "Kulisch"
+    },
+    "Workload": 300,
+    "Lehrveranstaltungen": {
+      "SWS_V": 0,
+      "SWS_S": 4,
+      "SWS_P": 0,
+      "SWS_gesamt": 4,
+      "Aufteilung": []
+    },
+    "Modultyp": "WPF",
+    "CharakterLehrveranstaltung": {
+      "Durchführung": "Präsenz",
+      "Sprache": "Deutsch"
+    },
+    "ZusammenMit": [
+      "MIB"
+    ],
+    "Teilnehmerzahlen": {},
+    "Verwendbarkeit": {}
+  }
+]
