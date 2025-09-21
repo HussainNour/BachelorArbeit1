@@ -1,20 +1,58 @@
 {
+  "id": "4abc955d-743b-4371-84aa-ac8376a90da5",
   "modul": {
     "lesende": [
-      {}
+      {
+        "titel": "Prof. Dr.",
+        "name": "Schmidt",
+        "gruppen": "1-5",
+        "erlaeuterung": "Gemeinsame Vorlesung für alle Gruppen, montags 09:15-10:45 Uhr"
+      }
     ],
     "seminarleiter": [
-      {}
+      {
+        "titel": "Dr.",
+        "name": "Meier",
+        "gruppen": "1-3",
+        "erlaeuterung": "Seminar in 2 Gruppen, Blockveranstaltung gerader Wochen, Dienstag 13:30-17:00 Uhr"
+      },
+      {
+        "titel": "M.Sc.",
+        "name": "Schulze",
+        "gruppen": "4-5",
+        "erlaeuterung": "Seminar in 2 Gruppen, Blockveranstaltung ungerader Wochen, Mittwoch 13:30-17:00 Uhr"
+      }
     ],
     "praktikumsleiter": [
-      {}
+      {
+        "name": "Wagner",
+        "gruppen": "1-5",
+        "erlaeuterung": "Praktikum in Einzelgruppen, wöchentlich wechselnd: Gruppe 1+2 (KW42,44,...), Gruppe 3+4 (KW43,45,...), Gruppe 5 (flexibel)"
+      }
     ],
-    "fakultaet": "ghjkghk",
-    "studiengang": "hg",
-    "fs": "hgjkghk",
-    "modulnr": "hgjkghj",
-    "modulname": "hgkgh",
-    "lehrveranstaltung": "hjgkghk"
-  },
-  "id": "4abc955d-743b-4371-84aa-ac8376a90da5"
+    "studiengang": "BIB",
+    "modulnr": "1300",
+    "modulname": "BAUKO I",
+    "lehrveranstaltung": "Einführung in die Bibliothekswissenschaft",
+    "fakultaet": "FIM",
+    "fs": "3",
+    "gruppen": "13 BIB 1 - 5",
+    "swsVorlesung": "2",
+    "swsSeminar": "1",
+    "swsPraktikum": "1",
+    "raumV": "Hörsaal 123",
+    "raumS": "Seminarraum 45",
+    "raumP": "Labor 67",
+    "technikV": "Beamer, PC",
+    "technikS": "Whiteboard",
+    "technikP": "Spezialausrüstung",
+    "planungshinweise": "Gleichmäßige Verteilung auf gerade/ungerade Wochen, Vorlesung zwingend vor Seminar",
+    "kwHinweise": "KW42, KW43, KW44, KW45, KW46, KW47, KW48, KW49, KW50, KW51, KW52, KW01, KW02, KW03, KW04, KW05, KW06",
+    "name": "Prof. Dr. Müller",
+    "unterschrift": "Fadi Mkhalale",
+    "rueckgabedatum": "2025-05-15",
+    "profUnterschrift": "Prof. Dr. Mustermann",
+    "dekanUnterschrift": "Prof. Dr. Schmidt",
+    "datumUnterschrift": "2025-05-15"
+  }
 }
