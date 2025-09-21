@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { JsonForms } from '@jsonforms/react';
 import { materialCells, materialRenderers } from '@jsonforms/material-renderers';
 import schema from '../schema.json';
@@ -62,6 +62,10 @@ type Model = Item[]; // Root ist ein Array!
 /** ---------- API ---------- */
 const API = 'http://localhost:5050/blaetter';
 
+/** ---------- externe Modulquelle ---------- */
+// Pfad ggf. anpassen:
+import modulesJson from '../../config/INB_module.json';
+
 /** ---------- kleine Hilfsfunktionen ---------- */
 const ensureArray = <T,>(v: any): T[] => {
   if (Array.isArray(v)) return v as T[];
@@ -95,10 +99,101 @@ const normalizeItem = (it: Item): Item => {
   });
 };
 
+/** ---------- Mapping von INB_module.json -> Formularfelder ---------- */
+type RawMod = any;
+
+const mapModuleToForm = (mod: RawMod): Partial<Modul> => {
+  if (!mod) return {};
+  const swsV = mod?.Lehrveranstaltungen?.SWS_V ?? '';
+  const swsS = mod?.Lehrveranstaltungen?.SWS_S ?? '';
+  const swsP = mod?.Lehrveranstaltungen?.SWS_P ?? '';
+
+  const aufteilung = Array.isArray(mod?.Lehrveranstaltungen?.Aufteilung)
+    ? mod.Lehrveranstaltungen.Aufteilung
+    : [];
+
+  const firstTyp = aufteilung[0]?.Typ ? ` ${aufteilung[0].Typ}` : '';
+
+  // Einzigartige Gruppen aus allen Aufteilungen zusammenführen
+  const gruppenSet = new Set(
+    aufteilung.map((a: any) => (a?.Gruppen || '').trim()).filter(Boolean)
+  );
+  const gruppen = Array.from(gruppenSet).join('; ');
+
+  return {
+    fakultaet: mod?.['Fakultät'] ?? '',
+    studiengang: Array.isArray(mod?.ZusammenMit) ? mod.ZusammenMit.join(', ') : '',
+    fs: mod?.['Fachsemester'] ?? '',
+    gruppen,
+    modulnr: mod?.['Modulnummer'] ?? '',
+    modulname: mod?.['Modulbezeichnung'] ?? '',
+    lehrveranstaltung: (mod?.['Modulbezeichnung'] || '') + firstTyp,
+    swsVorlesung: swsV !== '' ? String(swsV) : '',
+    swsSeminar: swsS !== '' ? String(swsS) : '',
+    swsPraktikum: swsP !== '' ? String(swsP) : ''
+  };
+};
+
+/** Felder, die beim Modulwechsel automatisch gesetzt werden */
+const AUTO_KEYS: (keyof Modul)[] = [
+  'fakultaet',
+  'studiengang',
+  'fs',
+  'gruppen',
+  'modulnr',
+  'modulname',
+  'lehrveranstaltung',
+  'swsVorlesung',
+  'swsSeminar',
+  'swsPraktikum'
+];
+
+/** Merge: nur die obigen Auto-Felder überschreiben; alles andere bleibt wie eingegeben */
+const mergeAutoFill = (oldItem: Item, auto: Partial<Modul>): Item => {
+  const oldMod = oldItem?.modul ?? {};
+  const next: Modul = { ...oldMod };
+  for (const k of AUTO_KEYS) {
+    const v = (auto as any)[k];
+    if (v !== undefined) (next as any)[k] = v;
+  }
+  return { ...oldItem, modul: next };
+};
+
 export const JsonFormsDemo = () => {
   const [data, setData] = useState<Model>([]); // Array wie früher
   const [hasErrors, setHasErrors] = useState(false);
   const [status, setStatus] = useState<'idle'|'loading'|'saving'|'saved'|'error'>('idle');
+
+  // --- Lookup & Dropdown-Optionen für modulnr ---
+  const moduByNr = useMemo(() => {
+    const m = new Map<string, RawMod>();
+    for (const mod of modulesJson as RawMod[]) {
+      const key = String(mod?.['Modulnummer'] ?? '').trim();
+      if (key) m.set(key, mod);
+    }
+    return m;
+  }, []);
+
+  const modulnrOptions = useMemo(
+    () =>
+      (modulesJson as RawMod[])
+        .map((m) => ({
+          value: String(m['Modulnummer']).trim(),
+          label: `${String(m['Modulnummer']).trim()} – ${String(m['Modulbezeichnung']).trim()}`
+        }))
+        .filter((o) => o.value),
+    []
+  );
+
+  // --- Schema mit enum für modulnr (Dropdown) ---
+  const schemaWithEnum = useMemo(() => {
+    const clone = JSON.parse(JSON.stringify(schema)) as any;
+    const target = clone?.items?.properties?.modul?.properties?.modulnr;
+    if (target) {
+      target.oneOf = modulnrOptions.map((o) => ({ const: o.value, title: o.label }));
+    }
+    return clone;
+  }, [modulnrOptions]);
 
   /** Laden: Liste holen -> bereinigen -> Array in den State (id BEHALTEN) */
   const load = async () => {
@@ -181,20 +276,42 @@ export const JsonFormsDemo = () => {
     }
   };
 
+  /** --- Auto-Fill bei Änderung der modulnr --- */
+  const prevRef = useRef<Model>(data);
+  const handleChange = ({ data: next, errors }: { data: any; errors?: any[] }) => {
+    const incoming: Model = (next ?? []) as Model;
+    const prev: Model = prevRef.current ?? [];
+
+    let mutated = false;
+    const patched: Model = incoming.map((item, idx) => {
+      const curNr = item?.modul?.modulnr ?? '';
+      const oldNr = prev[idx]?.modul?.modulnr ?? '';
+      if (curNr && curNr !== oldNr) {
+        const mod = moduByNr.get(String(curNr).trim());
+        const auto = mapModuleToForm(mod);
+        mutated = true;
+        // Nur definierte Auto-Felder überschreiben; id etc. bleibt erhalten
+        return mergeAutoFill(item, auto);
+      }
+      return item;
+    });
+
+    prevRef.current = mutated ? patched : incoming;
+    setData(mutated ? patched : incoming);
+    setHasErrors((errors?.length ?? 0) > 0);
+  };
+
   return (
     <Box sx={{ maxWidth: 1100, mx: 'auto', p: 2 }}>
       <Typography variant="h5" sx={{ mb: 2 }}>Zuarbeitsblätter (Array)</Typography>
 
       <JsonForms
-        schema={schema as any}
+        schema={schemaWithEnum as any}   // <-- mit Dropdown für modulnr
         uischema={uischema as any}
-        data={data}                     // Array!
+        data={data}                      // Array!
         renderers={materialRenderers}
         cells={materialCells}
-        onChange={({ data: next, errors }) => {
-          setData((next ?? []) as Model); // id-Felder bleiben in den Objekten erhalten
-          setHasErrors((errors?.length ?? 0) > 0);
-        }}
+        onChange={handleChange}
       />
 
       <Stack direction="row" spacing={2} sx={{ mt: 2 }}>

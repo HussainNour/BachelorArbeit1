@@ -8,7 +8,7 @@
       "modul": {
         "type": "object",
         "title": "Modul",
-        "required": ["fakultaet", "studiengang", "fs", "modulnr", "modulname", "lehrveranstaltung"],
+        "required": ["fakultaet", "studiengang", "fs", "modulnr", "modulname"],
         "properties": {
           "fakultaet":        { "type": "string", "title": "Fakultät" },
           "studiengang":      { "type": "string", "title": "Studiengang" },
