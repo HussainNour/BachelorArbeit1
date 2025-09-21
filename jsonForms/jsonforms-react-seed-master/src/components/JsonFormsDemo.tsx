@@ -112,8 +112,6 @@ const mapModuleToForm = (mod: RawMod): Partial<Modul> => {
     ? mod.Lehrveranstaltungen.Aufteilung
     : [];
 
-  const firstTyp = aufteilung[0]?.Typ ? ` ${aufteilung[0].Typ}` : '';
-
   // Einzigartige Gruppen aus allen Aufteilungen zusammenführen
   const gruppenSet = new Set(
     aufteilung.map((a: any) => (a?.Gruppen || '').trim()).filter(Boolean)
@@ -127,14 +125,14 @@ const mapModuleToForm = (mod: RawMod): Partial<Modul> => {
     gruppen,
     modulnr: mod?.['Modulnummer'] ?? '',
     modulname: mod?.['Modulbezeichnung'] ?? '',
-    lehrveranstaltung: (mod?.['Modulbezeichnung'] || '') + firstTyp,
+    // lehrveranstaltung:  <-- ABSICHTLICH NICHT gesetzt (soll leer bleiben)
     swsVorlesung: swsV !== '' ? String(swsV) : '',
-    swsSeminar: swsS !== '' ? String(swsS) : '',
+    swsSeminar:  swsS !== '' ? String(swsS) : '',
     swsPraktikum: swsP !== '' ? String(swsP) : ''
   };
 };
 
-/** Felder, die beim Modulwechsel automatisch gesetzt werden */
+/** Felder, die beim Modulwechsel automatisch gesetzt werden (ohne lehrveranstaltung) */
 const AUTO_KEYS: (keyof Modul)[] = [
   'fakultaet',
   'studiengang',
@@ -142,7 +140,7 @@ const AUTO_KEYS: (keyof Modul)[] = [
   'gruppen',
   'modulnr',
   'modulname',
-  'lehrveranstaltung',
+  // 'lehrveranstaltung',   // NICHT automatisch
   'swsVorlesung',
   'swsSeminar',
   'swsPraktikum'
@@ -157,6 +155,66 @@ const mergeAutoFill = (oldItem: Item, auto: Partial<Modul>): Item => {
     if (v !== undefined) (next as any)[k] = v;
   }
   return { ...oldItem, modul: next };
+};
+
+/** Zahlen-/Vorhandensein-Check für SWS */
+const numOrZero = (v: any): number => {
+  if (v === null || v === undefined) return 0;
+  const s = String(v).trim();
+  if (s === '') return 0;
+  const n = Number(s);
+  if (!Number.isNaN(n)) return n;
+  // Fallback: nicht-numerisch aber nicht leer -> als „vorhanden“ interpretieren
+  return 1;
+};
+
+/** Titel/Name in den ersten Eintrag der jeweiligen Arrays füllen (nur wenn leer) */
+const applyLeadersIfNeeded = (oldItem: Item, auto: Partial<Modul>, raw: RawMod): Item => {
+  const mv = raw?.Modulverantwortliche || {};
+  const titel = (mv?.Anrede ?? '').toString().trim();
+  const name = [mv?.Vorname, mv?.Nachname].filter(Boolean).join(' ').trim();
+
+  const prevMod = oldItem?.modul ?? {};
+
+  // Effektive SWS-Werte: neu gesetzte auto-Werte haben Vorrang, sonst bisherige
+  const effV = numOrZero((auto.swsVorlesung ?? prevMod.swsVorlesung));
+  const effS = numOrZero((auto.swsSeminar   ?? prevMod.swsSeminar));
+  const effP = numOrZero((auto.swsPraktikum ?? prevMod.swsPraktikum));
+
+  const next: Item = { ...oldItem, modul: { ...prevMod } };
+
+  // Utility: Array sicherstellen + ersten Eintrag bereitstellen
+  const ensureFirst = (arr?: Person[]): Person[] => {
+    const a = Array.isArray(arr) ? [...arr] : [];
+    if (!a[0]) a[0] = {};
+    return a;
+  };
+
+  // Nur leere Felder überschreiben
+  const fillNameIfEmpty = (p: Person) => {
+    if (titel && !p.titel) p.titel = titel;
+    if (name && !p.name) p.name = name;
+  };
+
+  if (effV > 0) {
+    const a = ensureFirst(next.modul!.lesende);
+    fillNameIfEmpty(a[0]);
+    next.modul!.lesende = a;
+  }
+
+  if (effS > 0) {
+    const a = ensureFirst(next.modul!.seminarleiter);
+    fillNameIfEmpty(a[0]);
+    next.modul!.seminarleiter = a;
+  }
+
+  if (effP > 0) {
+    const a = ensureFirst(next.modul!.praktikumsleiter);
+    fillNameIfEmpty(a[0]);
+    next.modul!.praktikumsleiter = a;
+  }
+
+  return next;
 };
 
 export const JsonFormsDemo = () => {
@@ -277,7 +335,7 @@ export const JsonFormsDemo = () => {
   };
 
   /** --- Auto-Fill bei Änderung der modulnr --- */
-  const prevRef = useRef<Model>(data);
+  const prevRef = useRef<Model>([]);
   const handleChange = ({ data: next, errors }: { data: any; errors?: any[] }) => {
     const incoming: Model = (next ?? []) as Model;
     const prev: Model = prevRef.current ?? [];
@@ -287,11 +345,17 @@ export const JsonFormsDemo = () => {
       const curNr = item?.modul?.modulnr ?? '';
       const oldNr = prev[idx]?.modul?.modulnr ?? '';
       if (curNr && curNr !== oldNr) {
-        const mod = moduByNr.get(String(curNr).trim());
-        const auto = mapModuleToForm(mod);
+        const rawMod = moduByNr.get(String(curNr).trim());
+        const auto = mapModuleToForm(rawMod);
         mutated = true;
-        // Nur definierte Auto-Felder überschreiben; id etc. bleibt erhalten
-        return mergeAutoFill(item, auto);
+
+        // 1) numerische/grundlegende Felder übernehmen (ohne lehrveranstaltung)
+        let merged = mergeAutoFill(item, auto);
+
+        // 2) je nach SWS die Personen-Arrays (lesende/seminar-/praktikumsleiter) befüllen
+        merged = applyLeadersIfNeeded(merged, auto, rawMod);
+
+        return merged;
       }
       return item;
     });
