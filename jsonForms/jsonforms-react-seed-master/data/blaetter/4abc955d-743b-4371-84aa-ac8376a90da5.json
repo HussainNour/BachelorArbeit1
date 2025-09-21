@@ -30,16 +30,15 @@
         "erlaeuterung": "Praktikum in Einzelgruppen, wöchentlich wechselnd: Gruppe 1+2 (KW42,44,...), Gruppe 3+4 (KW43,45,...), Gruppe 5 (flexibel)"
       }
     ],
-    "studiengang": "BIB",
-    "modulnr": "1300",
-    "modulname": "BAUKO I",
-    "lehrveranstaltung": "Einführung in die Bibliothekswissenschaft",
-    "fakultaet": "FIM",
-    "fs": "3",
-    "gruppen": "13 BIB 1 - 5",
-    "swsVorlesung": "2",
-    "swsSeminar": "1",
-    "swsPraktikum": "1",
+    "studiengang": "INB, MIB",
+    "modulnr": "C114",
+    "modulname": "Modellierung",
+    "lehrveranstaltung": "Modellierung Vorlesung",
+    "fakultaet": "FIM-INF",
+    "fs": "1",
+    "gruppen": "25INB-1+2+3; 25MIB-1+2",
+    "swsVorlesung": "4",
+    "swsSeminar": "2",
     "raumV": "Hörsaal 123",
     "raumS": "Seminarraum 45",
     "raumP": "Labor 67",
@@ -53,6 +52,7 @@
     "rueckgabedatum": "2025-05-15",
     "profUnterschrift": "Prof. Dr. Mustermann",
     "dekanUnterschrift": "Prof. Dr. Schmidt",
-    "datumUnterschrift": "2025-05-15"
+    "datumUnterschrift": "2025-05-15",
+    "swsPraktikum": "1"
   }
 }
