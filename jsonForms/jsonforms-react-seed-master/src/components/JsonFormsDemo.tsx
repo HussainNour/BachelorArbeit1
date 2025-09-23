@@ -38,15 +38,15 @@ type Modul = {
   planungshinweise?: string;
   kwHinweise?: string;
 
-  name?: string;
+  name?: string;                   // Name (Ersteller:in)
   unterschrift?: string;
-  rueckgabedatum?: string;       // YYYY-MM-DD
+  rueckgabedatum?: string;         // YYYY-MM-DD
 
   profUnterschrift?: string;
   dekanUnterschrift?: string;
-  datumUnterschrift?: string;    // YYYY-MM-DD
+  datumUnterschrift?: string;      // YYYY-MM-DD
 
-  lesende?: Person[];            // Arrays
+  lesende?: Person[];              // Arrays
   seminarleiter?: Person[];
   praktikumsleiter?: Person[];
 };
@@ -70,7 +70,7 @@ import modulesJson from '../../config/INB_module.json';
 const ensureArray = <T,>(v: any): T[] => {
   if (Array.isArray(v)) return v as T[];
   if (v === undefined || v === null) return [];
-  return [v as T]; // robust, falls der Server einmal ein einzelnes Objekt liefert
+  return [v as T];
 };
 
 const trimStringsDeep = (obj: any): any => {
@@ -118,6 +118,13 @@ const mapModuleToForm = (mod: RawMod): Partial<Modul> => {
   );
   const gruppen = Array.from(gruppenSet).join('; ');
 
+  // Ersteller:in-Name aus Modulverantwortliche aufbauen
+  const mv = mod?.Modulverantwortliche || {};
+  const anrede = (mv?.Anrede ?? '').toString().trim();
+  const vor    = (mv?.Vorname ?? '').toString().trim();
+  const nach   = (mv?.Nachname ?? '').toString().trim();
+  const displayName = [anrede, vor, nach].filter(Boolean).join(' ').trim();
+
   return {
     fakultaet: mod?.['Fakultät'] ?? '',
     studiengang: Array.isArray(mod?.ZusammenMit) ? mod.ZusammenMit.join(', ') : '',
@@ -125,14 +132,16 @@ const mapModuleToForm = (mod: RawMod): Partial<Modul> => {
     gruppen,
     modulnr: mod?.['Modulnummer'] ?? '',
     modulname: mod?.['Modulbezeichnung'] ?? '',
-    // lehrveranstaltung:  <-- ABSICHTLICH NICHT gesetzt (soll leer bleiben)
+    // lehrveranstaltung: NICHT automatisch (soll leer bleiben)
     swsVorlesung: swsV !== '' ? String(swsV) : '',
     swsSeminar:  swsS !== '' ? String(swsS) : '',
-    swsPraktikum: swsP !== '' ? String(swsP) : ''
+    swsPraktikum: swsP !== '' ? String(swsP) : '',
+    // Name (Ersteller:in)
+    name: displayName
   };
 };
 
-/** Felder, die beim Modulwechsel automatisch gesetzt werden (ohne lehrveranstaltung) */
+/** Felder, die beim Modulwechsel automatisch gesetzt werden */
 const AUTO_KEYS: (keyof Modul)[] = [
   'fakultaet',
   'studiengang',
@@ -143,7 +152,8 @@ const AUTO_KEYS: (keyof Modul)[] = [
   // 'lehrveranstaltung',   // NICHT automatisch
   'swsVorlesung',
   'swsSeminar',
-  'swsPraktikum'
+  'swsPraktikum',
+  'name'                    // <-- NEU: Name (Ersteller:in)
 ];
 
 /** Merge: nur die obigen Auto-Felder überschreiben; alles andere bleibt wie eingegeben */
@@ -168,11 +178,17 @@ const numOrZero = (v: any): number => {
   return 1;
 };
 
-/** Titel/Name in den ersten Eintrag der jeweiligen Arrays füllen (nur wenn leer) */
+/** Titel + Name in den ersten Eintrag der jeweiligen Arrays füllen (nur wenn leer)
+ *  titel = "Anrede"
+ *  name  = "Anrede Vorname Nachname"
+ */
 const applyLeadersIfNeeded = (oldItem: Item, auto: Partial<Modul>, raw: RawMod): Item => {
   const mv = raw?.Modulverantwortliche || {};
-  const titel = (mv?.Anrede ?? '').toString().trim();
-  const name = [mv?.Vorname, mv?.Nachname].filter(Boolean).join(' ').trim();
+  const anrede = (mv?.Anrede ?? '').toString().trim();
+  const vor    = (mv?.Vorname ?? '').toString().trim();
+  const nach   = (mv?.Nachname ?? '').toString().trim();
+
+  const displayName = [anrede, vor, nach].filter(Boolean).join(' ').trim();
 
   const prevMod = oldItem?.modul ?? {};
 
@@ -191,26 +207,26 @@ const applyLeadersIfNeeded = (oldItem: Item, auto: Partial<Modul>, raw: RawMod):
   };
 
   // Nur leere Felder überschreiben
-  const fillNameIfEmpty = (p: Person) => {
-    if (titel && !p.titel) p.titel = titel;
-    if (name && !p.name) p.name = name;
+  const fillIfEmpty = (p: Person) => {
+    if (anrede && !p.titel) p.titel = anrede;
+    if (displayName && !p.name) p.name = displayName;
   };
 
   if (effV > 0) {
     const a = ensureFirst(next.modul!.lesende);
-    fillNameIfEmpty(a[0]);
+    fillIfEmpty(a[0]);
     next.modul!.lesende = a;
   }
 
   if (effS > 0) {
     const a = ensureFirst(next.modul!.seminarleiter);
-    fillNameIfEmpty(a[0]);
+    fillIfEmpty(a[0]);
     next.modul!.seminarleiter = a;
   }
 
   if (effP > 0) {
     const a = ensureFirst(next.modul!.praktikumsleiter);
-    fillNameIfEmpty(a[0]);
+    fillIfEmpty(a[0]);
     next.modul!.praktikumsleiter = a;
   }
 
@@ -292,7 +308,7 @@ export const JsonFormsDemo = () => {
       const currentIds = new Set((data ?? []).map((b) => b.id).filter(Boolean) as string[]);
 
       // 3) Löschen, was auf dem Server existiert, aber lokal entfernt wurde
-      const toDelete = [...existingIds].filter((id) => !currentIds.has(id as string));
+      const toDelete = Array.from(existingIds).filter((id) => !currentIds.has(id as string));
       await Promise.all(
         toDelete.map((id) =>
           fetch(`${API}/${encodeURIComponent(id as string)}`, { method: 'DELETE' })

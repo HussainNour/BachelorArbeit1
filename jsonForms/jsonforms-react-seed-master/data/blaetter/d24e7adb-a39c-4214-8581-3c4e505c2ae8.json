@@ -1,0 +1,28 @@
+{
+  "modul": {
+    "modulnr": "C680",
+    "fakultaet": "FIM-INF",
+    "studiengang": "INB, MIB",
+    "fs": "2",
+    "gruppen": "",
+    "modulname": "Anwendungsorientierte Programmierung",
+    "swsVorlesung": "2",
+    "swsSeminar": "2",
+    "swsPraktikum": "0",
+    "name": "Prof. Dr. rer. nat. Johannes Waldmann",
+    "lesende": [
+      {
+        "titel": "Prof. Dr. rer. nat.",
+        "name": "Prof. Dr. rer. nat. Johannes Waldmann"
+      }
+    ],
+    "seminarleiter": [
+      {
+        "titel": "Prof. Dr. rer. nat.",
+        "name": "Prof. Dr. rer. nat. Johannes Waldmann"
+      }
+    ],
+    "praktikumsleiter": []
+  },
+  "id": "d24e7adb-a39c-4214-8581-3c4e505c2ae8"
+}
