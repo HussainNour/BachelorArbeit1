@@ -69,7 +69,7 @@ import modulesJson from '../../config/INB_module.json';
 /** ---------- kleine Hilfsfunktionen ---------- */
 const ensureArray = <T,>(v: any): T[] => {
   if (Array.isArray(v)) return v as T[];
-  if (v === undefined || v === null) return [];
+  if (v == null) return [];
   return [v as T];
 };
 
@@ -112,13 +112,11 @@ const mapModuleToForm = (mod: RawMod): Partial<Modul> => {
     ? mod.Lehrveranstaltungen.Aufteilung
     : [];
 
-  // Einzigartige Gruppen aus allen Aufteilungen zusammenführen
   const gruppenSet = new Set(
     aufteilung.map((a: any) => (a?.Gruppen || '').trim()).filter(Boolean)
   );
   const gruppen = Array.from(gruppenSet).join('; ');
 
-  // Ersteller:in-Name aus Modulverantwortliche aufbauen
   const mv = mod?.Modulverantwortliche || {};
   const anrede = (mv?.Anrede ?? '').toString().trim();
   const vor    = (mv?.Vorname ?? '').toString().trim();
@@ -132,11 +130,9 @@ const mapModuleToForm = (mod: RawMod): Partial<Modul> => {
     gruppen,
     modulnr: mod?.['Modulnummer'] ?? '',
     modulname: mod?.['Modulbezeichnung'] ?? '',
-    // lehrveranstaltung: NICHT automatisch (soll leer bleiben)
     swsVorlesung: swsV !== '' ? String(swsV) : '',
     swsSeminar:  swsS !== '' ? String(swsS) : '',
     swsPraktikum: swsP !== '' ? String(swsP) : '',
-    // Name (Ersteller:in)
     name: displayName
   };
 };
@@ -149,11 +145,10 @@ const AUTO_KEYS: (keyof Modul)[] = [
   'gruppen',
   'modulnr',
   'modulname',
-  // 'lehrveranstaltung',   // NICHT automatisch
   'swsVorlesung',
   'swsSeminar',
   'swsPraktikum',
-  'name'                    // <-- NEU: Name (Ersteller:in)
+  'name'
 ];
 
 /** Merge: nur die obigen Auto-Felder überschreiben; alles andere bleibt wie eingegeben */
@@ -167,46 +162,37 @@ const mergeAutoFill = (oldItem: Item, auto: Partial<Modul>): Item => {
   return { ...oldItem, modul: next };
 };
 
-/** Zahlen-/Vorhandensein-Check für SWS */
 const numOrZero = (v: any): number => {
-  if (v === null || v === undefined) return 0;
+  if (v == null) return 0;
   const s = String(v).trim();
   if (s === '') return 0;
   const n = Number(s);
   if (!Number.isNaN(n)) return n;
-  // Fallback: nicht-numerisch aber nicht leer -> als „vorhanden“ interpretieren
   return 1;
 };
 
-/** Titel + Name in den ersten Eintrag der jeweiligen Arrays füllen (nur wenn leer)
- *  titel = "Anrede"
- *  name  = "Anrede Vorname Nachname"
- */
+/** Titel + Name in die ersten Einträge der Arrays füllen (nur wenn leer) */
 const applyLeadersIfNeeded = (oldItem: Item, auto: Partial<Modul>, raw: RawMod): Item => {
   const mv = raw?.Modulverantwortliche || {};
   const anrede = (mv?.Anrede ?? '').toString().trim();
   const vor    = (mv?.Vorname ?? '').toString().trim();
   const nach   = (mv?.Nachname ?? '').toString().trim();
-
   const displayName = [anrede, vor, nach].filter(Boolean).join(' ').trim();
 
   const prevMod = oldItem?.modul ?? {};
 
-  // Effektive SWS-Werte: neu gesetzte auto-Werte haben Vorrang, sonst bisherige
   const effV = numOrZero((auto.swsVorlesung ?? prevMod.swsVorlesung));
   const effS = numOrZero((auto.swsSeminar   ?? prevMod.swsSeminar));
   const effP = numOrZero((auto.swsPraktikum ?? prevMod.swsPraktikum));
 
   const next: Item = { ...oldItem, modul: { ...prevMod } };
 
-  // Utility: Array sicherstellen + ersten Eintrag bereitstellen
   const ensureFirst = (arr?: Person[]): Person[] => {
     const a = Array.isArray(arr) ? [...arr] : [];
     if (!a[0]) a[0] = {};
     return a;
   };
 
-  // Nur leere Felder überschreiben
   const fillIfEmpty = (p: Person) => {
     if (anrede && !p.titel) p.titel = anrede;
     if (displayName && !p.name) p.name = displayName;
@@ -217,13 +203,11 @@ const applyLeadersIfNeeded = (oldItem: Item, auto: Partial<Modul>, raw: RawMod):
     fillIfEmpty(a[0]);
     next.modul!.lesende = a;
   }
-
   if (effS > 0) {
     const a = ensureFirst(next.modul!.seminarleiter);
     fillIfEmpty(a[0]);
     next.modul!.seminarleiter = a;
   }
-
   if (effP > 0) {
     const a = ensureFirst(next.modul!.praktikumsleiter);
     fillIfEmpty(a[0]);
@@ -233,8 +217,64 @@ const applyLeadersIfNeeded = (oldItem: Item, auto: Partial<Modul>, raw: RawMod):
   return next;
 };
 
+/** ---------- NEU: stabile IDs (Modulnummer + Dozent) ---------- */
+
+/** Umlaute & Sonderzeichen in slug */
+const toSlug = (s: string): string => {
+  const map: Record<string, string> = {
+    ä: 'ae', ö: 'oe', ü: 'ue', ß: 'ss',
+    Ä: 'ae', Ö: 'oe', Ü: 'ue'
+  };
+  const replaced = s.replace(/[ÄÖÜäöüß]/g, (c) => map[c] ?? c);
+  return replaced
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-zA-Z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .toLowerCase();
+};
+
+/** Dozentenname priorisieren: modul.name, sonst erste Person aus Arrays */
+const pickLecturerName = (m?: Modul): string => {
+  const tryFields = [
+    m?.name?.trim(),
+    m?.lesende?.[0]?.name?.trim(),
+    m?.seminarleiter?.[0]?.name?.trim(),
+    m?.praktikumsleiter?.[0]?.name?.trim()
+  ].filter(Boolean) as string[];
+  return tryFields[0] ?? '';
+};
+
+/** Aus Modulnummer + Dozentenname eine stabile ID */
+const computeStableId = (it: Item): string | undefined => {
+  const nr = it?.modul?.modulnr?.trim() ?? '';
+  const lecturer = pickLecturerName(it?.modul);
+  if (!nr || !lecturer) return undefined;
+  return `${toSlug(nr)}__${toSlug(lecturer)}`;
+};
+
+/** IDs zuweisen; Kollisionen vermeiden (…-2, …-3, …) */
+const assignStableIds = (items: Model, existingIds: Set<string>): Model => {
+  const used = new Set<string>([...existingIds]);
+  const out: Model = [];
+
+  for (const it of items) {
+    const base = computeStableId(it);
+    if (!base) { out.push(it); continue; }
+
+    let candidate = base;
+    let i = 2;
+    while (used.has(candidate)) {
+      candidate = `${base}-${i++}`;
+    }
+    used.add(candidate);
+    out.push({ ...it, id: candidate });
+  }
+  return out;
+};
+
 export const JsonFormsDemo = () => {
-  const [data, setData] = useState<Model>([]); // Array wie früher
+  const [data, setData] = useState<Model>([]);
   const [hasErrors, setHasErrors] = useState(false);
   const [status, setStatus] = useState<'idle'|'loading'|'saving'|'saved'|'error'>('idle');
 
@@ -269,7 +309,7 @@ export const JsonFormsDemo = () => {
     return clone;
   }, [modulnrOptions]);
 
-  /** Laden: Liste holen -> bereinigen -> Array in den State (id BEHALTEN) */
+  /** Laden */
   const load = async () => {
     try {
       setStatus('loading');
@@ -280,7 +320,7 @@ export const JsonFormsDemo = () => {
       const items: Item[] = (Array.isArray(raw) ? raw : [raw])
         .filter(Boolean)
         .map((inObj: any) => normalizeItem({
-          id: inObj?.id ?? undefined, // id übernehmen
+          id: inObj?.id ?? undefined,
           modul: inObj?.modul ?? {}
         }));
 
@@ -293,21 +333,27 @@ export const JsonFormsDemo = () => {
 
   useEffect(() => { load(); }, []);
 
-  /** Speichern: wie im alten Code => DELETE fehlende, PUT vorhandene, POST neue */
+  /** Speichern: IDs vorab stabil setzen */
   const save = async () => {
     if (hasErrors) return;
     try {
       setStatus('saving');
 
-      // 1) IDs holen, die aktuell auf dem Server existieren
+      // 1) Aktuell existierende IDs vom Server
       const existingRes = await fetch(API);
       const existing: any[] = existingRes.ok ? await existingRes.json() : [];
       const existingIds = new Set((existing ?? []).map((e) => e?.id).filter(Boolean));
 
-      // 2) IDs, die wir lokal haben
-      const currentIds = new Set((data ?? []).map((b) => b.id).filter(Boolean) as string[]);
+      // 2) Lokale Daten kopieren
+      let working: Model = data ?? [];
 
-      // 3) Löschen, was auf dem Server existiert, aber lokal entfernt wurde
+      // 2b) NEU: stabile IDs berechnen (modulnr + dozent)
+      working = assignStableIds(working, existingIds);
+
+      // 3) IDs nach Recompute
+      const currentIds = new Set((working ?? []).map((b) => b.id).filter(Boolean) as string[]);
+
+      // 4) Löschen, was nicht mehr existieren soll (oder umbenannt wurde)
       const toDelete = Array.from(existingIds).filter((id) => !currentIds.has(id as string));
       await Promise.all(
         toDelete.map((id) =>
@@ -316,31 +362,28 @@ export const JsonFormsDemo = () => {
         )
       );
 
-      // 4) Upsert (PUT für vorhandene, POST für neue)
+      // 5) Upsert – mit stabilen IDs
       const headers = { 'Content-Type': 'application/json' };
       const updated: Model = [];
 
-      for (const item of data ?? []) {
+      for (const item of working ?? []) {
         const bodyObj = normalizeItem(item);
         const body = JSON.stringify(bodyObj);
 
-        if (item.id) {
-          // Update
+        if (item.id && existingIds.has(item.id)) {
           const res = await fetch(`${API}/${encodeURIComponent(item.id)}`, { method: 'PUT', headers, body });
           if (!res.ok) throw new Error('PUT');
-          // Serverantwort optional übernehmen (falls transformiert)
           const saved = await res.json().catch(() => bodyObj);
           updated.push(normalizeItem(saved));
         } else {
-          // Neu anlegen
           const res = await fetch(API, { method: 'POST', headers, body });
           if (!res.ok) throw new Error('POST');
-          const created = await res.json(); // erwartet { ... , id }
+          const created = await res.json();
           updated.push(normalizeItem({ ...item, id: created?.id }));
         }
       }
 
-      // 5) State mit stabilen IDs aktualisieren
+      // 6) State aktualisieren
       setData(updated);
 
       setStatus('saved');
@@ -365,10 +408,7 @@ export const JsonFormsDemo = () => {
         const auto = mapModuleToForm(rawMod);
         mutated = true;
 
-        // 1) numerische/grundlegende Felder übernehmen (ohne lehrveranstaltung)
         let merged = mergeAutoFill(item, auto);
-
-        // 2) je nach SWS die Personen-Arrays (lesende/seminar-/praktikumsleiter) befüllen
         merged = applyLeadersIfNeeded(merged, auto, rawMod);
 
         return merged;
@@ -386,9 +426,9 @@ export const JsonFormsDemo = () => {
       <Typography variant="h5" sx={{ mb: 2 }}>Zuarbeitsblätter (Array)</Typography>
 
       <JsonForms
-        schema={schemaWithEnum as any}   // <-- mit Dropdown für modulnr
+        schema={schemaWithEnum as any}
         uischema={uischema as any}
-        data={data}                      // Array!
+        data={data}
         renderers={materialRenderers}
         cells={materialCells}
         onChange={handleChange}
