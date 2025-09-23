@@ -12,7 +12,8 @@ import { materialCells, materialRenderers } from '@jsonforms/material-renderers'
 import schema from '../schema.json';
 import uischema from '../uischema.json';
 import {
-  Box, Button, Alert, Stack, Typography, TextField, Autocomplete
+  Box, Button, Alert, Stack, Typography, TextField, Autocomplete,
+  FormGroup, FormControlLabel, Checkbox
 } from '@mui/material';
 
 /** ---------- Typen ---------- */
@@ -107,7 +108,7 @@ const normalizeItem = (it: Item): Item => {
   });
 };
 
-/** ---------- Semester & Gruppen-Vorschlag ---------- */
+/** ---------- Semester-Helpers (wie zuvor) ---------- */
 const computeSemesterFromDate = (d = new Date()): { kind: 'SoSe'|'WiSe'; year: number } => {
   const y = d.getFullYear(), m = d.getMonth()+1;
   return (m >= 4 && m <= 9) ? { kind:'SoSe', year:y } : { kind:'WiSe', year:y };
@@ -116,24 +117,49 @@ const nextSemester = (sem = computeSemesterFromDate()) =>
   sem.kind === 'SoSe' ? { kind:'WiSe' as const, year: sem.year } : { kind:'SoSe' as const, year: sem.year + 1 };
 const yy = (y: number) => String(y % 100).padStart(2, '0');
 
+/** Programme für Gruppenberechnung */
 const extractPrograms = (m?: Modul): string[] => {
   const s = (m?.studiengang ?? '').toUpperCase();
   const set = new Set<string>();
   if (/\bINB\b/.test(s)) set.add('INB');
   if (/\bMIB\b/.test(s)) set.add('MIB');
-  return set.size ? [...set] : ['INB', 'MIB'];
+  return set.size ? Array.from(set) : ['INB', 'MIB'];
 };
 
 const computeGruppenForNextSemester = (m?: Modul): string => {
   const sem = nextSemester(computeSemesterFromDate());
-  const progs = extractPrograms(m);
-  const cohorts = sem.kind === 'WiSe' ? [sem.year+1, sem.year, sem.year-1] : [sem.year, sem.year-1];
+  const programs = extractPrograms(m);
+  const cohorts: number[] = sem.kind === 'WiSe'
+    ? [sem.year + 1, sem.year, sem.year - 1]
+    : [sem.year, sem.year - 1];
+
   const parts: string[] = [];
-  for (const p of progs) for (const c of cohorts) parts.push(`${p}${yy(c)}`);
+  for (const prog of programs) {
+    for (const c of cohorts) parts.push(`${prog}${yy(c)}`);
+  }
   return parts.join(' + ');
 };
 
-/** ---------- Mapping aus Modul-JSON (ohne gruppen) ---------- */
+/** ---------- KW-Optionen je geplantem Semester ---------- */
+const pad2 = (n: number) => String(n).padStart(2, '0');
+const kw = (n: number) => `KW${pad2(n)}`;
+
+/** Praktische, erwartungskonforme Bereiche:
+ *  WiSe -> KW42..KW52 + KW01..KW06
+ *  SoSe -> KW14..KW28
+ */
+const getKWOptionsForPlannedSemester = () => {
+  const sem = nextSemester(computeSemesterFromDate());
+  if (sem.kind === 'WiSe') {
+    const a = Array.from({ length: 52 - 42 + 1 }, (_, i) => kw(42 + i));
+    const b = Array.from({ length: 6 }, (_, i) => kw(1 + i));
+    return [...a, ...b];
+  } else {
+    return Array.from({ length: 28 - 14 + 1 }, (_, i) => kw(14 + i));
+  }
+};
+
+/** ---------- Mapping aus Modul-JSON ---------- */
 type RawMod = any;
 const mapModuleToForm = (mod: RawMod): Partial<Modul> => {
   if (!mod) return {};
@@ -172,12 +198,13 @@ const mergeAutoFill = (oldItem: Item, auto: Partial<Modul>): Item => {
   return { ...oldItem, modul: next };
 };
 
-const numOrZero = (v: any) => {
+const numOrZero = (v: any): number => {
   if (v == null) return 0;
   const s = String(v).trim();
   if (s === '') return 0;
   const n = Number(s);
-  return Number.isNaN(n) ? 1 : n;
+  if (!Number.isNaN(n)) return n;
+  return 1;
 };
 
 const applyLeadersIfNeeded = (oldItem: Item, auto: Partial<Modul>, raw: RawMod): Item => {
@@ -186,16 +213,39 @@ const applyLeadersIfNeeded = (oldItem: Item, auto: Partial<Modul>, raw: RawMod):
   const vor    = (mv?.Vorname ?? '').toString().trim();
   const nach   = (mv?.Nachname ?? '').toString().trim();
   const displayName = [anrede, vor, nach].filter(Boolean).join(' ').trim();
+
   const prevMod = oldItem?.modul ?? {};
   const effV = numOrZero((auto.swsVorlesung ?? prevMod.swsVorlesung));
   const effS = numOrZero((auto.swsSeminar   ?? prevMod.swsSeminar));
   const effP = numOrZero((auto.swsPraktikum ?? prevMod.swsPraktikum));
+
   const next: Item = { ...oldItem, modul: { ...prevMod } };
-  const ensureFirst = (arr?: Person[]): Person[] => { const a = Array.isArray(arr)?[...arr]:[]; if (!a[0]) a[0]={}; return a; };
-  const fillIfEmpty = (p: Person) => { if (anrede && !p.titel) p.titel = anrede; if (displayName && !p.name) p.name = displayName; };
-  if (effV > 0) { const a = ensureFirst(next.modul!.lesende); fillIfEmpty(a[0]); next.modul!.lesende = a; }
-  if (effS > 0) { const a = ensureFirst(next.modul!.seminarleiter); fillIfEmpty(a[0]); next.modul!.seminarleiter = a; }
-  if (effP > 0) { const a = ensureFirst(next.modul!.praktikumsleiter); fillIfEmpty(a[0]); next.modul!.praktikumsleiter = a; }
+
+  const ensureFirst = (arr?: Person[]): Person[] => {
+    const a = Array.isArray(arr) ? [...arr] : [];
+    if (!a[0]) a[0] = {};
+    return a;
+  };
+  const fillIfEmpty = (p: Person) => {
+    if (anrede && !p.titel) p.titel = anrede;
+    if (displayName && !p.name) p.name = displayName;
+  };
+
+  if (effV > 0) {
+    const a = ensureFirst(next.modul!.lesende);
+    fillIfEmpty(a[0]);
+    next.modul!.lesende = a;
+  }
+  if (effS > 0) {
+    const a = ensureFirst(next.modul!.seminarleiter);
+    fillIfEmpty(a[0]);
+    next.modul!.seminarleiter = a;
+  }
+  if (effP > 0) {
+    const a = ensureFirst(next.modul!.praktikumsleiter);
+    fillIfEmpty(a[0]);
+    next.modul!.praktikumsleiter = a;
+  }
   return next;
 };
 
@@ -295,13 +345,81 @@ const freeSoloTester = rankWith(
   )
 );
 
+/** ---------- Custom Control: KW-Checkboxen für kwHinweise ---------- */
+type KWProps = {
+  data: any;
+  handleChange: (path: string, value: any) => void;
+  path: string;
+  label?: string;
+  enabled?: boolean;
+};
+
+const KwHinweiseControlBase = ({ data, handleChange, path, label = 'KW-Hinweise', enabled = true }: KWProps) => {
+  // Optionen anhand des geplanten Semesters
+  const options = useMemo(() => getKWOptionsForPlannedSemester(), []);
+
+  // Aus dem String "KW42, KW43, ..." -> Set für schnelle Checks
+  const selectedSet = useMemo(() => {
+    const set = new Set<string>();
+    const s = String(data ?? '').trim();
+    if (!s) return set;
+    for (const part of s.split(',').map(p => p.trim()).filter(Boolean)) {
+      set.add(part.toUpperCase());
+    }
+    return set;
+  }, [data]);
+
+  const toggle = (code: string) => {
+    const next = new Set(selectedSet);
+    if (next.has(code)) next.delete(code); else next.add(code);
+    // Als String in definierter Options-Reihenfolge zurückschreiben
+    const out = options.filter(o => next.has(o)).join(', ');
+    handleChange(path, out);
+  };
+
+  return (
+    <Box sx={{ border: '1px solid #e0e0e0', borderRadius: 1.5, p: 1.5 }}>
+      <Typography variant="subtitle2" sx={{ mb: 1 }}>{label}</Typography>
+      <FormGroup row>
+        {options.map(code => (
+          <FormControlLabel
+            key={code}
+            control={
+              <Checkbox
+                size="small"
+                disabled={!enabled}
+                checked={selectedSet.has(code)}
+                onChange={() => toggle(code)}
+              />
+            }
+            label={code}
+            sx={{ mr: 1.5 }}
+          />
+        ))}
+      </FormGroup>
+    </Box>
+  );
+};
+
+const KwHinweiseControl = withJsonFormsControlProps(KwHinweiseControlBase);
+
+// Hoher Rank, damit unser Control das Default-Textfeld ersetzt
+const kwHinweiseTester = rankWith(
+  6,
+  and(
+    uiTypeIs('Control'),
+    scopeEndsWith('kwHinweise'),
+    schemaMatches((s) => (s as any)?.type === 'string')
+  )
+);
+
 /** ---------- Komponente ---------- */
 export const JsonFormsDemo = () => {
   const [data, setData] = useState<Model>([]);
   const [hasErrors, setHasErrors] = useState(false);
   const [status, setStatus] = useState<'idle'|'loading'|'saving'|'saved'|'error'>('idle');
 
-  // Vorschläge (reine Suggestions)
+  // Vorschläge (reine Suggestions, kein Zwang)
   const moduByNr = useMemo(() => {
     const m = new Map<string, RawMod>();
     for (const mod of modulesJson as RawMod[]) {
@@ -322,14 +440,12 @@ export const JsonFormsDemo = () => {
     []
   );
 
-  // Schema unverändert (alles editierbar)
-  const schemaWithEnum = useMemo(() => schema as any, []);
-
-  // Renderer: Material + unser Free-Solo für modulnr
+  // Renderer: Material + unser Free-Solo + unser KW-Control
   const renderers = useMemo(() => {
     return [
       ...materialRenderers,
-      { tester: freeSoloTester, renderer: (p: any) => (<FreeSoloModulnrControl {...p} options={modulnrOptions} />) }
+      { tester: freeSoloTester, renderer: (p: any) => (<FreeSoloModulnrControl {...p} options={modulnrOptions} />) },
+      { tester: kwHinweiseTester, renderer: (p: any) => (<KwHinweiseControl {...p} />) }
     ];
   }, [modulnrOptions]);
 
@@ -350,7 +466,7 @@ export const JsonFormsDemo = () => {
         }));
 
       setData(items);
-      prevRef.current = items; // IDs im Prev-Ref speichern
+      prevRef.current = items; // WICHTIG: IDs im Prev-Ref speichern
       setStatus('idle');
     } catch {
       setStatus('error');
@@ -365,18 +481,18 @@ export const JsonFormsDemo = () => {
     try {
       setStatus('saving');
 
-      // existierende IDs laden
+      // existierende IDs
       const existingRes = await fetch(API);
       const existing: any[] = existingRes.ok ? await existingRes.json() : [];
       const existingIds = new Set((existing ?? []).map((e) => e?.id).filter(Boolean));
 
-      // Arbeitskopie
+      // Arbeitskopie (ohne Auto-Overrides)
       let working: Model = data ?? [];
 
       // Nur fehlende IDs vergeben; bestehende IDs bleiben
       working = assignIdsIfMissing(working, existingIds);
 
-      // Diff: löschen, was lokal entfernt wurde
+      // Diff
       const currentIds = new Set((working ?? []).map((b) => b.id).filter(Boolean) as string[]);
       const toDelete = Array.from(existingIds).filter((id) => !currentIds.has(id as string));
       await Promise.all(
@@ -394,13 +510,11 @@ export const JsonFormsDemo = () => {
         const body = JSON.stringify(bodyObj);
 
         if (item.id && existingIds.has(item.id)) {
-          // Bestehende Datei -> Update unter gleichem Namen
           const res = await fetch(`${API}/${encodeURIComponent(item.id)}`, { method: 'PUT', headers, body });
           if (!res.ok) throw new Error('PUT');
           const saved = await res.json().catch(() => bodyObj);
           updated.push(normalizeItem(saved));
         } else {
-          // Neue Datei
           const res = await fetch(API, { method: 'POST', headers, body });
           if (!res.ok) throw new Error('POST');
           const created = await res.json();
@@ -417,11 +531,7 @@ export const JsonFormsDemo = () => {
     }
   };
 
-  /** Change-Handler – schnell & stabil
-   *  - Automatik NUR beim Modulwechsel
-   *  - gruppen einmalig setzen; wenn manuell geändert, nie wieder überschreiben
-   *  - id bleibt immer erhalten
-   */
+  /** Change-Handler – Auto nur beim Modulwechsel; ID aus prevRef immer beibehalten */
   const handleChange = ({ data: next, errors }: { data: any; errors?: any[] }) => {
     const incoming: Model = (next ?? []) as Model;
     const prev: Model = prevRef.current ?? [];
@@ -435,6 +545,7 @@ export const JsonFormsDemo = () => {
 
       let result = item;
 
+      // *** NUR hier automatisch vorbelegen: beim Wechsel der Modulnummer ***
       if (curNr && curNr !== oldNr) {
         const rawMod = moduByNr.get(String(curNr).trim());
         const auto = mapModuleToForm(rawMod);
@@ -445,26 +556,23 @@ export const JsonFormsDemo = () => {
         // 2) Dozierenden-Felder ggf. vorbelegen
         merged = applyLeadersIfNeeded(merged, auto, rawMod);
 
-        // 3) gruppen nur setzen, wenn vorher leer ODER alter Vorschlag (userTouched bleibt unangetastet)
+        // 3) Gruppen *einmalig jetzt* setzen – aber nie überschreiben, wenn Nutzer schon geändert hatte
         const prevGroups = (prevItem as Item)?.modul?.gruppen?.trim() ?? '';
         const prevSuggested = computeGruppenForNextSemester((prevItem as Item)?.modul);
         const userTouched = prevGroups.length > 0 && prevGroups !== prevSuggested;
-
-        const nextGroups = userTouched
-          ? prevGroups
-          : computeGruppenForNextSemester(merged.modul);
+        const nextGroups = userTouched ? prevGroups : computeGruppenForNextSemester(merged.modul);
 
         merged = { ...merged, modul: { ...(merged.modul ?? {}), gruppen: nextGroups } };
         result = merged;
       }
 
-      // ID niemals verlieren
+      // *** WICHTIG: Immer alte ID beibehalten! ***
       if (prevId) result = { ...result, id: prevId };
 
       return result;
     });
 
-    prevRef.current = patched;
+    prevRef.current = patched; // neuen Stand als „alt“ merken
     setData(patched);
     setHasErrors((errors?.length ?? 0) > 0);
   };
@@ -474,7 +582,7 @@ export const JsonFormsDemo = () => {
       <Typography variant="h5" sx={{ mb: 2 }}>Zuarbeitsblätter (Array)</Typography>
 
       <JsonForms
-        schema={schemaWithEnum as any}
+        schema={schema as any}
         uischema={uischema as any}
         data={data}
         renderers={renderers}

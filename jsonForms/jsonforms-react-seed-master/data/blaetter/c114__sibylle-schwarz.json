@@ -1,0 +1,29 @@
+{
+  "modul": {
+    "kwHinweise": "KW42, KW43, KW44, KW45, KW46, KW47, KW52",
+    "modulnr": "C114",
+    "fakultaet": "FIM-INF",
+    "studiengang": "INB, MIB",
+    "fs": "1",
+    "modulname": "Modellierung",
+    "swsVorlesung": "4",
+    "swsSeminar": "2",
+    "swsPraktikum": "0",
+    "name": "Prof. Dr. rer. nat Sibylle Schwarz",
+    "lesende": [
+      {
+        "titel": "Prof. Dr. rer. nat",
+        "name": "Prof. Dr. rer. nat Sibylle Schwarz"
+      }
+    ],
+    "seminarleiter": [
+      {
+        "titel": "Prof. Dr. rer. nat",
+        "name": "Prof. Dr. rer. nat Sibylle Schwarz"
+      }
+    ],
+    "gruppen": "INB26 + INB25 + INB24 + MIB26 + MIB25 + MIB24",
+    "praktikumsleiter": []
+  },
+  "id": "c114__sibylle-schwarz"
+}
