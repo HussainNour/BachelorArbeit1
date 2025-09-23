@@ -49,20 +49,24 @@ type Modul = {
   planungshinweise?: string;
   kwHinweise?: string;
 
-  name?: string;
+  name?: string;                   // Name (Ersteller:in)
   unterschrift?: string;
-  rueckgabedatum?: string;
+  rueckgabedatum?: string;         // YYYY-MM-DD
 
   profUnterschrift?: string;
   dekanUnterschrift?: string;
-  datumUnterschrift?: string;
+  datumUnterschrift?: string;      // YYYY-MM-DD
 
   lesende?: Person[];
   seminarleiter?: Person[];
   praktikumsleiter?: Person[];
 };
 
-type Item = { id?: string; modul?: Modul; };
+type Item = {
+  id?: string;   // interne ID (Dateiname)
+  modul?: Modul;
+};
+
 type Model = Item[];
 
 /** ---------- API ---------- */
@@ -72,7 +76,11 @@ const API = 'http://localhost:5050/blaetter';
 import modulesJson from '../../config/INB_module.json';
 
 /** ---------- Utils ---------- */
-const ensureArray = <T,>(v: any): T[] => Array.isArray(v) ? v as T[] : (v == null ? [] : [v as T]);
+const ensureArray = <T,>(v: any): T[] => {
+  if (Array.isArray(v)) return v as T[];
+  if (v == null) return [];
+  return [v as T];
+};
 
 const trimStringsDeep = (obj: any): any => {
   if (obj == null) return obj;
@@ -82,7 +90,8 @@ const trimStringsDeep = (obj: any): any => {
     for (const [k, v] of Object.entries(obj)) out[k] = trimStringsDeep(v);
     return out;
   }
-  return typeof obj === 'string' ? obj.trim() : obj;
+  if (typeof obj === 'string') return obj.trim();
+  return obj;
 };
 
 const normalizeItem = (it: Item): Item => {
@@ -190,7 +199,7 @@ const applyLeadersIfNeeded = (oldItem: Item, auto: Partial<Modul>, raw: RawMod):
   return next;
 };
 
-/** ---------- Stabile IDs ---------- */
+/** ---------- Stabile IDs (modulnr + Dozent ohne Titel) ---------- */
 const toSlug = (s: string): string => {
   const map: Record<string,string>={ä:'ae',ö:'oe',ü:'ue',ß:'ss',Ä:'ae',Ö:'oe',Ü:'ue'};
   const r = s.replace(/[ÄÖÜäöüß]/g,(c)=>map[c]??c);
@@ -216,8 +225,13 @@ const computeStableId = (it: Item): string | undefined => {
   if (!nr || !lecturer) return undefined;
   return `${toSlug(nr)}__${toSlug(lecturer)}`;
 };
+
+/** IDs nur für NEUE Items vergeben; bestehende IDs bleiben */
 const assignIdsIfMissing = (items: Model, existingIds: Set<string>): Model => {
-  const used = new Set<string>([...existingIds, ...(items.map(i=>i.id).filter(Boolean) as string[])]);
+  const used = new Set<string>([
+    ...existingIds,
+    ...(items.map(i => i.id).filter(Boolean) as string[])
+  ]);
   const out: Model = [];
   for (const it of items) {
     if (it.id && String(it.id).trim() !== '') { out.push(it); continue; }
@@ -231,24 +245,55 @@ const assignIdsIfMissing = (items: Model, existingIds: Set<string>): Model => {
   return out;
 };
 
-/** ---------- Free-Solo Autocomplete für modulnr ---------- */
-type FSProps = { data:any; handleChange:(path:string,value:any)=>void; path:string; label?:string; enabled?:boolean; uischema?:any; };
-const FreeSoloModulnrControlBase = (props: FSProps & { options:{value:string; label:string}[] }) => {
+/** ---------- Free-Solo Autocomplete für modul.modulnr ---------- */
+type FSProps = {
+  data: any;
+  handleChange: (path: string, value: any) => void;
+  path: string;
+  label?: string;
+  errors?: string;
+  enabled?: boolean;
+  uischema?: any;
+};
+
+const FreeSoloModulnrControlBase = (props: FSProps & { options: { value: string; label: string }[] }) => {
   const { data, handleChange, path, label, enabled = true, options } = props;
-  const labelMap = useMemo(()=>{ const m = new Map<string,string>(); options.forEach(o=>m.set(o.value,o.label)); return m; },[options]);
-  const allValues = useMemo(()=> options.map(o=>o.value), [options]);
+
+  const labelMap = useMemo(() => {
+    const m = new Map<string, string>();
+    for (const o of options) m.set(o.value, o.label);
+    return m;
+  }, [options]);
+
+  const allValues = useMemo(() => options.map(o => o.value), [options]);
+
   return (
     <Autocomplete
-      freeSolo disabled={!enabled} options={allValues} value={data ?? ''}
+      freeSolo
+      disabled={!enabled}
+      options={allValues}
+      value={data ?? ''}
       onChange={(_, val) => handleChange(path, typeof val === 'string' ? val : '')}
-      onInputChange={(_, val, reason) => { if (reason !== 'reset') handleChange(path, val ?? ''); }}
+      onInputChange={(_, val, reason) => {
+        if (reason !== 'reset') handleChange(path, val ?? '');
+      }}
       getOptionLabel={(opt) => labelMap.get(opt as string) ?? String(opt ?? '')}
-      renderInput={(params) => (<TextField {...params} label={label ?? 'Modulnummer'} variant="outlined" />)}
+      renderInput={(params) => (
+        <TextField {...params} label={label ?? 'Modulnummer'} variant="outlined" />
+      )}
     />
   );
 };
 const FreeSoloModulnrControl = withJsonFormsControlProps(FreeSoloModulnrControlBase);
-const freeSoloTester = rankWith(5, and(uiTypeIs('Control'), scopeEndsWith('modulnr'), schemaMatches((s)=> (s as any)?.type==='string')));
+
+const freeSoloTester = rankWith(
+  5,
+  and(
+    uiTypeIs('Control'),
+    scopeEndsWith('modulnr'),
+    schemaMatches((s) => (s as any)?.type === 'string')
+  )
+);
 
 /** ---------- Komponente ---------- */
 export const JsonFormsDemo = () => {
@@ -256,7 +301,7 @@ export const JsonFormsDemo = () => {
   const [hasErrors, setHasErrors] = useState(false);
   const [status, setStatus] = useState<'idle'|'loading'|'saving'|'saved'|'error'>('idle');
 
-  // Vorschläge
+  // Vorschläge (reine Suggestions)
   const moduByNr = useMemo(() => {
     const m = new Map<string, RawMod>();
     for (const mod of modulesJson as RawMod[]) {
@@ -265,15 +310,30 @@ export const JsonFormsDemo = () => {
     }
     return m;
   }, []);
+
   const modulnrOptions = useMemo(
-    () => (modulesJson as RawMod[])
-      .map(m => ({ value: String(m['Modulnummer']).trim(), label: `${String(m['Modulnummer']).trim()} – ${String(m['Modulbezeichnung']).trim()}` }))
-      .filter(o => o.value),
+    () =>
+      (modulesJson as RawMod[])
+        .map((m) => ({
+          value: String(m['Modulnummer']).trim(),
+          label: `${String(m['Modulnummer']).trim()} – ${String(m['Modulbezeichnung']).trim()}`
+        }))
+        .filter((o) => o.value),
     []
   );
-  const renderers = useMemo(() => [...materialRenderers, { tester: freeSoloTester, renderer: (p:any)=><FreeSoloModulnrControl {...p} options={modulnrOptions}/> }], [modulnrOptions]);
 
-  /** Laden */
+  // Schema unverändert (alles editierbar)
+  const schemaWithEnum = useMemo(() => schema as any, []);
+
+  // Renderer: Material + unser Free-Solo für modulnr
+  const renderers = useMemo(() => {
+    return [
+      ...materialRenderers,
+      { tester: freeSoloTester, renderer: (p: any) => (<FreeSoloModulnrControl {...p} options={modulnrOptions} />) }
+    ];
+  }, [modulnrOptions]);
+
+  /** Laden – keine Auto-Overrides; prevRef initialisieren */
   const prevRef = useRef<Model>([]);
   const load = async () => {
     try {
@@ -281,70 +341,95 @@ export const JsonFormsDemo = () => {
       const res = await fetch(API);
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const raw = await res.json();
-      const items: Item[] = (Array.isArray(raw) ? raw : [raw]).filter(Boolean).map((o:any)=>normalizeItem({ id:o?.id ?? undefined, modul:o?.modul ?? {} }));
+
+      const items: Item[] = (Array.isArray(raw) ? raw : [raw])
+        .filter(Boolean)
+        .map((inObj: any) => normalizeItem({
+          id: inObj?.id ?? undefined,
+          modul: inObj?.modul ?? {}
+        }));
+
       setData(items);
-      prevRef.current = items; // wichtig: IDs/alter Zustand merken
+      prevRef.current = items; // IDs im Prev-Ref speichern
       setStatus('idle');
     } catch {
       setStatus('error');
     }
   };
-  useEffect(()=>{ load(); },[]);
 
-  /** Speichern */
+  useEffect(() => { load(); }, []);
+
+  /** Speichern – IDs nur vergeben, wenn sie fehlen; sonst alles unverändert */
   const save = async () => {
     if (hasErrors) return;
     try {
       setStatus('saving');
+
+      // existierende IDs laden
       const existingRes = await fetch(API);
       const existing: any[] = existingRes.ok ? await existingRes.json() : [];
-      const existingIds = new Set((existing ?? []).map((e)=>e?.id).filter(Boolean));
+      const existingIds = new Set((existing ?? []).map((e) => e?.id).filter(Boolean));
+
+      // Arbeitskopie
       let working: Model = data ?? [];
+
+      // Nur fehlende IDs vergeben; bestehende IDs bleiben
       working = assignIdsIfMissing(working, existingIds);
 
-      const currentIds = new Set((working ?? []).map((b)=>b.id).filter(Boolean) as string[]);
-      const toDelete = Array.from(existingIds).filter((id)=>!currentIds.has(id as string));
-      await Promise.all(toDelete.map((id)=> fetch(`${API}/${encodeURIComponent(id as string)}`, { method:'DELETE' }).then(r=>{ if(!r.ok) throw new Error('DELETE'); })));
+      // Diff: löschen, was lokal entfernt wurde
+      const currentIds = new Set((working ?? []).map((b) => b.id).filter(Boolean) as string[]);
+      const toDelete = Array.from(existingIds).filter((id) => !currentIds.has(id as string));
+      await Promise.all(
+        toDelete.map((id) =>
+          fetch(`${API}/${encodeURIComponent(id as string)}`, { method: 'DELETE' })
+            .then((r) => { if (!r.ok) throw new Error('DELETE'); })
+        )
+      );
 
-      const headers = { 'Content-Type':'application/json' };
+      // Upsert
+      const headers = { 'Content-Type': 'application/json' };
       const updated: Model = [];
       for (const item of working ?? []) {
         const bodyObj = normalizeItem(item);
         const body = JSON.stringify(bodyObj);
+
         if (item.id && existingIds.has(item.id)) {
-          const res = await fetch(`${API}/${encodeURIComponent(item.id)}`, { method:'PUT', headers, body });
+          // Bestehende Datei -> Update unter gleichem Namen
+          const res = await fetch(`${API}/${encodeURIComponent(item.id)}`, { method: 'PUT', headers, body });
           if (!res.ok) throw new Error('PUT');
-          const saved = await res.json().catch(()=>bodyObj);
+          const saved = await res.json().catch(() => bodyObj);
           updated.push(normalizeItem(saved));
         } else {
-          const res = await fetch(API, { method:'POST', headers, body });
+          // Neue Datei
+          const res = await fetch(API, { method: 'POST', headers, body });
           if (!res.ok) throw new Error('POST');
           const created = await res.json();
           updated.push(normalizeItem({ ...item, id: created?.id ?? item.id }));
         }
       }
+
       setData(updated);
-      prevRef.current = updated;
+      prevRef.current = updated; // Prev-Ref aktualisieren
       setStatus('saved');
-      setTimeout(()=>setStatus('idle'), 900);
+      setTimeout(() => setStatus('idle'), 900);
     } catch {
       setStatus('error');
     }
   };
 
-  /** Change-Handler
+  /** Change-Handler – schnell & stabil
    *  - Automatik NUR beim Modulwechsel
-   *  - gruppen wird NUR gesetzt, wenn vorher leer ODER noch alter Vorschlag
+   *  - gruppen einmalig setzen; wenn manuell geändert, nie wieder überschreiben
    *  - id bleibt immer erhalten
    */
-  const handleChange = ({ data: next, errors }: { data:any; errors?: any[] }) => {
+  const handleChange = ({ data: next, errors }: { data: any; errors?: any[] }) => {
     const incoming: Model = (next ?? []) as Model;
     const prev: Model = prevRef.current ?? [];
-    let mutated = false;
 
     const patched: Model = incoming.map((item, idx) => {
       const prevItem = prev[idx] ?? {};
       const prevId = (prevItem as Item)?.id;
+
       const curNr = item?.modul?.modulnr ?? '';
       const oldNr = (prevItem as Item)?.modul?.modulnr ?? '';
 
@@ -353,22 +438,21 @@ export const JsonFormsDemo = () => {
       if (curNr && curNr !== oldNr) {
         const rawMod = moduByNr.get(String(curNr).trim());
         const auto = mapModuleToForm(rawMod);
-        mutated = true;
 
-        // 1) Basisdaten aus Modulquelle
+        // 1) Basisdaten aus Modulquelle (nur jetzt; danach frei editierbar)
         let merged = mergeAutoFill(item, auto);
 
         // 2) Dozierenden-Felder ggf. vorbelegen
         merged = applyLeadersIfNeeded(merged, auto, rawMod);
 
-        // 3) gruppen nur setzen, wenn vorher leer ODER alter Vorschlag
+        // 3) gruppen nur setzen, wenn vorher leer ODER alter Vorschlag (userTouched bleibt unangetastet)
         const prevGroups = (prevItem as Item)?.modul?.gruppen?.trim() ?? '';
         const prevSuggested = computeGruppenForNextSemester((prevItem as Item)?.modul);
         const userTouched = prevGroups.length > 0 && prevGroups !== prevSuggested;
 
         const nextGroups = userTouched
-          ? prevGroups                    // Nutzer hatte schon geändert -> NICHT überschreiben
-          : computeGruppenForNextSemester(merged.modul); // sonst neuen Vorschlag setzen
+          ? prevGroups
+          : computeGruppenForNextSemester(merged.modul);
 
         merged = { ...merged, modul: { ...(merged.modul ?? {}), gruppen: nextGroups } };
         result = merged;
@@ -390,10 +474,10 @@ export const JsonFormsDemo = () => {
       <Typography variant="h5" sx={{ mb: 2 }}>Zuarbeitsblätter (Array)</Typography>
 
       <JsonForms
-        schema={schema as any}
+        schema={schemaWithEnum as any}
         uischema={uischema as any}
         data={data}
-        renderers={[...renderers]}
+        renderers={renderers}
         cells={materialCells}
         onChange={handleChange}
       />

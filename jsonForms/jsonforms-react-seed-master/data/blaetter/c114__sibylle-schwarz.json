@@ -1,12 +1,14 @@
 {
+  "id": "c114__sibylle-schwarz",
   "modul": {
     "modulnr": "C114",
-    "fakultaet": "FIM-INF",
+    "fakultaet": "FIM",
     "studiengang": "INB, MIB",
+    "fs": "5",
     "modulname": "Modellierung",
     "swsVorlesung": "4",
     "swsSeminar": "2",
-    "swsPraktikum": "0",
+    "swsPraktikum": "1",
     "name": "Prof. Dr. rer. nat Sibylle Schwarz",
     "lesende": [
       {
@@ -21,8 +23,6 @@
       }
     ],
     "gruppen": "MIB24",
-    "fs": "3",
     "praktikumsleiter": []
-  },
-  "id": "c114__sibylle-schwarz"
+  }
 }
