@@ -1,0 +1,33 @@
+{
+  "modul": {
+    "modulnr": "C752",
+    "fakultaet": "FIM-INF",
+    "studiengang": "INB, MIB",
+    "fs": "1",
+    "gruppen": "3b",
+    "modulname": "Digitaltechnik I",
+    "swsVorlesung": "3",
+    "swsSeminar": "1",
+    "swsPraktikum": "1",
+    "name": "Prof. Dr. rer. nat Jens Wagner",
+    "lesende": [
+      {
+        "titel": "Prof. Dr. rer. nat",
+        "name": "Prof. Dr. rer. nat Jens Wagner"
+      }
+    ],
+    "seminarleiter": [
+      {
+        "titel": "Prof. Dr. rer. nat",
+        "name": "Prof. Dr. rer. nat Jens Wagner"
+      }
+    ],
+    "praktikumsleiter": [
+      {
+        "titel": "Prof. Dr. rer. nat",
+        "name": "Prof. Dr. rer. nat Jens Wagner"
+      }
+    ]
+  },
+  "id": "c752__jens-wagner-2"
+}

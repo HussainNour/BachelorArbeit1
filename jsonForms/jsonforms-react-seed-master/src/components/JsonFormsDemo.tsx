@@ -154,11 +154,35 @@ const AUTO_KEYS: (keyof Modul)[] = [
   'name'                    // Name (Ersteller:in)
 ];
 
-/** Merge: nur die obigen Auto-Felder überschreiben; alles andere bleibt wie eingegeben */
-const mergeAutoFill = (oldItem: Item, auto: Partial<Modul>): Item => {
+/** ---------- Dirty-Tracking: geänderte Felder NICHT überschreiben ---------- */
+
+/** einfache Feld-Diff (flach) */
+const diffChangedModulFields = (prev?: Modul, next?: Modul): (keyof Modul)[] => {
+  const p = prev ?? {};
+  const n = next ?? {};
+  const changed: (keyof Modul)[] = [];
+  const keys = new Set<keyof Modul>([
+    ...(Object.keys(p) as (keyof Modul)[]),
+    ...(Object.keys(n) as (keyof Modul)[])
+  ]);
+  for (const k of keys) {
+    const pv = (p as any)[k];
+    const nv = (n as any)[k];
+    if (JSON.stringify(pv) !== JSON.stringify(nv)) changed.push(k);
+  }
+  return changed;
+};
+
+/** Merge: nur Auto-Felder überschreiben – außer sie sind "dirty" (skipKeys) */
+const mergeAutoFill = (
+  oldItem: Item,
+  auto: Partial<Modul>,
+  skipKeys: Set<keyof Modul> = new Set()
+): Item => {
   const oldMod = oldItem?.modul ?? {};
   const next: Modul = { ...oldMod };
   for (const k of AUTO_KEYS) {
+    if (skipKeys.has(k)) continue; // bereits manuell editiert → nicht überschreiben
     const v = (auto as any)[k];
     if (v !== undefined) (next as any)[k] = v;
   }
@@ -435,27 +459,44 @@ export const JsonFormsDemo = () => {
     }
   };
 
-  /** --- Auto-Fill bei Änderung der modulnr --- */
+  /** --- Dirty-Tracking: Felder, die schon editiert wurden --- */
+  const editedFieldsRef = useRef<Map<number, Set<keyof Modul>>>(new Map());
+
+  /** --- Auto-Fill bei Änderung der modulnr (mit Dirty-Schutz) --- */
   const prevRef = useRef<Model>([]);
   const handleChange = ({ data: next, errors }: { data: any; errors?: any[] }) => {
     const incoming: Model = (next ?? []) as Model;
     const prev: Model = prevRef.current ?? [];
 
+    // A) Änderungen pro Item/Key tracken
+    incoming.forEach((item, idx) => {
+      const changed = diffChangedModulFields(prev[idx]?.modul, item?.modul);
+      if (changed.length > 0) {
+        const set = editedFieldsRef.current.get(idx) ?? new Set<keyof Modul>();
+        changed.forEach((k) => set.add(k));
+        editedFieldsRef.current.set(idx, set);
+      }
+    });
+
     let mutated = false;
     const patched: Model = incoming.map((item, idx) => {
       const curNr = item?.modul?.modulnr ?? '';
       const oldNr = prev[idx]?.modul?.modulnr ?? '';
+
       if (curNr && curNr !== oldNr) {
         const rawMod = moduByNr.get(String(curNr).trim());
         const auto = mapModuleToForm(rawMod);
-        mutated = true;
 
-        // 1) numerische/grundlegende Felder übernehmen (ohne lehrveranstaltung)
-        let merged = mergeAutoFill(item, auto);
+        // Keys, die manuell geändert wurden, nicht überschreiben
+        const skip = editedFieldsRef.current.get(idx) ?? new Set<keyof Modul>();
 
-        // 2) je nach SWS die Personen-Arrays füllen
+        // 1) numerische/grundlegende Felder übernehmen (ohne lehrveranstaltung), unter Beachtung von skip
+        let merged = mergeAutoFill(item, auto, skip);
+
+        // 2) je nach SWS die Personen-Arrays füllen (nur ergänzen, nicht überschreiben)
         merged = applyLeadersIfNeeded(merged, auto, rawMod);
 
+        mutated = true;
         return merged;
       }
       return item;
