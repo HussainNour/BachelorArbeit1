@@ -1,4 +1,5 @@
 {
+  "id": "c114__sibylle-schwarz-2",
   "modul": {
     "modulnr": "C114",
     "fakultaet": "FIM-INF",
@@ -23,6 +24,5 @@
       }
     ],
     "praktikumsleiter": []
-  },
-  "id": "c114__prof-dr-rer-nat-sibylle-schwarz-2"
+  }
 }

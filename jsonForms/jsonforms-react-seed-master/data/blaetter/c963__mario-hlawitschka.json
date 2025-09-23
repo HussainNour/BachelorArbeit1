@@ -1,0 +1,28 @@
+{
+  "modul": {
+    "modulnr": "C963",
+    "fakultaet": "FIM-INF",
+    "studiengang": "",
+    "fs": "",
+    "gruppen": "5 Gr. geteilt in a und b; 25INB-1a; parallel 2 Gruppen a und b; 25INB-2a+25INB-3a; 25INB-1b+2b+3a+3b+25MIB-1b+1b+2a inkl. BIN",
+    "modulname": "Grundlagen der Programmierung",
+    "swsVorlesung": "2.5",
+    "swsSeminar": "0",
+    "swsPraktikum": "2",
+    "name": "Prof. Dr. rer. nat. Mario Hlawitschka",
+    "lesende": [
+      {
+        "titel": "Prof. Dr. rer. nat.",
+        "name": "Prof. Dr. rer. nat. Mario Hlawitschka"
+      }
+    ],
+    "praktikumsleiter": [
+      {
+        "titel": "Prof. Dr. rer. nat.",
+        "name": "Prof. Dr. rer. nat. Mario Hlawitschka"
+      }
+    ],
+    "seminarleiter": []
+  },
+  "id": "c963__mario-hlawitschka"
+}
