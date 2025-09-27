@@ -413,6 +413,103 @@ const kwHinweiseTester = rankWith(
   )
 );
 
+/** ---------- Custom Control: Checkboxen für planungshinweise ---------- */
+type PlanProps = {
+  data: any;
+  handleChange: (path: string, value: any) => void;
+  path: string;
+  label?: string;
+  enabled?: boolean;
+};
+
+const PLAN_OPTIONS: { id: string; label: string; text: string }[] = [
+  {
+    id: 'even-odd-balanced',
+    label: 'gleichmäßige Verteilung von Vorlesungen und Seminaren auf gerade und ungerade Wochen.',
+    text: 'gleichmäßige Verteilung von Vorlesungen und Seminaren auf gerade und ungerade Wochen.'
+  },
+  {
+    id: 'split-weeks',
+    label: 'Vorlesungen in der einen und Seminare in der anderen Woche.',
+    text: 'Vorlesungen in der einen und Seminare in der anderen Woche.'
+  },
+  {
+    id: 'block-yes',
+    label: 'Blockplanung (2 x 90 min hintereinander) von Vorlesungen, Seminaren oder Praktika einer Seminargruppe.',
+    text: 'Blockplanung (2 x 90 min hintereinander) von Vorlesungen, Seminaren oder Praktika einer Seminargruppe.'
+  },
+  {
+    id: 'block-no',
+    label: 'keine Blockplanung in einer Seminargruppe.',
+    text: 'keine Blockplanung in einer Seminargruppe.'
+  },
+  {
+    id: 'lecture-before-seminar',
+    label: 'Vorlesung zwingend vor Seminar.',
+    text: 'Vorlesung zwingend vor Seminar.'
+  }
+];
+
+const PlanungshinweiseControlBase = ({
+  data,
+  handleChange,
+  path,
+  label = 'Planungshinweise',
+  enabled = true
+}: PlanProps) => {
+  // Auswahl aus vorhandenem String rekonstruieren
+  const selectedSet = useMemo(() => {
+    const s = String(data ?? '');
+    const set = new Set<string>();
+    for (const o of PLAN_OPTIONS) if (s.includes(o.text)) set.add(o.id);
+    return set;
+  }, [data]);
+
+  const toggle = (id: string) => {
+    const next = new Set(selectedSet);
+    if (next.has(id)) next.delete(id); else next.add(id);
+    const out = PLAN_OPTIONS
+      .filter(o => next.has(o.id))
+      .map(o => o.text)
+      .join('\n');
+    handleChange(path, out);
+  };
+
+  return (
+    <Box sx={{ border: '1px solid #e0e0e0', borderRadius: 1.5, p: 1.5 }}>
+      <Typography variant="subtitle2" sx={{ mb: 1 }}>{label}</Typography>
+      <FormGroup>
+        {PLAN_OPTIONS.map(o => (
+          <FormControlLabel
+            key={o.id}
+            control={
+              <Checkbox
+                size="small"
+                disabled={!enabled}
+                checked={selectedSet.has(o.id)}
+                onChange={() => toggle(o.id)}
+              />
+            }
+            label={o.label}
+            sx={{ mr: 1.5 }}
+          />
+        ))}
+      </FormGroup>
+    </Box>
+  );
+};
+
+const PlanungshinweiseControl = withJsonFormsControlProps(PlanungshinweiseControlBase);
+
+const planungshinweiseTester = rankWith(
+  6,
+  and(
+    uiTypeIs('Control'),
+    scopeEndsWith('planungshinweise'),
+    schemaMatches((s) => (s as any)?.type === 'string')
+  )
+);
+
 /** ---------- Komponente ---------- */
 export const JsonFormsDemo = () => {
   const [data, setData] = useState<Model>([]);
@@ -440,12 +537,13 @@ export const JsonFormsDemo = () => {
     []
   );
 
-  // Renderer: Material + unser Free-Solo + unser KW-Control
+  // Renderer: Material + unser Free-Solo + KW-Control + Planungshinweise-Control
   const renderers = useMemo(() => {
     return [
       ...materialRenderers,
       { tester: freeSoloTester, renderer: (p: any) => (<FreeSoloModulnrControl {...p} options={modulnrOptions} />) },
-      { tester: kwHinweiseTester, renderer: (p: any) => (<KwHinweiseControl {...p} />) }
+      { tester: kwHinweiseTester, renderer: (p: any) => (<KwHinweiseControl {...p} />) },
+      { tester: planungshinweiseTester, renderer: (p: any) => (<PlanungshinweiseControl {...p} />) }
     ];
   }, [modulnrOptions]);
 
