@@ -132,7 +132,14 @@ const nextSemester = (sem = computeSemesterFromDate()) =>
   sem.kind === 'SoSe' ? { kind:'WiSe' as const, year: sem.year } : { kind:'SoSe' as const, year: sem.year + 1 };
 const yy = (y: number) => String(y % 100).padStart(2, '0');
 
-/** Programme für Gruppenberechnung */
+/** Semester-String für ID */
+const formatSemesterForId = (sem: { kind: 'SoSe'|'WiSe'; year: number }): string => {
+  return sem.kind === 'WiSe'
+    ? `wise${yy(sem.year)}${yy(sem.year + 1)}` // WiSe 2025/26 -> wise2526
+    : `sose${sem.year}`;                        // SoSe 2026    -> sose2026
+};
+
+/** ---------- Programme/Gruppen ---------- */
 const extractPrograms = (m?: Modul): string[] => {
   const s = (m?.studiengang ?? '').toUpperCase();
   const set = new Set<string>();
@@ -210,7 +217,6 @@ const mapModuleToForm = (mod: RawMod): Partial<Modul> => {
     swsSeminar:  swsS !== '' ? String(swsS) : '',
     swsPraktikum: swsP !== '' ? String(swsP) : '',
     name: displayName,                 // ← ohne Titel
-    // Wenn du die Unterschrift nicht automatisch füllen willst, kommentiere die nächste Zeile aus:
     unterschrift: displayNameWithTitle // ← mit Titel
   };
 };
@@ -299,11 +305,17 @@ const pickLecturerName = (m?: Modul): string => {
   const c = [m?.lesende?.[0]?.name, m?.seminarleiter?.[0]?.name, m?.praktikumsleiter?.[0]?.name, m?.name].filter((x): x is string => !!x && x.trim().length>0);
   return stripTitles(c[0] ?? '');
 };
+
+/** Semester ans Ende der ID: modulnr__dozent__semester */
 const computeStableId = (it: Item): string | undefined => {
   const nr = it?.modul?.modulnr?.trim() ?? '';
   const lecturer = pickLecturerName(it?.modul);
   if (!nr || !lecturer) return undefined;
-  return `${toSlug(nr)}__${toSlug(lecturer)}`;
+
+  const planned = nextSemester(computeSemesterFromDate());
+  const semPart = formatSemesterForId(planned);
+
+  return `${toSlug(nr)}__${toSlug(lecturer)}__${semPart}`;
 };
 
 const assignIdsIfMissing = (items: Model, existingIds: Set<string>): Model => {
@@ -638,8 +650,10 @@ export const JsonFormsDemo = () => {
         } else {
           const res = await fetch(API, { method: 'POST', headers, body });
           if (!res.ok) throw new Error('POST');
-          const created = await res.json();
-          updated.push(normalizeItem({ ...item, id: created?.id ?? item.id }));
+          // Server-Antwort kann abweichen; wir behalten unsere bereits vergebene ID bei.
+          const created = await res.json().catch(() => ({}));
+          const effectiveId = item.id ?? (created as any)?.id;
+          updated.push(normalizeItem({ ...item, id: effectiveId }));
         }
       }
 
