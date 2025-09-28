@@ -13,9 +13,10 @@ import schema from '../schema.json';
 import uischema from '../uischema.json';
 import {
   Box, Button, Alert, Stack, Typography, TextField, Autocomplete,
-  FormGroup, FormControlLabel, Checkbox
+  FormGroup, FormControlLabel, Checkbox, Link
 } from '@mui/material';
 import { createFilterOptions } from '@mui/material/Autocomplete';
+import { Link as RouterLink } from 'react-router-dom'; // ⬅️ neu
 
 /** ---------- Typen ---------- */
 type Person = {
@@ -51,8 +52,8 @@ type Modul = {
   planungshinweise?: string;
   kwHinweise?: string;
 
-  name?: string;                   // Name (nun: MIT Titel)
-  unterschrift?: string;           // Unterschrift (nun: OHNE Titel)
+  name?: string;                   // Name (Ersteller:in) — ohne Titel
+  unterschrift?: string;           // Hier darf der Titel enthalten sein
   rueckgabedatum?: string;         // YYYY-MM-DD
 
   profUnterschrift?: string;
@@ -72,7 +73,7 @@ type Item = {
 type Model = Item[];
 
 /** ---------- API ---------- */
-const API = 'http://localhost:5050/blaetter';
+const API = 'http://localhost:5050/Zuarbeit';
 
 /** ---------- externe Modulquelle ---------- */
 import modulesJson from '../../config/INB_module.json';
@@ -136,8 +137,8 @@ const yy = (y: number) => String(y % 100).padStart(2, '0');
 /** Semester-String für ID */
 const formatSemesterForId = (sem: { kind: 'SoSe'|'WiSe'; year: number }): string => {
   return sem.kind === 'WiSe'
-    ? `wise${yy(sem.year)}${yy(sem.year + 1)}`
-    : `sose${sem.year}`;
+    ? `wise${yy(sem.year)}${yy(sem.year + 1)}` // WiSe 2025/26 -> wise2526
+    : `sose${sem.year}`;                        // SoSe 2026    -> sose2026
 };
 
 /** ---------- Programme/Gruppen ---------- */
@@ -205,7 +206,7 @@ const mapModuleToForm = (mod: RawMod): Partial<Modul> => {
 
   // Name ohne Titel:
   const displayName = stripTitles([vor, nach].filter(Boolean).join(' ').trim());
-  // Mit Titel (Anrede + Namen):
+  // Unterschrift darf Titel enthalten:
   const displayNameWithTitle = [anrede, vor, nach].filter(Boolean).join(' ').trim();
 
   return {
@@ -217,9 +218,8 @@ const mapModuleToForm = (mod: RawMod): Partial<Modul> => {
     swsVorlesung: swsV !== '' ? String(swsV) : '',
     swsSeminar:  swsS !== '' ? String(swsS) : '',
     swsPraktikum: swsP !== '' ? String(swsP) : '',
-    // ↓↓↓ getauscht:
-    name: displayNameWithTitle,  // MIT Titel
-    unterschrift: displayName    // OHNE Titel
+    name: displayName,                 // ← ohne Titel
+    unterschrift: displayNameWithTitle // ← mit Titel
   };
 };
 
@@ -288,15 +288,10 @@ const applyLeadersIfNeeded = (oldItem: Item, auto: Partial<Modul>, raw: RawMod):
     next.modul!.praktikumsleiter = a;
   }
 
-  // ↓↓↓ neu: Name (mit Titel) fallback + Unterschrift (ohne Titel) fallback
+  // Optional: Unterschrift automatisch inkl. Titel setzen, falls leer
   const withTitle = [anrede, vor, nach].filter(Boolean).join(' ').trim();
-  const withoutTitle = displayName;
-
-  if (!next.modul!.name && withTitle) {
-    next.modul!.name = withTitle;           // MIT Titel
-  }
-  if (!next.modul!.unterschrift && withoutTitle) {
-    next.modul!.unterschrift = withoutTitle; // OHNE Titel
+  if (!next.modul!.unterschrift && withTitle) {
+    next.modul!.unterschrift = withTitle;
   }
 
   return next;
@@ -489,7 +484,7 @@ const PLAN_OPTIONS: { id: string; label: string; text: string }[] = [
   {
     id: 'split-weeks',
     label: 'Vorlesungen in der einen und Seminare in der anderen Woche.',
-    text: 'Vorlesungen in der einen und Seminare in der anderen Woche.'
+    text: 'Vorlesungen in der einen und Seminaren in der anderen Woche.'
   },
   {
     id: 'block-yes',
@@ -753,6 +748,21 @@ export const JsonFormsDemo = () => {
     }
   }, [data]);
 
+  /** ---------- Share-Links (Punkt 3) ---------- */
+  const buildShareUrl = (id: string) => {
+    // volle URL inkl. Origin, z. B. http://localhost:5173/zuarbeit/:id
+    return `${window.location.origin}/zuarbeit/${encodeURIComponent(id)}`;
+  };
+  const copyToClipboard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      alert('Link kopiert ✅');
+    } catch {
+      // Fallback
+      prompt('Zum Kopieren STRG+C drücken und Enter:', text);
+    }
+  };
+
   return (
     <Box sx={{ maxWidth: 1100, mx: 'auto', p: 2 }}>
       <Typography variant="h5" sx={{ mb: 2 }}>Zuarbeitsblätter (Array)</Typography>
@@ -779,6 +789,37 @@ export const JsonFormsDemo = () => {
       {status === 'saving'  && <Alert sx={{ mt: 2 }} severity="info">Speichere…</Alert>}
       {status === 'saved'   && <Alert sx={{ mt: 2 }} severity="success">Gespeichert</Alert>}
       {status === 'error'   && <Alert sx={{ mt: 2 }} severity="error">Fehler beim Laden/Speichern</Alert>}
+
+      {/* ---------- Share-Links-Liste ---------- */}
+      <Box sx={{ mt: 3 }}>
+        <Typography variant="subtitle2" sx={{ mb: 1 }}>Share-Links (nur Einzel-Editor)</Typography>
+        {!data?.length && <Typography variant="body2" color="text.secondary">Keine Einträge vorhanden.</Typography>}
+        <ul style={{ marginTop: 8 }}>
+          {(data ?? []).map((it, idx) => {
+            const id = it?.id?.trim();
+            const linkPath = id ? `/zuarbeit/${encodeURIComponent(id)}` : '';
+            const fullUrl = id ? buildShareUrl(id) : '';
+            const label = it?.modul?.modulnr || `Eintrag ${idx+1}`;
+            return (
+              <li key={idx} style={{ marginBottom: 6 }}>
+                {id ? (
+                  <>
+                    <Link component={RouterLink} to={linkPath}>
+                      {label} — {id}
+                    </Link>
+                    {' '}
+                    <Button size="small" onClick={() => copyToClipboard(fullUrl)}>
+                      Link kopieren
+                    </Button>
+                  </>
+                ) : (
+                  <em>(ohne ID – erst speichern)</em>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      </Box>
     </Box>
   );
 };

@@ -8,10 +8,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const store = Store('data/blaetter'); // legt Dateien unter ./data/blaetter/<id>.json ab
+const store = Store('data/Zuarbeit'); // legt Dateien unter ./data/Zuarbeit/<id>.json ab
 
 // Alle lesen
-app.get('/blaetter', (req, res) => {
+app.get('/Zuarbeit', (req, res) => {
   store.list((err, objs) => {
     if (err) return res.status(500).json({ error: String(err) });
     res.json(objs);
@@ -19,7 +19,7 @@ app.get('/blaetter', (req, res) => {
 });
 
 // Einzeln lesen
-app.get('/blaetter/:id', (req, res) => {
+app.get('/Zuarbeit/:id', (req, res) => {
   store.load(req.params.id, (err, obj) => {
     if (err || !obj) return res.status(404).json({ error: 'not found' });
     res.json(obj);
@@ -27,7 +27,7 @@ app.get('/blaetter/:id', (req, res) => {
 });
 
 // Anlegen (neue ID)
-app.post('/blaetter', (req, res) => {
+app.post('/Zuarbeit', (req, res) => {
   const id = req.body.id || randomUUID();
   const obj = { ...req.body, id };
   store.add(obj, (err) => {
@@ -37,7 +37,7 @@ app.post('/blaetter', (req, res) => {
 });
 
 // Aktualisieren (ID bleibt gleich)
-app.put('/blaetter/:id', (req, res) => {
+app.put('/Zuarbeit/:id', (req, res) => {
   const id = req.params.id;
   const obj = { ...req.body, id }; // ID festschreiben
   store.add(obj, (err) => {
@@ -47,7 +47,7 @@ app.put('/blaetter/:id', (req, res) => {
 });
 
 // Löschen
-app.delete('/blaetter/:id', (req, res) => {
+app.delete('/Zuarbeit/:id', (req, res) => {
   store.remove(req.params.id, (err) => {
     if (err) return res.status(500).json({ error: String(err) });
     res.status(204).end();
