@@ -15,6 +15,7 @@ import {
   Box, Button, Alert, Stack, Typography, TextField, Autocomplete,
   FormGroup, FormControlLabel, Checkbox
 } from '@mui/material';
+import { createFilterOptions } from '@mui/material/Autocomplete';
 
 /** ---------- Typen ---------- */
 type Person = {
@@ -358,18 +359,33 @@ const FreeSoloModulnrControlBase = (props: FSProps & { options: { value: string;
 
   const allValues = useMemo(() => options.map(o => o.value), [options]);
 
+  // Suche sowohl nach Nummer als auch nach Bezeichnung
+  const filterOptions = useMemo(() => {
+    return createFilterOptions<string>({
+      stringify: (opt) => `${opt} ${labelMap.get(opt) ?? ''}`,
+    });
+  }, [labelMap]);
+
   return (
-    <Autocomplete
+    <Autocomplete<string, false, false, true>
       freeSolo
       disabled={!enabled}
       options={allValues}
+      filterOptions={filterOptions}
       value={data ?? ''}
       isOptionEqualToValue={(opt, val) => opt === val}
       onChange={(_, val) => handleChange(path, typeof val === 'string' ? val : '')}
       onInputChange={(_, val, reason) => {
         if (reason !== 'reset') handleChange(path, val ?? '');
       }}
-      getOptionLabel={(opt) => labelMap.get(opt as string) ?? String(opt ?? '')}
+      // Im Textfeld NUR die Modulnummer anzeigen
+      getOptionLabel={(opt) => String(opt ?? '')}
+      // In der Dropdown-Liste "Nummer – Bezeichnung" zeigen
+      renderOption={(liProps, option) => (
+        <li {...liProps} key={option}>
+          {labelMap.get(option) ?? option}
+        </li>
+      )}
       renderInput={(params) => (
         <TextField {...params} label={label ?? 'Modulnummer'} variant="outlined" />
       )}

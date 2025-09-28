@@ -1,4 +1,5 @@
 {
+  "id": "c680__johannes-waldmann__wise2526",
   "modul": {
     "modulnr": "C680",
     "fakultaet": "FIM-INF",
@@ -26,6 +27,5 @@
     "planungshinweise": "gleichmäßige Verteilung von Vorlesungen und Seminaren auf gerade und ungerade Wochen.",
     "kwHinweise": "KW42, KW43, KW44, KW45, KW46, KW47, KW48, KW49, KW50, KW51, KW52, KW01, KW02, KW03, KW04, KW05, KW06",
     "praktikumsleiter": []
-  },
-  "id": "c680__johannes-waldmann__wise2526"
+  }
 }
