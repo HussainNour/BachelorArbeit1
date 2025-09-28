@@ -51,8 +51,8 @@ type Modul = {
   planungshinweise?: string;
   kwHinweise?: string;
 
-  name?: string;                   // Name (Ersteller:in) — ohne Titel
-  unterschrift?: string;           // Hier darf der Titel enthalten sein
+  name?: string;                   // Name (nun: MIT Titel)
+  unterschrift?: string;           // Unterschrift (nun: OHNE Titel)
   rueckgabedatum?: string;         // YYYY-MM-DD
 
   profUnterschrift?: string;
@@ -136,8 +136,8 @@ const yy = (y: number) => String(y % 100).padStart(2, '0');
 /** Semester-String für ID */
 const formatSemesterForId = (sem: { kind: 'SoSe'|'WiSe'; year: number }): string => {
   return sem.kind === 'WiSe'
-    ? `wise${yy(sem.year)}${yy(sem.year + 1)}` // WiSe 2025/26 -> wise2526
-    : `sose${sem.year}`;                        // SoSe 2026    -> sose2026
+    ? `wise${yy(sem.year)}${yy(sem.year + 1)}`
+    : `sose${sem.year}`;
 };
 
 /** ---------- Programme/Gruppen ---------- */
@@ -205,7 +205,7 @@ const mapModuleToForm = (mod: RawMod): Partial<Modul> => {
 
   // Name ohne Titel:
   const displayName = stripTitles([vor, nach].filter(Boolean).join(' ').trim());
-  // Unterschrift darf Titel enthalten:
+  // Mit Titel (Anrede + Namen):
   const displayNameWithTitle = [anrede, vor, nach].filter(Boolean).join(' ').trim();
 
   return {
@@ -217,8 +217,9 @@ const mapModuleToForm = (mod: RawMod): Partial<Modul> => {
     swsVorlesung: swsV !== '' ? String(swsV) : '',
     swsSeminar:  swsS !== '' ? String(swsS) : '',
     swsPraktikum: swsP !== '' ? String(swsP) : '',
-    name: displayName,                 // ← ohne Titel
-    unterschrift: displayNameWithTitle // ← mit Titel
+    // ↓↓↓ getauscht:
+    name: displayNameWithTitle,  // MIT Titel
+    unterschrift: displayName    // OHNE Titel
   };
 };
 
@@ -287,10 +288,15 @@ const applyLeadersIfNeeded = (oldItem: Item, auto: Partial<Modul>, raw: RawMod):
     next.modul!.praktikumsleiter = a;
   }
 
-  // Optional: Unterschrift automatisch inkl. Titel setzen, falls leer
+  // ↓↓↓ neu: Name (mit Titel) fallback + Unterschrift (ohne Titel) fallback
   const withTitle = [anrede, vor, nach].filter(Boolean).join(' ').trim();
-  if (!next.modul!.unterschrift && withTitle) {
-    next.modul!.unterschrift = withTitle;
+  const withoutTitle = displayName;
+
+  if (!next.modul!.name && withTitle) {
+    next.modul!.name = withTitle;           // MIT Titel
+  }
+  if (!next.modul!.unterschrift && withoutTitle) {
+    next.modul!.unterschrift = withoutTitle; // OHNE Titel
   }
 
   return next;

@@ -8,8 +8,8 @@
     "swsVorlesung": "4",
     "swsSeminar": "2",
     "swsPraktikum": "0",
-    "name": "Sibylle Schwarz",
-    "unterschrift": "Prof. Dr. rer. nat Sibylle Schwarz",
+    "name": "Prof. Dr. rer. nat Sibylle Schwarz",
+    "unterschrift": "Sibylle Schwarz",
     "lesende": [
       {
         "titel": "Prof. Dr. rer. nat",
@@ -23,6 +23,8 @@
       }
     ],
     "gruppen": "INB26 + INB25 + INB24 + MIB26 + MIB25 + MIB24",
+    "kwHinweise": "KW42",
+    "planungshinweise": "gleichmäßige Verteilung von Vorlesungen und Seminaren auf gerade und ungerade Wochen.",
     "praktikumsleiter": []
   },
   "id": "c114__sibylle-schwarz__wise2526"

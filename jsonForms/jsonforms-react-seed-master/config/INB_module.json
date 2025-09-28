@@ -17,27 +17,7 @@
       "SWS_V": 4,
       "SWS_S": 2,
       "SWS_P": 0,
-      "SWS_gesamt": 6,
-      "Aufteilung": [
-        {
-          "Typ": "Vorlesung",
-          "Dozent": "Fr. Prof. Schwarz",
-          "Gruppen": "25INB-1+2+3",
-          "Gruppenanzahl": 1
-        },
-        {
-          "Typ": "Seminar",
-          "Dozent": "Fr. Prof. Schwarz",
-          "Gruppen": "25INB-1+2+3",
-          "Gruppenanzahl": 3
-        },
-        {
-          "Typ": "Seminar",
-          "Dozent": "Hr. Höppner",
-          "Gruppen": "25MIB-1+2",
-          "Gruppenanzahl": 2
-        }
-      ]
+      "SWS_gesamt": 6   
     },
     "Modultyp": "PF",
     "CharakterLehrveranstaltung": {
@@ -80,41 +60,7 @@
       "SWS_V": 3,
       "SWS_S": 1,
       "SWS_P": 1,
-      "SWS_gesamt": 5,
-      "Aufteilung": [
-        {
-          "Typ": "Vorlesung",
-          "Dozent": "Hr. Prof. Wagner",
-          "Gruppen": "",
-          "Gruppenanzahl": 1,
-          "SWS": 2
-        },
-        {
-          "Typ": "Vorlesung",
-          "Dozent": "Fr. Brodowsky",
-          "Gruppen": "MNZ",
-          "Gruppenanzahl": 1,
-          "SWS": 1
-        },
-        {
-          "Typ": "Seminar",
-          "Dozent": "Hr. Prof. Wagner",
-          "Gruppen": "25INB-1+2+3",
-          "Gruppenanzahl": 3
-        },
-        {
-          "Typ": "Praktikum",
-          "Dozent": "Hr. Prof. Wagner",
-          "Gruppen": "25INB-1a+1b+2a",
-          "Gruppenanzahl": 3
-        },
-        {
-          "Typ": "Praktikum",
-          "Dozent": "Hr. M. Ulbricht",
-          "Gruppen": "25INB-2b+3a+3b",
-          "Gruppenanzahl": 3
-        }
-      ]
+      "SWS_gesamt": 5
     },
     "Modultyp": "PF",
     "CharakterLehrveranstaltung": {
@@ -165,46 +111,8 @@
       "SWS_V": 2.5,
       "SWS_S": 0,
       "SWS_P": 2,
-      "SWS_gesamt": 4.5,
-      "Aufteilung": [
-        {
-          "Typ": "Vorlesung",
-          "Dozent": "Hr. Prof. Rinke",
-          "Gruppen": "",
-          "Gruppenanzahl": 1
-        },
-        {
-          "Typ": "Vorlesung",
-          "Dozent": "Hr. Prof. Rinke",
-          "Gruppen": "5 Gr. geteilt in a und b",
-          "Gruppenanzahl": 9,
-          "Bemerkung": "a. 20 TN"
-        },
-        {
-          "Typ": "Praktikum",
-          "Dozent": "Hr. Prof. Rinke",
-          "Gruppen": "25INB-1a",
-          "Gruppenanzahl": 1
-        },
-        {
-          "Typ": "Praktikum",
-          "Dozent": "Hr. Prof. Rinke",
-          "Gruppen": "parallel 2 Gruppen a und b",
-          "Gruppenanzahl": 2
-        },
-        {
-          "Typ": "Praktikum",
-          "Dozent": "Hr. Höppner",
-          "Gruppen": "25INB-2a+25INB-3a",
-          "Gruppenanzahl": 2
-        },
-        {
-          "Typ": "Praktikum",
-          "Dozent": "LfbA N.N.",
-          "Gruppen": "25INB-1b+2b+3a+3b+25MIB-1b+1b+2a inkl. BIN",
-          "Gruppenanzahl": 1
-        }
-      ]
+      "SWS_gesamt": 4.5
+
     },
     "Modultyp": "PF",
     "CharakterLehrveranstaltung": {},
@@ -250,36 +158,7 @@
       "SWS_V": 4,
       "SWS_S": 2,
       "SWS_P": 0,
-      "SWS_gesamt": 6,
-      "Aufteilung": [
-        {
-          "Typ": "Vorlesung",
-          "Dozent": "Hr. Prof. Grüttmüller",
-          "Gruppen": 1,
-          "Studiengänge": [
-            "INB",
-            "MIB"
-          ]
-        },
-        {
-          "Typ": "Seminar",
-          "Dozent": "Hr. Prof. Grüttmüller",
-          "Gruppen": 2,
-          "Gruppenbezeichnung": "25INB-1+2"
-        },
-        {
-          "Typ": "Seminar",
-          "Dozent": "K. Schubert",
-          "Gruppen": 1,
-          "Gruppenbezeichnung": "25INB-3"
-        },
-        {
-          "Typ": "Seminar",
-          "Dozent": "MNZ B. Schmidt",
-          "Gruppen": 2,
-          "Gruppenbezeichnung": "25MIB-1+2 inkl. BIN"
-        }
-      ]
+      "SWS_gesamt": 6 
     },
     "Modultyp": "PF",
     "CharakterLehrveranstaltung": {
@@ -330,8 +209,7 @@
       "SWS_V": 4,
       "SWS_S": 2,
       "SWS_P": 0,
-      "SWS_gesamt": 6,
-      "Aufteilung": []
+      "SWS_gesamt": 6
     },
     "Modultyp": "PF",
     "CharakterLehrveranstaltung": {
@@ -363,8 +241,7 @@
       "SWS_V": 3,
       "SWS_S": 1,
       "SWS_P": 2,
-      "SWS_gesamt": 6,
-      "Aufteilung": []
+      "SWS_gesamt": 6
     },
     "Modultyp": "PF",
     "CharakterLehrveranstaltung": {
@@ -398,8 +275,7 @@
       "SWS_V": 2,
       "SWS_S": 2,
       "SWS_P": 0,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
     },
     "Modultyp": "PF",
     "CharakterLehrveranstaltung": {
@@ -431,8 +307,7 @@
       "SWS_V": 2,
       "SWS_S": 2,
       "SWS_P": 0,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
     },
     "Modultyp": "PF",
     "CharakterLehrveranstaltung": {
@@ -464,8 +339,7 @@
       "SWS_V": 2,
       "SWS_S": 2,
       "SWS_P": 0,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
     },
     "Modultyp": "PF",
     "CharakterLehrveranstaltung": {
@@ -497,8 +371,7 @@
       "SWS_V": 4,
       "SWS_S": 0,
       "SWS_P": 2,
-      "SWS_gesamt": 6,
-      "Aufteilung": []
+      "SWS_gesamt": 6
     },
     "Modultyp": "PF",
     "CharakterLehrveranstaltung": {
@@ -530,8 +403,7 @@
       "SWS_V": 2,
       "SWS_S": 1,
       "SWS_P": 1,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
     },
     "Modultyp": "PF",
     "CharakterLehrveranstaltung": {
@@ -563,8 +435,7 @@
       "SWS_V": 2,
       "SWS_S": 1,
       "SWS_P": 1,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
     },
     "Modultyp": "PF",
     "CharakterLehrveranstaltung": {
@@ -596,8 +467,7 @@
       "SWS_V": 1,
       "SWS_S": 3,
       "SWS_P": 0,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
     },
     "Modultyp": "PF",
     "CharakterLehrveranstaltung": {
@@ -629,8 +499,7 @@
       "SWS_V": 2,
       "SWS_S": 2,
       "SWS_P": 0,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
     },
     "Modultyp": "PF",
     "CharakterLehrveranstaltung": {
@@ -662,8 +531,7 @@
       "SWS_V": 1,
       "SWS_S": 0,
       "SWS_P": 1,
-      "SWS_gesamt": 2,
-      "Aufteilung": []
+      "SWS_gesamt": 2
     },
     "Modultyp": "PF",
     "CharakterLehrveranstaltung": {
@@ -695,8 +563,7 @@
       "SWS_V": 2,
       "SWS_S": 2,
       "SWS_P": 0,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
     },
     "Modultyp": "PF",
     "CharakterLehrveranstaltung": {
@@ -719,7 +586,7 @@
     "Dauer": "1 Semester",
     "Turnus": "Sommersemester",
     "Modulverantwortliche": {
-      "Anrede": "che Dr. rer. nat.",
+      "Anrede": "Dr. rer. nat.",
       "Vorname": "Sebastian",
       "Nachname": "Rinke"
     },
@@ -728,8 +595,7 @@
       "SWS_V": 2,
       "SWS_S": 2,
       "SWS_P": 0,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
     },
     "Modultyp": "PF",
     "CharakterLehrveranstaltung": {
@@ -761,8 +627,7 @@
       "SWS_V": 2,
       "SWS_S": 2,
       "SWS_P": 0,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
     },
     "Modultyp": "PF",
     "CharakterLehrveranstaltung": {
@@ -794,8 +659,7 @@
       "SWS_V": 0.5,
       "SWS_S": 0,
       "SWS_P": 1,
-      "SWS_gesamt": 1.5,
-      "Aufteilung": []
+      "SWS_gesamt": 1.5
     },
     "Modultyp": "PF",
     "CharakterLehrveranstaltung": {
@@ -827,8 +691,8 @@
       "SWS_V": 2,
       "SWS_S": 2,
       "SWS_P": 0,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
+      
     },
     "Modultyp": "PF",
     "CharakterLehrveranstaltung": {
@@ -860,8 +724,7 @@
       "SWS_V": 2,
       "SWS_S": 2,
       "SWS_P": 0,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
     },
     "Modultyp": "PF",
     "CharakterLehrveranstaltung": {
@@ -893,8 +756,7 @@
       "SWS_V": 0,
       "SWS_S": 0,
       "SWS_P": 0,
-      "SWS_gesamt": 0,
-      "Aufteilung": []
+      "SWS_gesamt": 0
     },
     "Modultyp": "PF",
     "CharakterLehrveranstaltung": {},
@@ -923,8 +785,7 @@
       "SWS_V": 0,
       "SWS_S": 0,
       "SWS_P": 0,
-      "SWS_gesamt": 0,
-      "Aufteilung": []
+      "SWS_gesamt": 0
     },
     "Modultyp": "PF",
     "CharakterLehrveranstaltung": {},
@@ -953,8 +814,7 @@
       "SWS_V": 0,
       "SWS_S": 2,
       "SWS_P": 0,
-      "SWS_gesamt": 2,
-      "Aufteilung": []
+      "SWS_gesamt": 2
     },
     "Modultyp": "PF",
     "CharakterLehrveranstaltung": {
@@ -986,8 +846,7 @@
       "SWS_V": 2,
       "SWS_S": 0,
       "SWS_P": 0,
-      "SWS_gesamt": 2,
-      "Aufteilung": []
+      "SWS_gesamt": 2 
     },
     "Modultyp": "PF",
     "CharakterLehrveranstaltung": {},
@@ -1016,8 +875,7 @@
       "SWS_V": 2,
       "SWS_S": 0,
       "SWS_P": 2,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
     },
     "Modultyp": "WPF",
     "CharakterLehrveranstaltung": {
@@ -1049,8 +907,7 @@
       "SWS_V": 2,
       "SWS_S": 2,
       "SWS_P": 0,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
     },
     "Modultyp": "WPF",
     "CharakterLehrveranstaltung": {
@@ -1082,8 +939,7 @@
       "SWS_V": 2,
       "SWS_S": 2,
       "SWS_P": 0,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
     },
     "Modultyp": "WPF",
     "CharakterLehrveranstaltung": {
@@ -1115,8 +971,7 @@
       "SWS_V": 0,
       "SWS_S": 0,
       "SWS_P": 0,
-      "SWS_gesamt": 0,
-      "Aufteilung": []
+      "SWS_gesamt": 0
     },
     "Modultyp": "WPF",
     "CharakterLehrveranstaltung": {
@@ -1148,8 +1003,7 @@
       "SWS_V": 2,
       "SWS_S": 2,
       "SWS_P": 0,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
     },
     "Modultyp": "WPF",
     "CharakterLehrveranstaltung": {
@@ -1181,8 +1035,7 @@
       "SWS_V": 2,
       "SWS_S": 0,
       "SWS_P": 2,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
     },
     "Modultyp": "WPF",
     "CharakterLehrveranstaltung": {
@@ -1214,8 +1067,7 @@
       "SWS_V": 2,
       "SWS_S": 0,
       "SWS_P": 2,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
     },
     "Modultyp": "WPF",
     "CharakterLehrveranstaltung": {
@@ -1247,8 +1099,7 @@
       "SWS_V": 2,
       "SWS_S": 2,
       "SWS_P": 0,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
     },
     "Modultyp": "WPF",
     "CharakterLehrveranstaltung": {
@@ -1280,8 +1131,7 @@
       "SWS_V": 2,
       "SWS_S": 2,
       "SWS_P": 0,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
     },
     "Modultyp": "WPF",
     "CharakterLehrveranstaltung": {
@@ -1313,8 +1163,8 @@
       "SWS_V": 2,
       "SWS_S": 2,
       "SWS_P": 0,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
+      
     },
     "Modultyp": "WPF",
     "CharakterLehrveranstaltung": {
@@ -1346,8 +1196,7 @@
       "SWS_V": 2,
       "SWS_S": 2,
       "SWS_P": 0,
-      "SWS_gesamt": 0,
-      "Aufteilung": []
+      "SWS_gesamt": 0
     },
     "Modultyp": "WPF",
     "CharakterLehrveranstaltung": {
@@ -1379,8 +1228,7 @@
       "SWS_V": 2,
       "SWS_S": 2,
       "SWS_P": 0,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
     },
     "Modultyp": "WPF",
     "CharakterLehrveranstaltung": {
@@ -1412,8 +1260,7 @@
       "SWS_V": 2,
       "SWS_S": 2,
       "SWS_P": 0,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
     },
     "Modultyp": "WPF",
     "CharakterLehrveranstaltung": {
@@ -1445,8 +1292,7 @@
       "SWS_V": 2,
       "SWS_S": 2,
       "SWS_P": 0,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
     },
     "Modultyp": "WPF",
     "CharakterLehrveranstaltung": {
@@ -1478,8 +1324,7 @@
       "SWS_V": 2,
       "SWS_S": 0,
       "SWS_P": 2,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
     },
     "Modultyp": "WPF",
     "CharakterLehrveranstaltung": {
@@ -1511,8 +1356,7 @@
       "SWS_V": 0,
       "SWS_S": 2,
       "SWS_P": 2,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
     },
     "Modultyp": "WPF",
     "CharakterLehrveranstaltung": {
@@ -1544,8 +1388,7 @@
       "SWS_V": 2,
       "SWS_S": 2,
       "SWS_P": 0,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
     },
     "Modultyp": "WPF",
     "CharakterLehrveranstaltung": {
@@ -1577,8 +1420,7 @@
       "SWS_V": 2,
       "SWS_S": 2,
       "SWS_P": 0,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
     },
     "Modultyp": "WPF",
     "CharakterLehrveranstaltung": {
@@ -1610,8 +1452,7 @@
       "SWS_V": 2,
       "SWS_S": 2,
       "SWS_P": 0,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
     },
     "Modultyp": "WPF",
     "CharakterLehrveranstaltung": {
@@ -1643,8 +1484,7 @@
       "SWS_V": 2,
       "SWS_S": 2,
       "SWS_P": 0,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
     },
     "Modultyp": "WPF",
     "CharakterLehrveranstaltung": {
@@ -1676,8 +1516,7 @@
       "SWS_V": 2,
       "SWS_S": 2,
       "SWS_P": 0,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
     },
     "Modultyp": "WPF",
     "CharakterLehrveranstaltung": {
@@ -1709,8 +1548,7 @@
       "SWS_V": 2,
       "SWS_S": 2,
       "SWS_P": 0,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
     },
     "Modultyp": "WPF",
     "CharakterLehrveranstaltung": {
@@ -1742,8 +1580,7 @@
       "SWS_V": 2,
       "SWS_S": 2,
       "SWS_P": 0,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
     },
     "Modultyp": "WPF",
     "CharakterLehrveranstaltung": {
@@ -1775,8 +1612,8 @@
       "SWS_V": 2,
       "SWS_S": 2,
       "SWS_P": 0,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
+      
     },
     "Modultyp": "WPF",
     "CharakterLehrveranstaltung": {
@@ -1808,8 +1645,7 @@
       "SWS_V": 2,
       "SWS_S": 2,
       "SWS_P": 0,
-      "SWS_gesamt": 3,
-      "Aufteilung": []
+      "SWS_gesamt": 3  
     },
     "Modultyp": "WPF",
     "CharakterLehrveranstaltung": {
@@ -1841,8 +1677,7 @@
       "SWS_V": 2,
       "SWS_S": 2,
       "SWS_P": 0,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
     },
     "Modultyp": "WPF",
     "CharakterLehrveranstaltung": {
@@ -1874,8 +1709,7 @@
       "SWS_V": 2,
       "SWS_S": 2,
       "SWS_P": -2,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
     },
     "Modultyp": "WPF",
     "CharakterLehrveranstaltung": {
@@ -1907,8 +1741,7 @@
       "SWS_V": 2,
       "SWS_S": 2,
       "SWS_P": 0,
-      "SWS_gesamt": 2,
-      "Aufteilung": []
+      "SWS_gesamt": 2
     },
     "Modultyp": "WPF",
     "CharakterLehrveranstaltung": {
@@ -1940,8 +1773,7 @@
       "SWS_V": 2,
       "SWS_S": 1,
       "SWS_P": 0,
-      "SWS_gesamt": 3,
-      "Aufteilung": []
+      "SWS_gesamt": 3
     },
     "Modultyp": "PF",
     "CharakterLehrveranstaltung": {
@@ -1973,8 +1805,7 @@
       "SWS_V": 2,
       "SWS_S": 2,
       "SWS_P": 0,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
     },
     "Modultyp": "PF",
     "CharakterLehrveranstaltung": {
@@ -2006,8 +1837,7 @@
       "SWS_V": 2,
       "SWS_S": 2,
       "SWS_P": 0,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
     },
     "Modultyp": "PF",
     "CharakterLehrveranstaltung": {
@@ -2038,8 +1868,8 @@
       "SWS_V": 2,
       "SWS_S": 2,
       "SWS_P": 0,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
+      
     },
     "Modultyp": "PF",
     "CharakterLehrveranstaltung": {
@@ -2071,8 +1901,7 @@
       "SWS_V": 2,
       "SWS_S": 2,
       "SWS_P": 0,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
     },
     "Modultyp": "PF",
     "CharakterLehrveranstaltung": {
@@ -2104,8 +1933,8 @@
       "SWS_V": 2,
       "SWS_S": 2,
       "SWS_P": 0,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
+      
     },
     "Modultyp": "PF",
     "CharakterLehrveranstaltung": {
@@ -2137,8 +1966,8 @@
       "SWS_V": 2,
       "SWS_S": 2,
       "SWS_P": 0,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
+      
     },
     "Modultyp": "PF",
     "CharakterLehrveranstaltung": {
@@ -2170,8 +1999,8 @@
       "SWS_V": 2,
       "SWS_S": 2,
       "SWS_P": 0,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
+      
     },
     "Modultyp": "WPF",
     "CharakterLehrveranstaltung": {
@@ -2203,8 +2032,8 @@
       "SWS_V": 2,
       "SWS_S": 2,
       "SWS_P": 0,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
+      
     },
     "Modultyp": "WPF",
     "CharakterLehrveranstaltung": {
@@ -2236,8 +2065,8 @@
       "SWS_V": 2,
       "SWS_S": 2,
       "SWS_P": 0,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
+      
     },
     "Modultyp": "WPF",
     "CharakterLehrveranstaltung": {
@@ -2269,8 +2098,8 @@
       "SWS_V": 3,
       "SWS_S": 0,
       "SWS_P": 1,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
+      
     },
     "Modultyp": "WPF",
     "CharakterLehrveranstaltung": {
@@ -2302,8 +2131,7 @@
       "SWS_V": 2,
       "SWS_S": 0,
       "SWS_P": 0,
-      "SWS_gesamt": 2,
-      "Aufteilung": []
+      "SWS_gesamt": 2
     },
     "Modultyp": "PF",
     "CharakterLehrveranstaltung": {
@@ -2335,8 +2163,8 @@
       "SWS_V": 0,
       "SWS_S": 2,
       "SWS_P": 2,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
+      
     },
     "Modultyp": "WPF",
     "CharakterLehrveranstaltung": {
@@ -2367,8 +2195,8 @@
       "SWS_V": 2,
       "SWS_S": 0,
       "SWS_P": 2,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
+      
     },
     "Modultyp": "WPF",
     "CharakterLehrveranstaltung": {
@@ -2400,8 +2228,8 @@
       "SWS_V": 2,
       "SWS_S": 2,
       "SWS_P": 0,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
+      
     },
     "Modultyp": "WPF",
     "CharakterLehrveranstaltung": {
@@ -2433,8 +2261,8 @@
       "SWS_V": 2,
       "SWS_S": 0,
       "SWS_P": 2,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
+      
     },
     "Modultyp": "WPF",
     "CharakterLehrveranstaltung": {
@@ -2466,8 +2294,8 @@
       "SWS_V": 0,
       "SWS_S": 3,
       "SWS_P": 0,
-      "SWS_gesamt": 3,
-      "Aufteilung": []
+      "SWS_gesamt": 3
+      
     },
     "Modultyp": "WPF",
     "CharakterLehrveranstaltung": {
@@ -2499,8 +2327,7 @@
       "SWS_V": 0,
       "SWS_S": 2,
       "SWS_P": 2,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
     },
     "Modultyp": "WPF",
     "CharakterLehrveranstaltung": {
@@ -2532,8 +2359,7 @@
       "SWS_V": 0,
       "SWS_S": 4,
       "SWS_P": 0,
-      "SWS_gesamt": 4,
-      "Aufteilung": []
+      "SWS_gesamt": 4
     },
     "Modultyp": "WPF",
     "CharakterLehrveranstaltung": {
