@@ -1,0 +1,29 @@
+{
+  "id": "c947__sebastian-rinke__sose2026",
+  "modul": {
+    "modulnr": "C947",
+    "fakultaet": "FIM-INF",
+    "studiengang": "INB, MIB",
+    "fs": "2",
+    "modulname": "Digitaltechnik II",
+    "swsSeminar": "2",
+    "swsPraktikum": "0",
+    "name": "Sebastian Rinke",
+    "unterschrift": "Dr. rer. nat. Sebastian Rinke",
+    "lesende": [
+      {
+        "titel": "Dr. rer. nat.",
+        "name": "Sebastian Rinke"
+      }
+    ],
+    "seminarleiter": [
+      {
+        "titel": "Dr. rer. nat.",
+        "name": "Sebastian Rinke"
+      }
+    ],
+    "gruppen": "INB26 + INB25 + MIB26 + MIB25",
+    "praktikumsleiter": [],
+    "swsVorlesung": "3"
+  }
+}

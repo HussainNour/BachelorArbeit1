@@ -1,4 +1,5 @@
 {
+  "id": "c114__sibylle-schwarz__wise2526",
   "modul": {
     "modulnr": "C114",
     "fakultaet": "FIM-INF",
@@ -26,6 +27,5 @@
     "kwHinweise": "KW42, KW43",
     "planungshinweise": "gleichmäßige Verteilung von Vorlesungen und Seminaren auf gerade und ungerade Wochen.",
     "praktikumsleiter": []
-  },
-  "id": "c114__sibylle-schwarz__wise2526"
+  }
 }
